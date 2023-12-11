@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+</head>
+<body>
+    <h1>JOIN</h1>
+    
+    <label>Email<input id="email"></label>
+    <button id="sendMailButton">이메일인증</button>
+<script>
+	console.log('콘솔되니');
+	let email1 = document.getElementById("email");
+	
+    let btn = document.getElementById("sendMailButton");
+    btn.addEventListener('click',(e)=>{
+		console.log('눌렸니');
+		let email = email1.value.toString();
+		console.log(email);
+	 	console.log(typeof(email))
+		
+		$.ajax({
+			      type : "POST",
+			      url : "emailConfirm",
+			      data : {
+			         "email" : email
+			      }
+		});		
+		
+        console.log('제발');
+    })
+
+</script>
+</body>
+</html>
