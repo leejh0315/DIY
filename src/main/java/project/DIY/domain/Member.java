@@ -4,7 +4,11 @@ import lombok.Data;
 
 @Data
 public class Member {
-	int id;
-	String password;
-	String name;
+	private int id;
+	private String loginId;
+	private String passWord;
+	private String userName;
+	private String statusCode;
+	private String birth;
+	private String activeUUID; 
 }

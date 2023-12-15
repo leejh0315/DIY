@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,27 +11,45 @@
     
     <label>Email<input id="email"></label>
     <button id="sendMailButton">이메일인증</button>
+    
+    <label>인증번호<input id="numberCheck"></label>
+    <button id="numberCheckButton">인증번호확인</button>
+    
+    
+
 <script>
-	console.log('콘솔되니');
 	let email1 = document.getElementById("email");
-	
-    let btn = document.getElementById("sendMailButton");
+	let btn = document.getElementById("sendMailButton");
+	let checkNumber;
     btn.addEventListener('click',(e)=>{
-		console.log('눌렸니');
 		let email = email1.value.toString();
-		console.log(email);
-	 	console.log(typeof(email))
-		
+
 		$.ajax({
 			      type : "POST",
 			      url : "emailConfirm",
 			      data : {
 			         "email" : email
-			      }
-		});		
-		
-        console.log('제발');
-    })
+			      }, success : function(data){
+					  checkNumber = data;
+				  }
+		});
+	});
+	let numberCheck = document.getElementById("numberCheck");
+	let numberCheckButton = document.getElementById("numberCheckButton");
+	
+	numberCheckButton.addEventListener('click',(e)=>{
+		let number = numberCheck.value.toString();
+
+		$.ajax({
+			      type : "POST",
+			      url : "numberCheck",
+			      data : {
+			         "number" : number
+			      }, success : function(data){
+					  checkNumber = data;
+				  }
+		});
+	});
 
 </script>
 </body>

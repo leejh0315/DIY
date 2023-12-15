@@ -28,8 +28,8 @@ public class EmailServiceImpl implements EmailService{
     	System.out.println("보내는 대상 : "+ to);
         System.out.println("인증 번호 : "+ePw);
         RedisProperties r = new RedisProperties();
-        r.setHost(to);
-        r.setPassword(ePw);
+//        r.setHost(to);
+//        r.setPassword(ePw);
         MimeMessage  message = emailSender.createMimeMessage();
         
         message.addRecipients(RecipientType.TO, to);//보내는 대상
@@ -37,7 +37,7 @@ public class EmailServiceImpl implements EmailService{
  
         String msgg="";
         msgg+= "<div style='margin:20px;'>";
-        msgg+= "<h1> 안녕하세요 사조마켓입니다. </h1>";
+        msgg+= "<h1> 안녕하세요 DIY입니다. </h1>";
         msgg+= "<br>";
         msgg+= "<p>아래의 인증번호를 입력해주세요.<p>";
         msgg+= "<br>";
@@ -50,7 +50,7 @@ public class EmailServiceImpl implements EmailService{
         msgg+= ePw+"</strong><div><br/> ";
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("humanedu6.4@gmail.com","<SAJO>Market"));//보내는 사람
+        message.setFrom(new InternetAddress("DIY@gmail.com","<DIY>"));//보내는 사람
  
         return message;
     }
@@ -133,4 +133,6 @@ public class EmailServiceImpl implements EmailService{
         }
         return ePw;
     }
+    
+    
 }
