@@ -28,4 +28,10 @@ public class PostController {
 		return "redirect:/";
 	} 
 	
+	@GetMapping("/selectPost")
+	public String selectPost(Model model) {
+		Post post = postRepository.selectPost();
+		model.addAttribute("post", post);
+		return "post/selectPost";
+	}
 }

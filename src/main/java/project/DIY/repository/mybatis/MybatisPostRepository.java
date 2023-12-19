@@ -19,6 +19,12 @@ public class MybatisPostRepository implements PostRepository{
 		postMapper.insertPost(post);
 		
 	}
+
+	@Override
+	public Post selectPost() {
+		Post post = postMapper.selectPost();
+		return post;
+	}
 	
 
 }

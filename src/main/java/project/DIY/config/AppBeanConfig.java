@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AppBeanConfig {
 
+	@Autowired
 	private final MemberMapper memberMapper;
 
 	@Bean

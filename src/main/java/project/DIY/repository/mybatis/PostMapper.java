@@ -8,6 +8,7 @@ import project.DIY.domain.Post;
 public interface PostMapper {
 
 	public void insertPost(Post post);
+	public Post selectPost();
 		
 	
 }

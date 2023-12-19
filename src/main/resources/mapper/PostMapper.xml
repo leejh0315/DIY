@@ -13,4 +13,14 @@
 
 	</insert>
 	
+	
+	<select id="selectPost" resultType="Post">
+		insert INTO temp.post VALUES (
+		#{title}, #{content}
+		);
+
+	</select>
+	
+	
+	
 </mapper>
