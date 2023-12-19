@@ -5,6 +5,7 @@
 <mapper	namespace="project.DIY.repository.mybatis.MemberMapper">
 
 <!-- 로그인 -->
+<!-- id는 인터페이스 메소드명과 동일 -->
 	<select id="selectById" resultType="project.DIY.domain.Member">
 		select * from temp.member
 		where loginId = #{loginId};

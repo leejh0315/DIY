@@ -10,5 +10,7 @@ public class Member {
 	private String userName;
 	private String statusCode;
 	private String birth;
-	private String activeUUID; 
+	private String activeUUID;
 }
+
+

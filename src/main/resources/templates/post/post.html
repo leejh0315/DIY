@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+</head>
+<body>
+    <h1>Post</h1>
+    <form action="/post" method="post" name="post" th:object="${post}"> 
+		제목<input th:field="*{title}">
+		내용<input th:field="*{content}">
+		
+	</form>
+	<button id="submitBtn">입력</button>
+
+<script>
+	let submitBtn = document.getElementById("submitBtn");
+	let form = document.post;
+	
+	submitBtn.addEventListener('click',(e)=>{
+		form.submit();
+		
+	});	
+</script>
+</body>
+</html>

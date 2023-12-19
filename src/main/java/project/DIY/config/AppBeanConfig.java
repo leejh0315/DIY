@@ -18,4 +18,12 @@ public class AppBeanConfig {
 	public MemberRepository memberRepository() {
 		return new MybatisMemberRepository(memberMapper);
 	}
+	@Autowired
+	private final PostMapper postMapper;
+	
+	@Bean
+	public PostRepository postRepository() {
+		return new MybatisPostRepository(postMapper);
+	}
+	
 }

@@ -74,7 +74,7 @@ public class HomeController {
 			return "login/login";
 		}
 		Member memberVO = loginService.login(loginForm.getLoginId(), loginForm.getPassWord());
-
+		
 		if(memberVO == null) { //계정정보가 없거나, 비밀번호가 안맞거나 로그인 실패
 			bindingResult.reject("loginForm", "아이디 or 비밀번호 불일치");
 			return "login/login";

@@ -6,4 +6,6 @@ public interface MemberRepository {
 	public Member selectById(String loginId);
 	public boolean updateUUID(Member member);
 	public Integer idCheck(String loginId);
+	//jpa
+	//mybatis
 }
