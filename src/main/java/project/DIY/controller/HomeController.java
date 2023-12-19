@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.form.JoinForm;
 import project.DIY.form.LoginForm;
 import project.DIY.repository.MemberRepository;
 import project.DIY.service.LoginService;
@@ -24,17 +26,33 @@ import project.DIY.session.SessionVar;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
+	
 	@Autowired
 	private final MemberRepository memberRepository;
-	
 	private final LoginService loginService;
 	
-
+	@GetMapping("/")
+	public String getMain(Model model) {
+		
+		return "main/main";
+	}
 	
 	@GetMapping("/join")
-	public String getJoin(Model model) {
+	public String getJoin() {
 
 		return "join/join";
+	}
+	
+	@PostMapping("/join")
+	public String postJoin(@ModelAttribute JoinForm joinForm,
+			BindingResult bindingResult, HttpServletResponse resp
+			, HttpServletRequest req
+			, @RequestParam(name="redirectURL", defaultValue = "/") String redirectURL){
+		validateJoinForm(joinForm, bindingResult);
+		if(bindingResult.hasErrors()) {
+			return "login/login";
+		}
+		return "";
 	}
 	
 	@GetMapping("/login")
@@ -50,8 +68,8 @@ public class HomeController {
 			BindingResult bindingResult, HttpServletResponse resp
 			, HttpServletRequest req
 			, @RequestParam(name="redirectURL", defaultValue = "/") String redirectURL ) {
-		System.out.println("와졌을까?");
 		validateLoginForm(loginForm, bindingResult);
+		
 		if(bindingResult.hasErrors()) {
 			return "login/login";
 		}
@@ -76,7 +94,7 @@ public class HomeController {
 		memberVO.setActiveUUID(session.getId());
 		memberRepository.updateUUID(memberVO);
 
-//		return "redirect:" + redirectURL; //
+//		return "redirect:" + redirectURL; 
 		return "/join/join";
 	}
 
@@ -88,5 +106,25 @@ public class HomeController {
 			errors.rejectValue("passWord", null, "비밀번호 필수 입력입니다.");
 		}
 	}
-
+	
+	public void validateJoinForm(JoinForm joinForm, Errors errors) {
+		if(!StringUtils.hasText(joinForm.getLoginId())) {
+			errors.rejectValue("loginId", null, "아이디 필수 입력입니다.");
+		}
+		if(!StringUtils.hasText(joinForm.getPassword())) {
+			errors.rejectValue("password", null, "비밀번호 필수 입력입니다.");
+		}
+		if(!joinForm.getPassword().equals(joinForm.getPasswordCheck())) {
+			errors.rejectValue("passwordCheck", "비밀번호가 올바르지 않습니다.");
+		}
+	}
+	
+	@ResponseBody
+	@PostMapping("/joongbok")
+	public int idCheck(@RequestParam("email") String email) {
+		
+		int cnt = memberRepository.idCheck(email);
+		return cnt;
+	}
+	
 }

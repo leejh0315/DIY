@@ -31,5 +31,11 @@ public class MybatisMemberRepository implements MemberRepository{
 		
 
 	}
+
+	@Override
+	public Integer idCheck(String loginId) {
+		Integer cnt = memberMapper.idCheck(loginId);
+		return cnt;
+	}
 	
 }

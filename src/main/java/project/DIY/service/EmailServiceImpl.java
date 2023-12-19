@@ -11,25 +11,26 @@ import org.springframework.stereotype.Service;
 import jakarta.mail.Message.RecipientType;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 
  
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService{
  
     @Autowired
     JavaMailSender emailSender;
     
- 
+    private final RedisUtils redisUtils;
+    
     public static String ePw = createKey();
  
     private MimeMessage createMessage(String to)throws Exception{
     	ePw = createKey();
-    	
+    	redisUtils.setDataExpire(to, ePw, 60*3L);//3분 유효시간
     	System.out.println("보내는 대상 : "+ to);
         System.out.println("인증 번호 : "+ePw);
         RedisProperties r = new RedisProperties();
-//        r.setHost(to);
-//        r.setPassword(ePw);
         MimeMessage  message = emailSender.createMimeMessage();
         
         message.addRecipients(RecipientType.TO, to);//보내는 대상

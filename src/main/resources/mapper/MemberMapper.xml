@@ -17,4 +17,9 @@
 	where loginId= #{loginId};
 	</update>
 
+	<select id="idCheck" resultType="Integer">
+		select count(*) from temp.member 
+		where loginId = #{loginId};
+	</select>
+
 </mapper>

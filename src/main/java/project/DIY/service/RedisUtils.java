@@ -1,28 +1,39 @@
 package project.DIY.service;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.stereotype.Component;
 
-@Service
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
 public class RedisUtils {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
 
-    public RedisUtils(RedisTemplate<String, Object> redisTemplate) {
-        this.redisTemplate = redisTemplate;
+
+    public String getData(String key) {
+        ValueOperations<String,String> valueOperations = stringRedisTemplate.opsForValue();
+        return valueOperations.get(key);
     }
 
-    public void setData(String key, String value,Long expiredTime){
-        redisTemplate.opsForValue().set(key, value, expiredTime, TimeUnit.MILLISECONDS);
+
+    public void setData(String key, String value) {
+        ValueOperations<String,String> valueOperations = stringRedisTemplate.opsForValue();
+        valueOperations.set(key, value);
     }
 
-    public String getData(String key){
-        return (String) redisTemplate.opsForValue().get(key);
+    public void setDataExpire(String key, String value, long duration) {
+        ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
+        Duration expireDuration = Duration.ofSeconds(duration);
+        valueOperations.set(key, value, expireDuration);
     }
 
-    public void deleteData(String key){
-        redisTemplate.delete(key);
+    public void deleteData(String key) {
+        stringRedisTemplate.delete(key);
     }
+
 }

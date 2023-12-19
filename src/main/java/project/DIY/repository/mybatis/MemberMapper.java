@@ -8,4 +8,5 @@ import project.DIY.domain.Member;
 public interface MemberMapper {
 	public Member selectById(String loginId);
 	public void updateUUID(Member member);
+	public Integer idCheck(String loginId);
 }
