@@ -7,24 +7,24 @@
 <!-- 로그인 -->
 <!-- id는 인터페이스 메소드명과 동일 -->
 	<select id="selectById" resultType="project.DIY.domain.Member">
-		select * from temp.member
+		select * from diydb.member
 		where loginId = #{loginId};
 	</select>
 	
 	
 	<update id="updateUUID" parameterType="project.DIY.domain.Member">
-	UPDATE temp.member
+	UPDATE diydb.member
 	set activeUUID = #{activeUUID}
 	where loginId= #{loginId};
 	</update>
 
 	<select id="idCheck" resultType="Integer">
-		select count(*) from temp.member 
+		select count(*) from diydb.member 
 		where loginId = #{loginId};
 	</select>
 
 	<insert id="insertMember" parameterType="project.DIY.domain.Member">
-		INSERT INTO temp.member
+		INSERT INTO diydb.member
 		VALUES (
 			null,
 			#{loginId}, 

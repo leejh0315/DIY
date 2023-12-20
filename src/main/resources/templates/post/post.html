@@ -20,17 +20,52 @@
 			height: 100px;
 			width: 60px;
 		}
-
+		.modal{
+			position: absolute;
+			z-index: 1;
+			top:20%;
+			left:20%;
+			width: 50%;
+			height: 50%;
+			background-color: rgba(0,0,0,0.4);
+		}
+		#modalOffButton{
+			position: absolute;
+			right: 10px;
+		}
 	</style>
 	</head>
 	<body>
 		<h1>Post</h1>
-		
-		검색어<input id="keyword1"><br>
-		<button id="searchButton">검색</button><br>
+		<div class="modal" id="modal">
+			<div>
+				<div>작품 검색</div>
+				<div id="modalOffButton">X</div>
+				
+				<label>카테고리
+					<select id="categorySelect">
+						<option value="none" selected>선택</option>
+						<option value="book">도서</option>
+						<option value="concert">공연</option>
+						<option value="movie">영화</option>
+					</select>
+				</label>
+				작품명<input id="keyword1">
+				<button id="searchButton">검색</button><br>
+				
+				<div id="searchMovieResult"></div>
+				<div id="searchConcertResult"></div>
+			</div>
+		</div>
 
-		<div id="searchMovieResult"></div>
-		<div id="searchConcertResult"></div>
+		<p>어떤 작품에 대하여 쓰나요?</p>
+		<p>감상문을 작성할 작품을 검색해서 등록해보세요.</p>
+		<button id="modalOnButton">작품 검색</button><br><br>
+
+
+
+
+
 		<br><br>
 		<form action="/post" method="post" name="post" th:object="${post}" enctype="multipart/form-data"> 
 			제목<input th:field="*{title}"><br>
@@ -42,17 +77,43 @@
 			
 		</form>
 		<button id="submitBtn">입력</button>
-
-	<script>
-		let submitBtn = document.getElementById("submitBtn");
-		let form = document.post;
 		
+	<script>
+		$("#modal").css("display", "none");	
+		
+		let categorySelect = document.getElementById("categorySelect");
+		let modal = document.getElementById("modal");
+		let submitBtn = document.getElementById("submitBtn");
+		let modalOnButton = document.getElementById("modalOnButton");
+		let modalOffButton = document.getElementById("modalOffButton");
+		let form = document.post;
+
 		let searchMovieResult = document.getElementById("searchMovieResult");
 		let searchConcertResult = document.getElementById("searchConcertResult");
 		let resultC = [];
 		let resultC_name= [];
 		let resultC_type = [];
 		let resultC_thumb = [];
+		let modalTogle = true;
+		modalOnButton.addEventListener("click", (e)=>{
+			if(modalTogle){
+				modal.style.display="flex";
+				$("section1").css("background-color", "ligthgray");
+				modalTogle = false;
+			}else{
+				$("#modal").css("display", "none");
+				$("section1").css("background-color", "white");
+				modalTogle = true;
+			}
+			
+			
+		});
+
+		modalOffButton.addEventListener("click", (e)=>{
+			$("#modal").css("display", "none");
+			$("section1").css("background-color", "white")	
+		})
+
 		submitBtn.addEventListener('click',(e)=>{
 			form.submit();
 		});	
@@ -61,6 +122,9 @@
 		let searchButton = document.getElementById("searchButton");
 
 		searchButton.addEventListener("click", (e)=>{
+			e.preventDefault();
+			
+			
 			searchMovieResult.innerHTML = "";
 			searchConcertResult.innerHTML = "";
 			resultC_name = [];
@@ -70,70 +134,75 @@
 			console.log(keyword);
 			console.log(typeof(keyword));
 			
-			$.ajax({
+			
+			
+			if(categorySelect.value == "none"){
+				alert("검색어를 입력해주세요.");	
+			}else if(categorySelect.value == "book"){
+				$.ajax({
 				type: "GET",
 				url: "/kakaoBookSearch/"+keyword,
 				dataType: "json",
 				contentType:"application/json",
-			}).done(function(res) {
-				console.log(res);
-				for(let i = 0 ; i < res.documents.length; i++){
-					if(res.documents[i].authors == "" || res.documents[i].authors == null){
-						res.documents[i].authors = "작가 없음";
-						searchMovieResult.innerHTML += 
-						"<div class='result'> <img src='"+res.documents[i].thumbnail +"'><p class='title'>"+res.documents[i].title+"</p><p>"+res.documents[i].authors+"</p></div>";
-					}else{
-						searchMovieResult.innerHTML += 
-						"<div class='result'> <img src='"+res.documents[i].thumbnail +"'><p class='title'>"+res.documents[i].title+"</p><p>"+res.documents[i].authors+"</p></div>";
-					}
-				};
-			}).fail(function (error) {
-				alert(JSON.stringify(error));
-			});
-			console.log("책 api ajax 요청 종료");
-
-			$.ajax({
-				type: "GET",
-				url: "concert/"+keyword,
-				dataType: "xml",
-				//contentType:"application/json",
-			}).done(function(res) {
-				console.log(res);
-				let resTextToString = $(res).text().toString();	
-				console.log(resTextToString);
-				resultC = resTextToString.split('        ');
-				for(let i = 2 ; i< resultC.length; i++){
-					if(i%9 == 2){
-						resultC_name.push(resultC[i]);
-					}
-					if(i%9 == 7){
-						resultC_type.push(resultC[i]);
-					}
-					if(i%9 == 6){
-						resultC_thumb.push(resultC[i]);
-					}
-				}
-				console.log(resultC_name);
-				console.log(resultC_type);
-				console.log(resultC_thumb);
+				}).done(function(res) {
+					console.log(res);
+					for(let i = 0 ; i < res.documents.length; i++){
+						if(res.documents[i].authors == "" || res.documents[i].authors == null){
+							res.documents[i].authors = "작가 없음";
+							searchMovieResult.innerHTML += 
+							"<div class='result'> <img src='"+res.documents[i].thumbnail +"'><p class='title'>"+res.documents[i].title+"</p><p>"+res.documents[i].authors+"</p></div>";
+						}else{
+							searchMovieResult.innerHTML += 
+							"<div class='result'> <img src='"+res.documents[i].thumbnail +"'><p class='title'>"+res.documents[i].title+"</p><p>"+res.documents[i].authors+"</p></div>";
+						}
+					};
+				}).fail(function (error) {
+					alert(JSON.stringify(error));
+				});
+				console.log("책 api ajax 요청 종료");
+				}else if(categorySelect.value == "concert"){
+					$.ajax({
+						type: "GET",
+						url: "concert/"+keyword,
+						dataType: "xml",
+						//contentType:"application/json",
+						}).done(function(res) {	
+						console.log(res);
+						let resTextToString = $(res).text().toString();	
+						console.log(resTextToString);
+						resultC = resTextToString.split('        ');
+						for(let i = 2 ; i< resultC.length; i++){
+							if(i%9 == 2){
+								resultC_name.push(resultC[i]);
+							}
+							if(i%9 == 7){
+								resultC_type.push(resultC[i]);
+							}
+							if(i%9 == 6){
+								resultC_thumb.push(resultC[i]);
+							}
+						}
+					console.log(resultC_name);
+					console.log(resultC_type);
+					console.log(resultC_thumb);
 				
-				for(let i = 0 ; i < resultC_name.length; i++){
-					searchConcertResult.innerHTML += 
-					"<div class='result'> <img src='"+resultC_thumb[i] +
-					"'><p class='title'>"+
-					resultC_name[i]+
-					"</p><p>"+
-					resultC_type[i]+"</p></div>";;
+					for(let i = 0 ; i < resultC_name.length; i++){
+						searchConcertResult.innerHTML += 
+						"<div class='result'> <img src='"+resultC_thumb[i] +
+						"'><p class='title'>"+
+						resultC_name[i]+
+						"</p><p>"+
+						resultC_type[i]+"</p></div>";;
+					}
+					}).fail(function (error) {
+		
+					});
+					console.log("ajax 요청 종료");
+				}else{
+					alert("영화api 준비 안됨");
+				}
 					
-				}
-				
-			}).fail(function (error) {
-
-			});
-			console.log("ajax 요청 종료");
-
-
-		});
+	});
 </script>
 </body>
 </html>

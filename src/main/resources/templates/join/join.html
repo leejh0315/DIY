@@ -63,7 +63,7 @@
 	let countText = document.getElementById("countText");
 	let count = document.getElementById('count');
 	var email = "";
-	let total_time = 10;
+	let total_time = 180;
 	let minute = total_time / 60;
 	let second = total_time % 60;
 	let interval;
@@ -101,7 +101,7 @@
 	
 	sendMailButton.addEventListener('click',(e)=>{
 		e.preventDefault();
-		total_time = 10;
+		total_time = 180;
 		interval = setInterval(() =>{
 			countMinus()
 		}, 1000);
