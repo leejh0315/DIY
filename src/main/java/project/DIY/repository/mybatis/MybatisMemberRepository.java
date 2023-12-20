@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.form.JoinForm;
 import project.DIY.repository.MemberRepository;
 
 @Repository
@@ -28,14 +29,17 @@ public class MybatisMemberRepository implements MemberRepository{
 		result = true;
 		
 		return result;
-		
-
 	}
 
 	@Override
 	public Integer idCheck(String loginId) {
 		Integer cnt = memberMapper.idCheck(loginId);
 		return cnt;
+	}
+
+	@Override
+	public void insertMember(Member member) {
+		memberMapper.insertMember(member);
 	}
 	
 }

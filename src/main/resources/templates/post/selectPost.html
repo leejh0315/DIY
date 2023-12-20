@@ -6,10 +6,25 @@
     <title>Document</title>
 </head>
 <body>
-	<h1>
-		selectPost
-	</h1>
+	<h1>selectPost</h1>
 	
+	<table>
+		<thead>
+			<tr>
+				<th>제목</th>
+				<th>내용</th>
+			</tr>
+		</thead>
+		
+		<tbody th:each="post:${post}">
+			<tr>
+				<td class="tr" th:text="${post.name}"></td>
+				<td class="tr" th:text="${post.content}"></td>
+				
+			</tr>
+		</tbody>
+		
+	</table>
     
 </body>
 </html>

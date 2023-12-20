@@ -16,7 +16,7 @@ public class LoginService {
 		Member member = memberRepository.selectById(id);
 		
 		if(member != null) {
-			if(member.getPassWord().equals(password)) {
+			if(member.getPassword().equals(password)) {
 				return member;
 			}
 		}
@@ -29,7 +29,7 @@ public class LoginService {
 		Member memberVO = memberRepository.selectById(email);
 		
 		if(memberVO != null) {
-			if(memberVO.getPassWord().equals(password)) {
+			if(memberVO.getPassword().equals(password)) {
 				return memberVO;
 			}
 		}

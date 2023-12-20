@@ -42,7 +42,7 @@ public class EmailController {
 			return "1";
 		}else if(redisUtils.getData(userEmail) == "" || redisUtils.getData(userEmail) == null) {
 			System.out.println("레디스 비었음");
-			return "0";
+			return "2";
 		}
 		else {
 			System.out.println("번호 다름");

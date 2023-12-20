@@ -23,4 +23,18 @@
 		where loginId = #{loginId};
 	</select>
 
+	<insert id="insertMember" parameterType="project.DIY.domain.Member">
+		INSERT INTO temp.member
+		VALUES (
+			null,
+			#{loginId}, 
+			#{password},
+			#{nickName}, 
+			"Y",
+			"",
+			date_format(now(), '%Y%m%d%H%i%s'),
+			null
+			);
+		
+	</insert>
 </mapper>

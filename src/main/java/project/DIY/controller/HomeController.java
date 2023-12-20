@@ -38,21 +38,35 @@ public class HomeController {
 	}
 	
 	@GetMapping("/join")
-	public String getJoin() {
+	public String getJoin(Model model) {
 
+		JoinForm joinForm = new JoinForm();
+		model.addAttribute("joinForm", joinForm);
+		
 		return "join/join";
 	}
 	
 	@PostMapping("/join")
 	public String postJoin(@ModelAttribute JoinForm joinForm,
-			BindingResult bindingResult, HttpServletResponse resp
-			, HttpServletRequest req
-			, @RequestParam(name="redirectURL", defaultValue = "/") String redirectURL){
+			BindingResult bindingResult){
+		
+		System.out.println("post요청이 잘 오는가?");
+		System.out.println(joinForm);
+		
 		validateJoinForm(joinForm, bindingResult);
+
+		
 		if(bindingResult.hasErrors()) {
-			return "login/login";
+			return "join/join";
+		}else {
+			Member member = new Member();
+			member.setLoginId(joinForm.getLoginId());
+			member.setPassword(joinForm.getPassword());
+			member.setNickName(joinForm.getNickName());
+			memberRepository.insertMember(member);
+			return "redirect:/";	
 		}
-		return "";
+		
 	}
 	
 	@GetMapping("/login")
@@ -68,6 +82,7 @@ public class HomeController {
 			BindingResult bindingResult, HttpServletResponse resp
 			, HttpServletRequest req
 			, @RequestParam(name="redirectURL", defaultValue = "/") String redirectURL ) {
+
 		validateLoginForm(loginForm, bindingResult);
 		
 		if(bindingResult.hasErrors()) {
@@ -113,17 +128,30 @@ public class HomeController {
 		}
 		if(!StringUtils.hasText(joinForm.getPassword())) {
 			errors.rejectValue("password", null, "비밀번호 필수 입력입니다.");
+		}else if(joinForm.getPassword().length() < 8) {
+			errors.rejectValue("password",null, "비밀번호는 8자 이상으로 입력해주세요.");
 		}
-		if(!joinForm.getPassword().equals(joinForm.getPasswordCheck())) {
-			errors.rejectValue("passwordCheck", "비밀번호가 올바르지 않습니다.");
+		
+		if(!StringUtils.hasText(joinForm.getPasswordCheck())){
+			errors.rejectValue("passwordCheck", null, "비밀번호 확인을 해주세요.");
+		}else if(!joinForm.getPassword().equals(joinForm.getPasswordCheck())) {
+			errors.rejectValue("passwordCheck", null,"비밀번호가 올바르지 않습니다.");
+		}else if(joinForm.getPassword().length() < 8) {
+			errors.rejectValue("passwordCheck", null,"비밀번호는 8자 이상으로 입력해주세요.");
+		}
+		
+		if(!StringUtils.hasText(joinForm.getNickName())){
+			errors.rejectValue("nickName", null,"닉네임을 입력해주세요.");
 		}
 	}
 	
 	@ResponseBody
 	@PostMapping("/joongbok")
 	public int idCheck(@RequestParam("email") String email) {
-		
+		System.out.println("중복체크 진입");
+		System.out.println("email:" + email);
 		int cnt = memberRepository.idCheck(email);
+		System.out.println("cnt : " + cnt);
 		return cnt;
 	}
 	

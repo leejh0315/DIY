@@ -6,8 +6,8 @@ import lombok.Data;
 public class Member {
 	private int id;
 	private String loginId;
-	private String passWord;
-	private String userName;
+	private String password;
+	private String nickName;
 	private String statusCode;
 	private String birth;
 	private String activeUUID;

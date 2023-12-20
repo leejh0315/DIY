@@ -5,6 +5,7 @@ import project.DIY.repository.mybatis.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +26,11 @@ public class AppBeanConfig {
 	@Bean
 	public PostRepository postRepository() {
 		return new MybatisPostRepository(postMapper);
+	}
+	
+	@Bean
+	public RestTemplate getRestTemplate(){
+		return new RestTemplate();
 	}
 	
 }
