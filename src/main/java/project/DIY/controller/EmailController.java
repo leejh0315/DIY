@@ -38,6 +38,7 @@ public class EmailController {
 	public String numberCheck(@RequestParam(value = "number") String number) {
 		
 		if(number.equals(redisUtils.getData(userEmail))) {
+			redisUtils.setDataExpire(userEmail, "Y", 60*10L);
 			System.out.println("번호 같음");
 			return "1";
 		}else if(redisUtils.getData(userEmail) == "" || redisUtils.getData(userEmail) == null) {

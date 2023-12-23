@@ -21,6 +21,7 @@ import project.DIY.form.JoinForm;
 import project.DIY.form.LoginForm;
 import project.DIY.repository.MemberRepository;
 import project.DIY.service.LoginService;
+import project.DIY.service.RedisUtils;
 import project.DIY.session.SessionVar;
 
 @Controller
@@ -30,6 +31,7 @@ public class HomeController {
 	@Autowired
 	private final MemberRepository memberRepository;
 	private final LoginService loginService;
+	private final RedisUtils redisUtils;
 	
 	@GetMapping("/")
 	public String getMain(Model model) {
@@ -50,15 +52,16 @@ public class HomeController {
 	public String postJoin(@ModelAttribute JoinForm joinForm,
 			BindingResult bindingResult){
 		
-		System.out.println("post요청이 잘 오는가?");
 		System.out.println(joinForm);
-		
 		validateJoinForm(joinForm, bindingResult);
 
 		
 		if(bindingResult.hasErrors()) {
 			return "join/join";
-		}else {
+		}else if(!redisUtils.getData(joinForm.getLoginId()).equals("Y") || redisUtils.getData(joinForm.getLoginId())=="") {
+			return "join/join";
+		}
+		else {
 			Member member = new Member();
 			member.setLoginId(joinForm.getLoginId());
 			member.setPassword(joinForm.getPassword());
