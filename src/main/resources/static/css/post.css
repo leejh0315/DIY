@@ -2,12 +2,7 @@
 
 
 
-.result{
-    text-align: center;
-    display: inline-block;
-    height: 160px;
-    width: 100px;
-}
+
 .title{
     width: 100px;
 }
@@ -41,21 +36,21 @@ color: #9A9E7B;
 transition: filter linear .3s;
 }
 
-.rating__star:hover {
- /* filter: drop-shadow(1px 1px 4px #9A9E7B); */
-}
+
 
 /* 작품선택부분 */
 .post_topwrap{
+    margin: auto;
+    width: 1100px;
     padding: 100px 0 30px 0;
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
 .post_topleft{
     padding-right: 40px;
     text-align: left;
+    flex: auto;
 }
 
 .post_topleft > .p1 {
@@ -124,7 +119,66 @@ transition: filter linear .3s;
         pointer-events: none;
         }
 
-    .posttitle > input{
-        width: 100%;
+
+    .title_lb{
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        justify-items: center;
+        align-items: center;
+        width: 1100px;
+        font-weight: 800;
     }
-    
+    .title_lb > span {
+        flex-grow: .5;
+    }
+    .posttitle{
+        
+        border:1px solid #999999;
+        border-radius: 10px;
+        flex-grow: 1;
+        width: 910px;
+        height: 35px;
+        font-weight: 300;
+        text-indent: 15px;
+    }
+    .cont_lb{
+        margin: 20px auto;
+        width: 1100px;
+        font-weight: 800;
+    }
+    .panel {
+        margin: auto;
+    }
+    .submitwrap{
+        width: 1100px;
+        margin: auto;
+    }
+    .submitBtn {
+        float: right;
+        margin: 20px 0;
+        width: 180px;
+        height: 50px;
+        color: white;
+        background-color: #9A9E7B;
+        border-radius: 10px;
+        border: none;
+    }
+
+    /* 모달창 css */
+
+    .result{
+        
+        text-align: center;
+        height: 160px;
+        width: 100px;
+    }
+    .result > img {
+        width: 100px;
+
+    }
+    #searchResult {
+        margin: 0 10px 0 10px;
+        height: 40vh; overflow-y: auto;  
+
+    }
