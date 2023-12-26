@@ -18,8 +18,6 @@ public class AppBeanConfig {
 	private final MemberMapper memberMapper;
 	@Autowired
 	private final PostMapper postMapper;
-	@Autowired
-	private final UploadFileMapper uploadFileMapper;
 	
 	@Bean
 	public MemberRepository memberRepository() {
@@ -30,12 +28,7 @@ public class AppBeanConfig {
 	public PostRepository postRepository() {
 		return new MybatisPostRepository(postMapper);
 	}
-	
-	
-	@Bean
-	public UploadFileRepository uploadRepository() {
-		return new MybatisUploadFileRepository(uploadFileMapper);
-	}
+
 	
 	@Bean
 	public RestTemplate getRestTemplate(){

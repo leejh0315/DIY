@@ -25,6 +25,12 @@ public class MybatisPostRepository implements PostRepository{
 		Post post = postMapper.selectPost();
 		return post;
 	}
+
+	@Override
+	public Post getLastPost() {
+		Post post = postMapper.getLastPost();
+		return null;
+	}
 	
 
 }
