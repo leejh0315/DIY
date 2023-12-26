@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -89,17 +89,19 @@
 </head>
 <body>
 	<h1>Post</h1>
+	<form action="/writePost" method="post" name="writePost" th:object="${writePost}" enctype="multipart/form-data">
+
 	<div class="searchModal" id="searchModal">
 		<div>
 			<div>작품 검색</div>
 			<div id="searchModalOffButton">X</div>
 			
 			<label>카테고리
-				<select id="categorySelect">
-					<option value="none" selected>선택</option>
-					<option value="book">도서</option>
-					<option value="concert">공연</option>
-					<option value="movie">영화</option>
+				<select id="categorySelect" th:field='${writePost.postCtCode}'>
+					<option value="none" selected th:value="none">선택</option>
+					<option value="book"  th:value="book">도서</option>
+					<option value="concert"  th:value="concert">공연</option>
+					<option value="movie" th:value="movie">영화</option>
 				</select>
 			</label>
 			작품명<input id="keyword1">
@@ -108,39 +110,163 @@
 			<div id="searchResult"></div>
 			
 		</div>
-	</div> 
-
-				
-	<p>어떤 작품에 대하여 쓰나요?</p>
-	<p>감상문을 작성할 작품을 검색해서 등록해보세요.</p>
-	<button id="searchModalOnButton">작품 검색</button><br><br>
-
-	<p>선택한 작품</p>
-	<div class="selectedWork" id="selectedWork"></div>	
-
-	<p>나의 별점</p>
-	<div class="rating">
-		<span class="rating__result"></span> 
-		<i class="rating__star far fa-star"></i>
-		<i class="rating__star far fa-star"></i>
-		<i class="rating__star far fa-star"></i>
-		<i class="rating__star far fa-star"></i>
-		<i class="rating__star far fa-star"></i>
 	</div>
+	 
+	
+				
+		<p>어떤 작품에 대하여 쓰나요?</p>
+		<p>감상문을 작성할 작품을 검색해서 등록해보세요.</p>
+		<button id="searchModalOnButton" type="button">작품 검색</button><br><br>
+	
+		<p>선택한 작품</p>
+		<div class="selectedWork" id="selectedWork"></div>	
+			<input type="hidden" id="targetName" th:field="*{targetName}">
+			<input type="hidden" id="targetSubName" th:field="*{targetSubName}">
+			<input type="hidden" id="targetAuthor" th:field="*{targetAuthor}">
+			<input type="hidden" id="targetThumbnail" th:field="*{targetThumbnail}">
+	
+		<p>나의 별점</p>
+		<div class="rating">
+			<span class="rating__result" id="starCnt"></span> 
+			<i class="rating__star far fa-star"></i>
+			<i class="rating__star far fa-star"></i>
+			<i class="rating__star far fa-star"></i>
+			<i class="rating__star far fa-star"></i>
+			<i class="rating__star far fa-star"></i>
+		</div>
+			<input type="hidden" id="stars" th:field="*{starCount}" value="">
 				
 	
-		<form action="/post" method="post" name="post" th:object="${post}" enctype="multipart/form-data"> 
-			제목<input th:field="*{title}"><br>
+		 
+		<label>제목<input th:field="*{title}"></label>
 			
-		<form method="post">
-			<textarea id="summernote" name="editordata"></textarea>
-		</form>
 		
-		<button id="submitBtn">입력</button>
+		<textarea id="summernote" name="editordata" th:field="*{content}"></textarea>
+		
+		<button id="submitBtn" type="submit">입력</button>
+	</form>
 			
 	<script>
 		$("#searchModal").css("display", "none");
-			
+		
+		
+		$('#summernote').summernote({
+            // 썸머노트 옵션 설정
+            codeviewFilter: false,
+            codeviewIframeFilter: false,
+            disableXSSProtection: true,
+            height: 500,
+            minHeight: null,
+            maxHeight: null,
+            focus: true,
+            lang: 'ko-KR',
+            toolbar: [
+                // 스타일 관련 기능
+                ['style', ['style']],
+                // 글자 크기 설정
+                ['fontsize', ['fontsize']],
+                // 글꼴 스타일
+                ['font', ['bold', 'underline', 'clear']],
+                // 글자 색상
+                ['color', ['color']],
+                // 테이블 삽입
+                ['table', ['table']],
+                // 문단 스타일
+                ['para', ['paragraph']],
+                // 에디터 높이 설정
+                ['height', ['height']],
+                // 이미지, 링크, 동영상 삽입
+                ['insert', ['picture', 'link', 'video']],
+                // 코드 보기, 전체화면, 도움말
+                ['view', ['codeview', 'fullscreen', 'help']],
+            ],
+            fontSizes: [
+                // 글자 크기 선택 옵션
+                '8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'
+            ],
+            styleTags: [
+                // 스타일 태그 옵션
+                'p',
+                { title: 'Blockquote', tag: 'blockquote', className: 'blockquote', value: 'blockquote' },
+                'pre',
+                { title: 'code_light', tag: 'pre', className: 'code_light', value: 'pre' },
+                { title: 'code_dark', tag: 'pre', className: 'code_dark', value: 'pre' },
+                'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+            ],
+
+            callbacks: {
+                onImageUpload: function (files, editor, welEditable) {
+                    // 파일 업로드
+                    for (var i = files.length - 1; i >= 0; i--) {
+                        var fileName = files[i].name
+                        var caption = prompt('이미지 설명:', fileName)
+                        if (caption == '') {
+                            caption = '이미지'
+                        }
+                        uploadSummernoteImageFile(files[i], this, caption)
+                    }
+                },
+                onMediaDelete: function ($target, editor, $editable) {
+                    // 삭제된 이미지의 파일 이름을 알아내기 위해 split 활용
+                    if (confirm('이미지를 삭제하시겠습니까?')) {
+                        var deletedImageUrl = $target.attr('src').split('/').pop()
+
+                        // ajax 함수 호출
+                        deleteSummernoteImageFile(deletedImageUrl)
+                    }
+                },
+            },
+        })
+    
+
+    // 이미지 업로드 ajax
+    function uploadSummernoteImageFile(file, el, caption) {
+        data = new FormData()
+        data.append('file', file)
+        $.ajax({
+            data: data,
+            type: 'POST',
+            url: 'uploadSummernoteImageFile',
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function (data) {
+                $(el).summernote('editor.insertImage', data.url, function ($image) {
+                    $image.attr('alt', caption) // 캡션 정보를 이미지의 alt 속성에 설정
+                })
+            },
+        })
+    }
+
+    // 이미지 삭제 ajax
+    function deleteSummernoteImageFile(imageName) {
+        data = new FormData()
+        data.append('file', imageName)
+        $.ajax({
+            data: data,
+            type: 'POST',
+            url: 'deleteSummernoteImageFile',
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+        })
+    }		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*
 		$(document).ready(function() {
             $('#summernote').summernote({
 			  height: 300,                 // 에디터 높이
@@ -160,17 +286,46 @@
                         ['insert', ['link', 'picture']],
   					  ],
 					fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
-					fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72']
-		          
-		});
+					fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
+					callbacks : {
+						  onImageUpload : function(files, editor, welEditable) {       
+								for (var i = 0; i < files.length; i++) {
+									sendFile(files[i], this);
+								}
+						}	
+			          
+			}});
         });
-
+        
+        function sendFile(file, el) {
+			var form_data = new FormData();
+			form_data.append('file', file);
+			$.ajax({                                                              
+				data : form_data,
+				type : "POST",
+				url : '/image',
+				cache : false,
+				contentType : false,
+				enctype : 'multipart/form-data',                                  
+				processData : false,
+				success : function(url) {                                        
+					$(el).summernote('insertImage', url, function($image) {
+						$image.css('width', "25%");
+					});
+				}
+			});
+		}
+        
+        */	
+		let starCnt = document.getElementById("starCnt");
+		let stars = document.getElementById("stars");
+		
 		let categorySelect = document.getElementById("categorySelect");
 		let searchModal = document.getElementById("searchModal");
 		let submitBtn = document.getElementById("submitBtn");
 		let searchModalOnButton = document.getElementById("searchModalOnButton");
 		let searchModalOffButton = document.getElementById("searchModalOffButton");
-		let form = document.post;
+		//let form = document.post;
 
 		let selectedWork = document.getElementById("selectedWork");
 		let selectedWorkImage = document.getElementById("selectedWorkImage");
@@ -190,6 +345,13 @@
 		let resultC_thumb = [];
 		let searchModalTogle = true;
 		let tempBool =false;
+		
+		let targetName = document.getElementById("targetName");
+		let targetSubName = document.getElementById("targetSubName");
+		let targetAuthor = document.getElementById("targetAuthor");
+		let targetThumbnail = document.getElementById("targetThumbnail");
+		
+		
 		searchModalOnButton.addEventListener("click", (e)=>{
 		if(searchModalTogle){
 			//searchModal.style.display="flex";
@@ -208,16 +370,16 @@
 		$("section1").css("background-color", "white")	
 		})
 
-		submitBtn.addEventListener('click',(e)=>{
-			form.submit();
-		});	
+//		submitBtn.addEventListener('click',(e)=>{
+//			form.submit();
+//		});	
 
 		let keyword1 = document.getElementById("keyword1");
 		let searchButton = document.getElementById("searchButton");
 
 		searchButton.addEventListener("click", (e)=>{
 			e.preventDefault();
-			
+			console.log("검색시작")
 			searchResult.innerHTML = "";
 			resultC_name = [];
 			resultC_type = [];
@@ -233,17 +395,27 @@
 					dataType: "json",
 					contentType:"application/json",
 				}).done(function(res) {
+					console.log("책 api 호출 시작")
 					searchBookList = res.documents;
 					for(let i = 0 ; i < res.documents.length; i++){
 						if(res.documents[i].authors == "" || res.documents[i].authors == null){
 							res.documents[i].authors = "작가 없음";
 							searchResult.innerHTML += 
-							"<div class='result' onclick='selectedBook(this)' id='" + i +"'> <img src='"+res.documents[i].thumbnail +"'><p class='title'>"+res.documents[i].title+"</p><p>"+res.documents[i].authors+"</p></div>";
+							"<div class='result' onclick='selectedBook(this)' id='" + i +"'>\
+								 <img src='"+res.documents[i].thumbnail +"'> \
+								 <p class='title'>"+res.documents[i].title+"</p>\
+								 <p>"+res.documents[i].authors+"</p>\
+								 </div>";
 						}else{
 							searchResult.innerHTML += 
-							"<div class='result' onclick='selectedBook(this)' id='" + i +"'> <img src='"+res.documents[i].thumbnail +"'><p class='title'>"+res.documents[i].title+"</p><p>"+res.documents[i].authors+"</p></div>";
+							"<div class='result' onclick='selectedBook(this)' id='" + i +"'>\
+								 <img src='"+res.documents[i].thumbnail +"'>\
+								 <p class='title' >"+res.documents[i].title+"</p>\
+								 <p>"+res.documents[i].authors+"</p>\
+								 </div>";
 						}
 					};
+					console.log("책 api 호출 완료")
 				}).fail(function (error) {
 					alert("api호출에 실패하였습니다.");
 				});
@@ -288,9 +460,15 @@
 						dataType: "json",
 						//contentType:"application/json",
 						}).done(function(res) {	
-						
+						console.log(res);
 						searchMovieList = res.Data[0].Result;
-						serachMovieListLength = res.Data[0].Result.length;
+						if(res.TotalCount == 0){
+							alert("검색된 영화가 없습니다. 제목을 확인해주세요.");
+							return false;							
+						}else{
+							serachMovieListLength = res.Data[0].Result.length;
+						}
+							
 						
 					for(let i = 0 ; i < serachMovieListLength; i++){
 						let tempImageUrl = searchMovieList[i].posters;
@@ -325,9 +503,15 @@
 				}	
 		});
 
+
 function selected(e){
 	selectedWork.innerHTML = "";
 	let tempNumber = parseInt($(e).attr('id'));
+	
+	targetName.value = resultC_name[tempNumber];
+	targetAuthor.value = resultC_type[tempNumber];
+	targetThumbnail.value = resultC_thumb[tempNumber];
+	
 	selectedWork.innerHTML += 
 	"<img src='" + resultC_thumb[tempNumber] + "'>\
 	<div>"+resultC_name[tempNumber]+"</div>\
@@ -339,10 +523,15 @@ function selected(e){
 function selectedBook(e){
 	selectedWork.innerHTML = "";
 	let tempNumber = parseInt($(e).attr('id'));
+	
+	targetName.value = searchBookList[tempNumber].title;
+	targetAuthor.value = searchBookList[tempNumber].authors;
+	targetThumbnail.value = searchBookList[tempNumber].thumbnail;
+	
 	selectedWork.innerHTML += 
-	"<img src='" + searchBookList[tempNumber].thumbnail + "'>\
-	<div>"+searchBookList[tempNumber].title+"</div>\
-	<div>"+searchBookList[tempNumber].authors+"</div>"
+		"<img src='" + searchBookList[tempNumber].thumbnail + "'>\
+		<div>"+searchBookList[tempNumber].title+"</div>\
+		<div>"+searchBookList[tempNumber].authors+"</div>";
 	$(".searchModal").css("display","none");
 	searchModalTogle = true;
 }
@@ -350,6 +539,11 @@ function selectedBook(e){
 function selectMovie(e){
 	selectedWork.innerHTML = "";
 	let tempNumber = parseInt($(e).attr('id'));
+	
+	targetName.value = searchMovieList[tempNumber].title;
+	targetAuthor.value = searchMovieList[tempNumber].directors;
+	targetThumbnail.value = searchMovieList[tempNumber].posters;
+	
 	selectedWork.innerHTML += 
 	"<img src='" + searchMovieList[tempNumber].posters + "'>\
 	<div>"+searchMovieList[tempNumber].title+"</div>\
@@ -380,13 +574,30 @@ star.onclick = () => {
 	if (star.className.indexOf(starClassUnactive) !== -1) {
 		printRatingResult(result, i + 1);
 		for (i; i >= 0; --i) stars[i].className = starClassActive;
+		
+		let tempStarCnt = starCnt.innerText;
+		tempStarCnt = tempStarCnt.substring(0,1);
+		let tempIntStarCnt = parseInt(tempStarCnt);
+		$('#stars').val(tempIntStarCnt);
+	
 	} else {
 		printRatingResult(result, i);
 		for (i; i < starsLength; ++i) stars[i].className = starClassUnactive;
+		
+		let tempStarCnt = starCnt.innerText;
+		tempStarCnt = tempStarCnt.substring(0,1);
+		let tempIntStarCnt = parseInt(tempStarCnt);
+		$('#stars').val(tempIntStarCnt);
+		
+		
+		
+		
+		
 	}
 };
 });
 }
+
 
 function printRatingResult(result, num = 0) {
 result.textContent = `${num}/5`;

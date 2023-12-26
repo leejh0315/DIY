@@ -7,15 +7,28 @@
 <!-- 로그인 -->
 <!-- id는 인터페이스 메소드명과 동일 -->
 	<insert id="insertPost" parameterType="Post">
-		insert INTO temp.post VALUES (
-		#{title}, #{content}
-		);
+		INSERT INTO diydb.post
+		VALUES (
+			null, 
+			#{postCtcode},
+			#{targetName}, 
+			#{targetSubName},
+			#{targetAuthor},
+            #{targetThmbnail},
+            #{memberId},
+            #{memberNick},
+            #{starCount},
+            #{title},
+            #{content},
+			date_format(now(), '%Y%m%d%H%i%s'),
+			null
+			);
 
 	</insert>
 	
 	
 	<select id="selectPost" resultType="Post">
-		insert INTO temp.post VALUES (
+		insert INTO diydb.post VALUES (
 		#{title}, #{content}
 		);
 

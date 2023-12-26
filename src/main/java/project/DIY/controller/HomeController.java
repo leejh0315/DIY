@@ -105,7 +105,9 @@ public class HomeController {
 			bindingResult.reject("loginForm", "활동정지된 회원입니다. 관리자에게 문의해주세요.");
 			return "login/login";
 		}
+		
 		System.out.println("로그인성공");
+		
 		HttpSession session = req.getSession();
 		session.setAttribute(SessionVar.LOGIN_MEMBER, memberVO);
 
@@ -113,7 +115,7 @@ public class HomeController {
 		memberRepository.updateUUID(memberVO);
 
 //		return "redirect:" + redirectURL; 
-		return "/join/join";
+		return "redirect:/";
 	}
 
 	public void validateLoginForm(LoginForm loginForm, Errors errors) {

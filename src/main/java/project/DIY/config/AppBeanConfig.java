@@ -13,19 +13,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AppBeanConfig {
 
+
 	@Autowired
 	private final MemberMapper memberMapper;
-
+	@Autowired
+	private final PostMapper postMapper;
+	@Autowired
+	private final UploadFileMapper uploadFileMapper;
+	
 	@Bean
 	public MemberRepository memberRepository() {
 		return new MybatisMemberRepository(memberMapper);
 	}
-	@Autowired
-	private final PostMapper postMapper;
 	
 	@Bean
 	public PostRepository postRepository() {
 		return new MybatisPostRepository(postMapper);
+	}
+	
+	
+	@Bean
+	public UploadFileRepository uploadRepository() {
+		return new MybatisUploadFileRepository(uploadFileMapper);
 	}
 	
 	@Bean
