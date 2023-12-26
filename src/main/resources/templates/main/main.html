@@ -5,9 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
-<body>
-    <h1>MAIN</h1>
 
+<body>
+    	<nav>
+        <div class="logo">
+            <img th:src="@{image/logo.png}" alt="">
+        </div>
+
+        <ul>
+            <li><a href="#">책</a></li>
+            <li><a href="#">영화</a></li>
+            <li><a href="#">공연</a></li>
+        </ul>
+
+        <input class="search" type="text" placeholder="Search">
+        
+        
+        
+        <div class="userinfo">
+            <div class="profileimg">
+                <img th:src="@{image/defalut_profileimg.jpg}" alt="">
+            </div>
+                <p>사용자 이름</p>
+
+            
+        </div>
+    </nav>
+
+	<footer class="footer">
+
+    <p>Copyright © 2023. DIY All rights reserved.</p>
+    <p>Contact <br>
+    이정현 : yijh0315@naver.com<br>
+    원윤선 : ereunosun113@gmail.com 
+    </p>
+	</footer>
 </body>
 </html>
