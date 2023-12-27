@@ -10,22 +10,70 @@
 .searchModal{
     z-index: 1;
     position: absolute;
-    top:20%;
-    left:20%;
-    width: 50%;
-    height: 50%;
-    background-color: rgba(0,0,0,0.4);
-}
-#searchModalOffButton{
-    position: absolute;
-    right: 10px;
-}
-.selectedWork{
-    border: solid 1px black;
-    width: 200px;
-    height: 140px;
+    top:50%;
+    left:50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 600px;
+    height: 600px;
+    background-color: rgb(165, 165, 165);
 }
 
+.searchModal>div>div:nth-of-type(1){
+    background-color:#9A9E7B ;
+    padding: 15px 20px;
+    font-size: 16px;
+    height: 50px;
+    color: white;
+}
+
+.select_lab {
+    /* label 등은 inline-block */
+    text-align: center;
+    padding-top: 30px;
+}
+#keyword1{
+    border-radius: 8px;
+    border:1px solid #9A9E7B;
+    width: 190px;
+    height: 30px;
+    text-indent: 6px;
+}
+
+.searchButton {
+    color: white;
+    background-color: #9A9E7B;
+    border-radius: 10px;
+    width: 65px;
+    height: 30px;
+    border: none;
+}
+
+
+.select_lab > label{
+    padding: 0 15px;
+}
+
+#searchModalOffButton{
+    position: absolute;
+    top: 15px;
+    right: 18px;
+}
+
+#searchResult {
+    margin: 0 40px 0 40px;
+    height: 45vh; 
+    overflow-y: auto;
+}
+
+.resultarea{
+    
+}
+
+.resultarea>p{
+    font-size: 16px;
+    width: 500px;
+    font-weight: 700;
+}
 
 
 
@@ -78,11 +126,52 @@ transition: filter linear .3s;
     font-weight: 800;
 }
 
+label{
+    font-weight: 400;
+}
+
+.categorySelect {
+    width: 80px;
+    height: 30px;
+}
+
+
 .selectedWork{
+    margin: 0 auto;
     border-radius: 10px;
     border:1px solid #999999;
     width: 350px;
     height: 200px;
+    padding: 27px 20px 0 30px;
+}
+
+.selectedWork >img {
+    width: 100px;
+    height: 145px;
+    float: left;
+}
+
+.selectedWork>div:nth-of-type(1){ 
+    height: 145px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center
+}
+
+.selectedWork>div>div:nth-of-type(1){ 
+    font-weight: 800;
+    color: #333333;
+}
+.selectedWork> div>div{
+    color: #777777;
+}
+
+    
+.selectedWork > div {
+    float: right;
+    width: 188px;
+    overflow: hidden;
+    color: #777777;
 }
 .post_topmid > p {
     font-weight: 800;
@@ -91,6 +180,7 @@ transition: filter linear .3s;
 .post_topright > p{
     font-weight: 800;
 }
+
 .rating {
     border-radius: 10px;
     border:1px solid #999999;
@@ -154,6 +244,7 @@ transition: filter linear .3s;
         width: 1100px;
         margin: auto;
     }
+
     .submitBtn {
         float: right;
         margin: 20px 0;
@@ -167,18 +258,19 @@ transition: filter linear .3s;
 
     /* 모달창 css */
 
-    .result{
-        
-        text-align: center;
+    .result {
+        display: flex;
+        flex-direction: row;
         height: 160px;
-        width: 100px;
+        width: 340px;
+        padding: 20px 0 0 0;
     }
+
     .result > img {
         width: 100px;
 
     }
-    #searchResult {
-        margin: 0 10px 0 10px;
-        height: 40vh; overflow-y: auto;  
 
-    }
+
+    
+

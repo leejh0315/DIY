@@ -56,19 +56,27 @@
 	<div class="searchModal" id="searchModal">
 		<div>
 			<div>작품 검색</div>
-			<div id="searchModalOffButton">X</div>
-			
+			<div id="searchModalOffButton">
+				<svg xmlns="http://www.w3.org/2000/svg" height="20" width="16" viewBox="0 0 384 512">
+				<path fill="#ffffff" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+				</svg>
+			</div>
+			<div class="select_lab">
 			<label>카테고리
-				<select id="categorySelect" th:field='${writePost.postCtCode}'>
+				<select id="categorySelect" class="categorySelect" th:field='${writePost.postCtCode}'>
 					<option value="none" selected th:value="none">선택</option>
 					<option value="book"  th:value="book">도서</option>
 					<option value="concert"  th:value="concert">공연</option>
 					<option value="movie" th:value="movie">영화</option>
 				</select>
 			</label>
-			작품명<input id="keyword1">
-			<button id="searchButton">검색</button><br>
-			
+			작품명<input id="keyword1" placeholder="작품명을 입력해주세요">
+			<button id="searchButton" class="searchButton">검색</button><br>
+		</div>
+			<div class="resultarea">
+				<p>검색결과</p>
+				<div class="div_line"></div>
+			</div>
 			<div id="searchResult">
 
 			</div>
@@ -136,6 +144,7 @@
             toolbar: [
                 // 스타일 관련 기능
                 ['style', ['style']],
+                ['fontname', ['fontname']],
                 // 글자 크기 설정
                 ['fontsize', ['fontsize']],
                 // 글꼴 스타일
@@ -153,6 +162,7 @@
                 // 코드 보기, 전체화면, 도움말
                 ['view', ['codeview', 'fullscreen', 'help']],
             ],
+			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
             fontSizes: [
                 // 글자 크기 선택 옵션
                 '8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'
@@ -308,7 +318,7 @@
 					for(let i = 0 ; i < res.documents.length; i++){
 						if(res.documents[i].authors == "" || res.documents[i].authors == null){
 							res.documents[i].authors = "작가 없음";
-							searchResult.innerHTML += 
+							searchResult.innerHTML +=
 							"<div class='result' onclick='selectedBook(this)' id='" + i +"'>\
 								 <img src='"+res.documents[i].thumbnail +"'> \
 								 <p class='title'>"+res.documents[i].title+"</p>\
@@ -422,8 +432,9 @@ function selected(e){
 	
 	selectedWork.innerHTML += 
 	"<img src='" + resultC_thumb[tempNumber] + "'>\
+	<div>\
 	<div>"+resultC_name[tempNumber]+"</div>\
-	<div>"+resultC_type[tempNumber]+"</div>"
+	<div>"+resultC_type[tempNumber]+"</div></div>"
 	$(".searchModal").css("display","none");
 	searchModalTogle = true;
 }
@@ -438,8 +449,9 @@ function selectedBook(e){
 	
 	selectedWork.innerHTML += 
 		"<img src='" + searchBookList[tempNumber].thumbnail + "'>\
+		<div>\
 		<div>"+searchBookList[tempNumber].title+"</div>\
-		<div>"+searchBookList[tempNumber].authors+"</div>";
+		<div>"+searchBookList[tempNumber].authors+"</div></div>";
 	$(".searchModal").css("display","none");
 	searchModalTogle = true;
 }
@@ -454,8 +466,10 @@ function selectMovie(e){
 	
 	selectedWork.innerHTML += 
 	"<img src='" + searchMovieList[tempNumber].posters + "'>\
+	<div>\
 	<div>"+searchMovieList[tempNumber].title+"</div>\
-	<div>"+searchMovieList[tempNumber].directors +"</div>"
+	<div>"+searchMovieList[tempNumber].directors +"</div>\
+	</div>"
 	$(".searchModal").css("display","none");
 	searchModalTogle = true;
 }
