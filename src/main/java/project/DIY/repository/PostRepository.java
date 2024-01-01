@@ -6,4 +6,5 @@ public interface PostRepository {
 	public void insertPost(Post post);
 	public Post selectPost();
 	public Post getLastPost();
+
 }

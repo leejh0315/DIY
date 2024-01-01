@@ -29,7 +29,7 @@ public class MybatisPostRepository implements PostRepository{
 	@Override
 	public Post getLastPost() {
 		Post post = postMapper.getLastPost();
-		return null;
+		return post;
 	}
 	
 

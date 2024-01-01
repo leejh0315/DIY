@@ -35,7 +35,7 @@
 	</select>
 	
 	<select id="getLastPost" resultType="Post">
-		
+		select * from diydb.post order by postCode desc limit 1;
 	</select>
 	
 	
