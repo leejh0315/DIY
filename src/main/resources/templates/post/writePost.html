@@ -12,6 +12,9 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+
+
+
 <!-- include summernote css/js -->
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
@@ -19,7 +22,28 @@
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/post.css}">
 
-
+<style>
+	
+	.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spinner 1s linear infinite;
+}
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+</style>
 </head>
 <body>
 	<nav>
@@ -76,7 +100,9 @@
 				<div class="div_line"></div>
 			</div>
 			<div id="searchResult">
-
+				
+    				
+				
 			</div>
 			
 		</div>
@@ -122,8 +148,9 @@
 		
 		<button id="submitBtn" type="submit">입력</button>
 	</form>
-			
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>			
 	<script>
+$("#spinner").css("display","none");
 		let summernote = document.getElementById("summernote");
 		$("#searchModal").css("display", "none");
 		
@@ -289,6 +316,13 @@
 		$("section1").css("background-color", "white")	
 		})
 
+		function showSpinner() {
+		    $("#spinner").css("display","block");
+		}
+		function hideSpinner() {
+    		$("#spinner").css("display","none");
+		}
+		
 //		submitBtn.addEventListener('click',(e)=>{
 //			form.submit();
 //		});	
@@ -300,6 +334,8 @@
 			e.preventDefault();
 			console.log("검색시작")
 			searchResult.innerHTML = "";
+			searchResult.innerHTML += "<div class='spinner' id='spinner'></div>";
+			showSpinner();
 			resultC_name = [];
 			resultC_type = [];
 			resultC_thumb = [];
@@ -307,13 +343,16 @@
 			
 			if(categorySelect.value == "none"){
 				alert("검색어를 입력해주세요.");	
+				$("#spinner").css("display","none");
 			}else if(categorySelect.value == "book"){
+				$("#spinner").css("display","block");
 				$.ajax({
 					type: "GET",
 					url: "/kakaoBookSearch/"+keyword,
 					dataType: "json",
 					contentType:"application/json",
 				}).done(function(res) {
+					$("#spinner").css("display","none");
 					console.log("책 api 호출 시작")
 					searchBookList = res.documents;
 					for(let i = 0 ; i < res.documents.length; i++){
@@ -340,12 +379,14 @@
 				});
 								
 			}else if(categorySelect.value == "concert"){
+				$("#spinner").css("display","block");
 				$.ajax({
 					type: "GET",
 					url: "concert/"+keyword,
 					dataType: "xml",
 					//contentType:"application/json",
 				}).done(function(res) {	
+					hideSpinner();
 					let resTextToString = $(res).text().toString();	
 					resultC = resTextToString.split('        ');
 					for(let i = 2 ; i< resultC.length; i++){
@@ -373,12 +414,14 @@
 					});
 					
 				}else if(categorySelect.value == "movie"){
+					$("#spinner").css("display","block");
 					$.ajax({
 						type: "GET",
 						url: "movie/"+keyword,
 						dataType: "json",
 						//contentType:"application/json",
 						}).done(function(res) {	
+						hideSpinner();
 						console.log(res);
 						searchMovieList = res.Data[0].Result;
 						if(res.TotalCount == 0){
