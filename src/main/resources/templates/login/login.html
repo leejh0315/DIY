@@ -5,23 +5,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
-    <h1>LOGIN</h1>
+
+  <nav>
+    <div class="logo">
+        <img th:src="@{img/logo.png}" alt="">
+    </div>
+
+    <ul>
+        <li><a href="#">책</a></li>
+        <li><a href="#">영화</a></li>
+        <li><a href="#">공연</a></li>
+    </ul>
+
+    <input class="search" type="text" placeholder="Search">
+    
+    
+    
+    <div class="userinfo">
+        <div class="profileimg">
+            <img th:src="@{img/defalut_profileimg.jpg}" alt="">
+        </div>
+            <p>사용자 이름</p>
+
+        
+    </div>
+  </nav>
+
+  <!-- login  -->
+  <div class="login_wrap">
+    <h1>로그인</h1>
+    <p>문득에서 문화 기록을 시작하세요</p>
     <form action="/login" method="post" th:object="${loginForm}" id="loginForm">
-	    <label>ID<input id="loginId" th:field="*{loginId}"></label><br>
-	    <label>PW<input id="loginPw" type="password" th:field="*{passWord}"></label><br>
-    <button id="loginButton" type="submit">로그인</button>
+	    <label><input id="loginId" class="loginId" th:field="*{loginId}" placeholder="이메일"></label><br>
+	    <label><input id="loginPw" class="loginPw" type="password" th:field="*{passWord}" placeholder="비밀번호"></label><br>
+      
       <div class="errorMessage">
         <div th:errors="*{loginId}"></div>
+        
         <div th:errors="*{passWord}"></div>
- 	 </div>
+      
       <div th:if="${#fields.hasGlobalErrors()}">
-        <p th:each="error : ${#fields.globalErrors()}" th:text="${error}">
-          글로벌오류
-        </p>
+        <div th:each="error : ${#fields.globalErrors()}" th:text="${error}"></div>
       </div>
+    </div>
+
+       
+        <button id="loginButton" class="loginButton" type="submit">로그인</button>
+
+        
+
+
+        <div class="saver_finder_wrap">
+          <div>
+          <input type="checkbox" id="Idsaver" name="Idsaver" />
+          <label for="Idsaver">아이디 저장</label>
+        </div>
+
+          <div class="idpwFinder">
+          <a>아이디 찾기</a> |
+          <a>비밀번호 찾기</a>
+        </div>
+        </div>
+
+      	
     </form>
 
+    <div class="joinBtn_wrap">
+      <p>아직 회원이 아니신가요?</p>
+      <button class="joinBtn" onclick="location.herf('')" >회원가입</button>
+    </div>
+   
+  </div>
 </body>
+
+<script>
+  $(document).ready(function(){
+    var key = getCookie("key");
+    $("#loginId").val(key);
+
+    if($("#loginId").val() != ""){
+      $("#Idsaver").attr("checked", true)
+    }
+
+    $("#Idsaver").change(function(){
+      if($("#Idsaver").is(":checked")){
+        setCookie("key", $("#loginId").val(),7);
+      }else{
+        deleteCookie("key");
+      }
+    });
+
+    $("loginId").keyup(function(){
+      if($("#Idsaver").is(":checked")){ // ID 저장하기를 체크한 상태라면,
+	            setCookie("key", $("#id").val(), 7); // 7일 동안 쿠키 보관
+	        }
+      console.log("쿠키 저장됨")
+    });
+
+
+  });
+
+function setCookie(cookieName, value, exdays) {
+		var exdate = new Date();
+		exdate.setDate(exdate.getDate() + exdays);
+		var cookieValue = escape(value)
+				+ ((exdays == null) ? "" : "; expires=" + exdate.toGMTString());
+		document.cookie = cookieName + "=" + cookieValue;
+	}
+
+	// 쿠키 삭제
+	function deleteCookie(cookieName) {
+		var expireDate = new Date();
+		expireDate.setDate(expireDate.getDate() - 1);
+		document.cookie = cookieName + "= " + "; expires="
+				+ expireDate.toGMTString();
+	}
+     
+	// 쿠키 가져오기
+	function getCookie(cookieName) {
+		cookieName = cookieName + '=';
+		var cookieData = document.cookie;
+		var start = cookieData.indexOf(cookieName);
+		var cookieValue = '';
+		if (start != -1) { // 쿠키가 존재하면
+			start += cookieName.length;
+			var end = cookieData.indexOf(';', start);
+			if (end == -1) // 쿠키 값의 마지막 위치 인덱스 번호 설정 
+				end = cookieData.length;
+                console.log("end위치  : " + end);
+			cookieValue = cookieData.substring(start, end);
+		}
+		return unescape(cookieValue);
+	}
+  
+
+</script>
 </html>
