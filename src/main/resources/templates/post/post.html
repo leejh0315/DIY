@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,8 +23,16 @@
     }
 		
 	</style>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
+	<th:block th:if="${member == null}">
+		<div th:replace="main/header :: headFrag(${none})"></div>
+	</th:block>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+	
 	<div th:text="${post.title}"></div>
 	
 	<th:block th:if="${postWriteMember.profileSrc == null}"> <!-- 프로필 이미지 없을때-->
@@ -46,8 +54,8 @@
 	</th:block>
 	
 	<hr>
-	<div>작품정보</div>
-	<!--<img th:src="@{post.targetThumbnail}">-->
+	<div id="targetInformation">작품정보</div>
+	<input type="hidden" id="targetThumb" th:value = "${post.targetThumbnail}">
 	<div th:text="${post.targetName}"></div>
 	<div th:text="${post.targetSubName}"></div>
 	<div th:text="${post.targetAuthor}"></div>
@@ -59,7 +67,20 @@
 	<hr>
 	<div th:utext="${post.content}"></div>
 
+	<script>
+		let targetInformation = document.getElementById("targetInformation");
+		let thumb = document.getElementById("targetThumb");
+		console.log(thumb.value);
+		if(thumb.value == null || thumb.value == ""){
+			
+		}else{
+			targetInformation.innerHTML+="<img src='"+thumb.value+"'>"		
+		}
 		
+		
+		
+		
+	</script>
     
 </body>
 </html>

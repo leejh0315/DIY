@@ -2,6 +2,7 @@ package project.DIY.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,12 +26,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.JsonObject;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Category;
 import project.DIY.domain.Member;
 import project.DIY.domain.Post;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
+import project.DIY.session.SessionVar;
 
 @Controller
 @RequiredArgsConstructor
@@ -45,7 +48,12 @@ public class PostController {
     private String resourceLocation;
 	
 	@GetMapping("/writePost")
-	public String getPost(Model model) {
+	public String getPost(Model model, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+
+		model.addAttribute("member", member);
+		
 		List<Category> ct = new ArrayList<>();
 		ct.add(new Category("book", "책"));
 		ct.add(new Category("concert", "공연"));
@@ -142,13 +150,14 @@ public class PostController {
 		
 		System.out.println(postItem);
 		System.out.println(postWriteMember);
-		//HttpSession session = req.getSession(false);
-		//Member memberVO = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		HttpSession session = req.getSession();
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 
 		model.addAttribute("post",postItem);
 		model.addAttribute("postWriteMember", postWriteMember);
 		model.addAttribute("targetTumb", targetTumb);
-
+		model.addAttribute("member", member);
+		
 		
 		return "post/post";
 	}

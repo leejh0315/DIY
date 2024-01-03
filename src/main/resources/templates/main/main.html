@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,31 +9,14 @@
 </head>
 
 <body>
-    		<nav>
-        <div class="logo">
-            <img th:src="@{img/logo.png}" alt="">
-        </div>
-
-        <ul>
-            <li><a href="#">책</a></li>
-            <li><a href="#">영화</a></li>
-            <li><a href="#">공연</a></li>
-        </ul>
-
-        <input class="search" type="text" placeholder="Search">
-        
-        
-        
-        <div class="userinfo">
-            <div class="profileimg">
-                <img th:src="@{img/defalut_profileimg.jpg}" alt="">
-            </div>
-                <p>사용자 이름</p>
-
-            
-        </div>
-    </nav>
-
+	<th:block th:if="${member == null}">
+		<div th:replace="main/header :: headFrag(${none})"></div>
+	</th:block>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+	
+	
 	<footer class="footer">
 
     <p>Copyright © 2023. DIY All rights reserved.</p>

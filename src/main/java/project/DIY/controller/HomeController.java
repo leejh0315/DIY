@@ -34,8 +34,12 @@ public class HomeController {
 	private final RedisUtils redisUtils;
 	
 	@GetMapping("/")
-	public String getMain(Model model) {
-		
+	public String getMain(Model model, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+
+		model.addAttribute("member", member);
+
 		return "main/main";
 	}
 	
@@ -73,9 +77,15 @@ public class HomeController {
 	}
 	
 	@GetMapping("/login")
-	public String login(Model model) {
+	public String login(Model model, HttpServletRequest req) {
 		LoginForm loginForm = new LoginForm();
+		
+		HttpSession session = req.getSession();
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+
+		model.addAttribute("member", member);
 		model.addAttribute("loginForm", loginForm);
+
 	
 		return "login/login";
 	}
@@ -115,6 +125,18 @@ public class HomeController {
 		memberRepository.updateUUID(memberVO);
 
 //		return "redirect:" + redirectURL; 
+		return "redirect:/";
+	}
+	
+	@PostMapping("/logout")
+	public String logout(HttpServletResponse resp, HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		if(session != null) {
+			Member memberVO = (Member)session.getAttribute(SessionVar.LOGIN_MEMBER);
+			memberVO.setActiveUUID(null);
+			memberRepository.updateUUID(memberVO);
+			session.invalidate();
+		}
 		return "redirect:/";
 	}
 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+
+</head>
+
+<body>
+	<th:block th:fragment="headFrag(uuid)">
+	<nav>
+        <div class="logo">
+            <img th:src="@{/img/logo.png}" alt="">
+        </div>
+
+        <ul>
+            <li><a href="#">책</a></li>
+            <li><a href="#">영화</a></li>
+            <li><a href="#">공연</a></li>
+        </ul>
+
+        <input class="search" type="text" placeholder="Search">
+        
+        <th:block th:if="${uuid == none}"> 
+			<a href="/login">Login</a>
+		</th:block>
+		
+		<th:block th:if="${uuid != null}"> 
+	        <div class="userinfo">
+	            <div class="profileimg">
+	                <img th:src="@{/img/defalut_profileimg.jpg}" alt="">
+	            </div>
+	            <p th:text="${member.nickName}"></p>
+		            <form th:action="@{/logout}" method="post">
+						<button type="submit">로그아웃</button>
+					</form>
+	        </div>
+		</th:block>
+			
+    </nav>
+	</th:block>
+	
+		
+</body>
+</html>
