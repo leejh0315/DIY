@@ -4,8 +4,8 @@
 
 
 .title{
-    width: 100px;
-}
+    font-weight: 800 ;
+} 
 
 .searchModal{
     z-index: 1;
@@ -14,8 +14,8 @@
     left:50%;
     transform: translate3d(-50%, -50%, 0);
     width: 600px;
-    height: 600px;
-    background-color: rgb(165, 165, 165);
+    height: 550px;
+    background-color:rgb(248, 248, 248);
 }
 
 .searchModal>div>div:nth-of-type(1){
@@ -26,10 +26,18 @@
     color: white;
 }
 
+
+
 .select_lab {
+    width: 500px;
     /* label 등은 inline-block */
-    text-align: center;
+    margin: 0 auto;
     padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+.select_lab label{
+    padding: 0;
 }
 #keyword1{
     border-radius: 8px;
@@ -49,9 +57,6 @@
 }
 
 
-.select_lab > label{
-    padding: 0 15px;
-}
 
 #searchModalOffButton{
     position: absolute;
@@ -60,21 +65,27 @@
 }
 
 #searchResult {
-    margin: 0 40px 0 40px;
+    margin: 0 50px 0 50px;
     height: 45vh; 
     overflow-y: auto;
 }
 
-.resultarea{
-    
-}
 
+
+.resultarea{
+    padding-top: 20px;
+}
 .resultarea>p{
     font-size: 16px;
     width: 500px;
     font-weight: 700;
+    padding-left: 50px;
 }
-
+.resultarea hr{
+    width: 500px;
+    margin: 10px auto;
+    color: #686868;
+}
 
 
 .rating__star {
@@ -232,22 +243,19 @@ label{
         font-weight: 300;
         text-indent: 15px;
     }
-    .cont_lb{
+ 
+
+    .content_wrap{
+        width: 1100px;
         margin: 20px auto;
-        width: 1100px;
+    }
+    .content_wrap p {
         font-weight: 800;
-    }
-    .panel {
-        margin: auto;
-    }
-    .submitwrap{
-        width: 1100px;
-        margin: auto;
     }
 
     .submitBtn {
         float: right;
-        margin: 20px 0;
+         
         width: 180px;
         height: 50px;
         color: white;
@@ -265,6 +273,12 @@ label{
         width: 340px;
         padding: 20px 0 0 0;
     }
+    .result div:nth-of-type(1){
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center
+    }
 
     .result > img {
         width: 100px;
@@ -273,4 +287,22 @@ label{
 
 
     
-
+	.spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border: 8px solid #f3f3f3; /* Light grey */
+        border-top: 8px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spinner 1s linear infinite;
+    }
+    @keyframes spinner {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
