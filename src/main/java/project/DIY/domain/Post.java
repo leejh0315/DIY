@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class Post {
 	private String postCode;
-	private String postCtCode; //카테고리 : 영화, 책, 공연
+	private String postCtcode; //카테고리 : 영화, 책, 공연
 	
 	private String targetName;	//대상 작품 이름
 	private String targetSubName;	//대상 작품 부제목

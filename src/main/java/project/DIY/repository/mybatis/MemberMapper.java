@@ -11,4 +11,5 @@ public interface MemberMapper {
 	public void updateUUID(Member member);
 	public Integer idCheck(String loginId);
 	public void insertMember(Member member);
+	public Member selectByCode(int code);
 }

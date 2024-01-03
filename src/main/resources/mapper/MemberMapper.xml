@@ -37,4 +37,8 @@
 			);
 		
 	</insert>
+	
+	<select id="selectByCode" resultType="Member">
+		select * from diydb.member where id = #{code};
+	</select>
 </mapper>

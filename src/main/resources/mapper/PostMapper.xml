@@ -14,7 +14,7 @@
 			#{targetName}, 
 			#{targetSubName},
 			#{targetAuthor},
-            #{targetThmbnail},
+            #{targetThumbnail},
             #{memberId},
             #{memberNick},
             #{starCount},
@@ -38,6 +38,9 @@
 		select * from diydb.post order by postCode desc limit 1;
 	</select>
 	
+	<select id="selectByPostCode" resultType="Post">
+		select * from diydb.post where postCode = #{postCode};
+	</select>
 	
 	
 </mapper>

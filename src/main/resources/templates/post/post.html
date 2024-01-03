@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+     .userinfo >p{
+        margin: auto 10px;
+    }
+
+    .profileimg{
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+        border-radius: 70px;
+    }
+
+
+    .profileimg >img{
+        width: 100%;
+        height: 100%;
+    }
+		
+	</style>
+</head>
+<body>
+	<div th:text="${post.title}"></div>
+	
+	<th:block th:if="${postWriteMember.profileSrc == null}"> <!-- 프로필 이미지 없을때-->
+        <div class="userinfo">
+            <div class="profileimg">
+                <img th:src="@{/img/defalut_profileimg.jpg}" alt="">
+            </div>
+                <p th:text="${postWriteMember.nickName}"></p>    
+        </div>
+	</th:block>
+			
+	<th:block th:if="${postWriteMember.profileSrc != null}"> <!-- 프로필 이미지 있을때-->
+        <div class="userinfo">
+            <div class="profileimg">
+              <img th:src="@{postWriteMember.profileSrc}">
+            </div>
+                <p th:text="${postWriteMember.nickName}"></p>    
+        </div>
+	</th:block>
+	
+	<hr>
+	<div>작품정보</div>
+	<!--<img th:src="@{post.targetThumbnail}">-->
+	<div th:text="${post.targetName}"></div>
+	<div th:text="${post.targetSubName}"></div>
+	<div th:text="${post.targetAuthor}"></div>
+	<div th:text="${post.createOn}"></div>
+	<div style="border: 1px solid black; width: 50px; display: inline-block;">
+		★<p th:text="${post.starCount}"></p>
+	</div>
+	
+	<hr>
+	<div th:utext="${post.content}"></div>
+
+		
+    
+</body>
+</html>

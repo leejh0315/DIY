@@ -93,7 +93,7 @@ public String concert(@PathVariable("keyword") String keyword){
                 .build()
                 .toUri();
         System.out.println(uri);
-
+        System.out.println();
         RestTemplate restTemplate = new RestTemplate();
         RequestEntity<Void> req = RequestEntity
                         

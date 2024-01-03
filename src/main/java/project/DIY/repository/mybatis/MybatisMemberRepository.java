@@ -41,5 +41,11 @@ public class MybatisMemberRepository implements MemberRepository{
 	public void insertMember(Member member) {
 		memberMapper.insertMember(member);
 	}
+
+	@Override
+	public Member selectByCode(int code) {
+		Member member = memberMapper.selectByCode(code);
+		return member;
+	}
 	
 }

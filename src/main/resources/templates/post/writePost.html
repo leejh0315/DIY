@@ -85,12 +85,16 @@
 			</div>
 			<div class="select_lab">
 			<label>카테고리
-				<select id="categorySelect" class="categorySelect" th:field='${writePost.postCtCode}'>
+				<select id="categorySelect" class="categorySelect" th:field="${ct}">
 					<option value="none" selected th:value="none">선택</option>
-					<option value="book"  th:value="book">도서</option>
-					<option value="concert"  th:value="concert">공연</option>
-					<option value="movie" th:value="movie">영화</option>
+       				<option th:each="ct : ${ct}" th:value="${ct.type}"
+               			 th:text="${ct.displayName}"></option>
+   
 				</select>
+				
+			
+      
+ 
 			</label>
 			작품명<input id="keyword1" placeholder="작품명을 입력해주세요">
 			<button id="searchButton" class="searchButton">검색</button><br>
@@ -120,6 +124,8 @@
 				<p>선택한 작품</p>
 				<div class="selectedWork" id="selectedWork"></div>	
 				<input type="hidden" id="targetName" th:field="*{targetName}">
+				<input type="hidden" id="postCtcode" th:field="*{postCtcode}">
+				
 				<input type="hidden" id="targetSubName" th:field="*{targetSubName}">
 				<input type="hidden" id="targetAuthor" th:field="*{targetAuthor}">
 				<input type="hidden" id="targetThumbnail" th:field="*{targetThumbnail}">
@@ -216,12 +222,9 @@ $("#spinner").css("display","none");
                 },
                 onMediaDelete: function ($target, editor, $editable) {
                     // 삭제된 이미지의 파일 이름을 알아내기 위해 split 활용
-                    if (confirm('이미지를 삭제하시겠습니까?')) {
                         var deletedImageUrl = $target.attr('src').split('/').pop()
-
                         // ajax 함수 호출
                         deleteSummernoteImageFile(deletedImageUrl)
-                    }
                 },
             },
         })
@@ -293,6 +296,7 @@ $("#spinner").css("display","none");
 		let tempBool =false;
 		
 		let targetName = document.getElementById("targetName");
+		let postCtcode = document.getElementById("postCtcode");
 		let targetSubName = document.getElementById("targetSubName");
 		let targetAuthor = document.getElementById("targetAuthor");
 		let targetThumbnail = document.getElementById("targetThumbnail");
@@ -473,7 +477,7 @@ function selected(e){
 	targetName.value = resultC_name[tempNumber];
 	targetAuthor.value = resultC_type[tempNumber];
 	targetThumbnail.value = resultC_thumb[tempNumber];
-	
+	postCtcode.value = "concert";
 	selectedWork.innerHTML += 
 	"<img src='" + resultC_thumb[tempNumber] + "'>\
 	<div>\
@@ -490,7 +494,7 @@ function selectedBook(e){
 	targetName.value = searchBookList[tempNumber].title;
 	targetAuthor.value = searchBookList[tempNumber].authors;
 	targetThumbnail.value = searchBookList[tempNumber].thumbnail;
-	
+	postCtcode.value = "book";
 	selectedWork.innerHTML += 
 		"<img src='" + searchBookList[tempNumber].thumbnail + "'>\
 		<div>\
@@ -507,7 +511,7 @@ function selectMovie(e){
 	targetName.value = searchMovieList[tempNumber].title;
 	targetAuthor.value = searchMovieList[tempNumber].directors;
 	targetThumbnail.value = searchMovieList[tempNumber].posters;
-	
+	postCtcode.value = "movie";
 	selectedWork.innerHTML += 
 	"<img src='" + searchMovieList[tempNumber].posters + "'>\
 	<div>\
