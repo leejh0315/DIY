@@ -23,6 +23,7 @@
 	<!-- join -->
 	<div class="join_wrap">
 	<h1>회원가입</h1>
+	<p class="sub">문득에서 문화 기록을 시작하세요</p>
 	<form action="/join" method="post" th:object="${joinForm}" id="joinForm" name="joinForm">
 		<div id="emailInputBox" class="emailInputBox">
 			<p>이메일</p><br>
@@ -74,7 +75,7 @@
 		글로벌오류
 		</p>
 	</div>
-		<button id="joinButton">회원가입</button>
+		<button id="joinButton" class="joinButton">회원가입</button>
 	</form>
 </div>
 <script>
