@@ -1,0 +1,139 @@
+p {
+    margin: 0;
+    padding: 0;
+}
+
+hr {
+    background:#CFCFCF;
+    height: 1px;
+    border:0;
+}
+
+.writerinfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.posts_wrap{
+    width: 80%;
+    position: absolute;
+    left: 20%;
+    margin-left: -11%;
+    top: 35%;
+    margin-top: -150px;   
+}
+.createOn {
+    margin: 0 8px;
+    font-size: 12px;
+    color: #777;
+    font-weight: 300;
+}
+.nickName{
+    margin: 0 8px;
+    font-size: 14px;
+    
+}
+
+
+.writer_profileimg{
+    width: 25px;
+    height: 25px;
+    overflow: hidden;
+    border-radius: 70px;
+}
+
+
+.writer_profileimg >img{
+    width: 100%;
+    height: 100%;
+}
+
+.posttitle {
+    font-weight: 700;
+    font-size: 22px;
+    padding: 0 0 15px 0;
+}
+
+
+/*  */
+.infotitle{
+    margin: 8px 20px;
+    font-size: 13px;
+    font-weight: 700;
+}
+.targetInformation{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 20px 20px 20px;
+}
+
+.targetThumb{
+    order: 0;
+    
+
+}
+.targetThumb{
+    width: 70px;
+}
+
+.infodetail{
+    margin-left: 10px;
+    gap: 2px;
+    order: 1;
+    display: flex;
+    flex-direction: column;
+}
+.ratebox{
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    order: 2;
+    border: 1px solid #9A9E7B;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 14px;
+    margin-left: auto;
+}
+.infodetail{font-size: 14px;}
+
+.infodetail div:nth-of-type(1){
+    font-weight: 800;
+    color: #333333;
+}
+
+.infodetail div{
+    color: #777777;
+}
+
+.postcontent {
+    margin-top: 20px;
+}
+
+.likes{
+    margin: 40px 0 40px 0;
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid #9A9E7B;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 14px;
+    
+}
+.likes>p{
+    padding: 0 20px 0 5px;
+}
+.replycnt{
+    display: inline-block;
+    font-weight: 700;
+    font-size: 14px;
+    
+}
+.replycnt>div{
+    padding-left: 5px;
+    display: inline-block;
+}
