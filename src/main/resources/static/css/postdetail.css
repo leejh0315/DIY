@@ -125,7 +125,7 @@ hr {
     
 }
 .likes>p{
-    padding: 0 20px 0 5px;
+    padding: 0 5px;
 }
 .replycnt{
     display: inline-block;
@@ -134,6 +134,6 @@ hr {
     
 }
 .replycnt>div{
-    padding-left: 5px;
+    padding-left: 8px;
     display: inline-block;
 }

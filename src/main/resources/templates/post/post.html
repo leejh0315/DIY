@@ -67,16 +67,41 @@
 			<hr>
 		
 		<div class="postcontent" th:utext="${post.content}"></div>
-		<div class="likes" id="likes"><i class="far fa-heart" style="color: #9A9E7B;"></i><p>좋아요</p><i class="fas fa-ellipsis-h fa-sm"></i></div>
+		<div class="likes" id="likes"><i class="far fa-heart" style="color: #9A9E7B;"></i><p>좋아요</p></div>
 
 		<div class="replycnt">댓글<div>2</div></div>
 		<hr>
+			<!-- 댓글리스트 -->
+		<hr>
+			<!-- 댓글 작성 -->
+			<div class="replyWrite">
+				<div class="replyer_profileimg">
+					<img th:src="@{member.profileSrc}">
+				</div>
+				<div>
+					    
+					<form action="/replypost" method="post">
+						<p th:text="${member.nickName}" class="nickName"></p>
+						<input  th:field="*{reply.replyContent}" type="text" class="" placeholder="댓글을 입력하세요">
+						<input th:field="*{reply.postId}" type="hidden" id="postCode">
+						<div th:text="*{postCode}" id="postCodeDiv" style="display: none;"></div>
+						<button id="submitBtn" class="submitBtn" type="submit">등록</button>
+					</form>
+				</div>
+				
+			</div>
+			
 	</div>
 	<script>
 		let targetInformation = document.getElementById("targetInformation");
 		let thumb = document.getElementById("targetThumb");
 		let likes = document.getElementById("likes");
+		let postCode = document.getElementById("postCode");
+		let postCodeDiv = document.getElementById("postCodeDiv");
+		
+		postCode.value = postCodeDiv.innerText;
 
+		
 		console.log(thumb.value);
 		if(thumb.value == null || thumb.value == ""){
 			
@@ -84,6 +109,7 @@
 			targetInformation.innerHTML+="<img class='targetThumb' src='"+thumb.value+"'>"		
 		}
 		
+
 		
 		
 		
