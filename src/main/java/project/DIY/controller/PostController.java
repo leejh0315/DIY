@@ -30,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Category;
 import project.DIY.domain.Member;
 import project.DIY.domain.Post;
+import project.DIY.domain.Reply;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
 import project.DIY.session.SessionVar;
@@ -147,8 +148,13 @@ public class PostController {
     }
 	
 	@GetMapping("/posts/{postCode}")
-	public String getPostByPostId(Model model, @PathVariable("postCode") int postCode, @ModelAttribute("post") Post postItem
+	public String getPostByPostId(@ModelAttribute Reply reply,
+			Model model, @PathVariable("postCode") int postCode, @ModelAttribute("post") Post postItem
 			, HttpServletRequest req) {
+
+		
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
@@ -164,6 +170,8 @@ public class PostController {
 		
 
 		model.addAttribute("post",postItem);
+		model.addAttribute("postCode", postCode);
+		model.addAttribute("reply",reply);
 		model.addAttribute("postWriteMember", postWriteMember);
 		model.addAttribute("targetTumb", targetTumb);
 		model.addAttribute("member", member);

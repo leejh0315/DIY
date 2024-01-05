@@ -1,13 +1,19 @@
 package project.DIY.config;
-import project.DIY.repository.*;
-import project.DIY.repository.mybatis.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
+import project.DIY.repository.MemberRepository;
+import project.DIY.repository.PostRepository;
+import project.DIY.repository.ReplyRepository;
+import project.DIY.repository.mybatis.MemberMapper;
+import project.DIY.repository.mybatis.MybatisMemberRepository;
+import project.DIY.repository.mybatis.MybatisPostRepository;
+import project.DIY.repository.mybatis.MybatisReplyRepository;
+import project.DIY.repository.mybatis.PostMapper;
+import project.DIY.repository.mybatis.ReplyMapper;
 
 @Configuration
 @RequiredArgsConstructor
@@ -18,6 +24,8 @@ public class AppBeanConfig {
    private final MemberMapper memberMapper;
    @Autowired
    private final PostMapper postMapper;
+   @Autowired
+   private final ReplyMapper replyMapper;
    
    @Bean
    public MemberRepository memberRepository() {
@@ -28,7 +36,11 @@ public class AppBeanConfig {
    public PostRepository postRepository() {
       return new MybatisPostRepository(postMapper);
    }
-
+   
+   @Bean
+   public ReplyRepository replyRepository() {
+      return new MybatisReplyRepository(replyMapper);
+   }
    
    @Bean
    public RestTemplate getRestTemplate(){

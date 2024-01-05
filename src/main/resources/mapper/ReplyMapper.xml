@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="project.DIY.repository.mybatis.ReplyMapper">
+
+<!-- 로그인 -->
+<!-- id는 인터페이스 메소드명과 동일 -->
+	<insert id="insertReply" parameterType="Reply">
+		INSERT INTO diydb.reply (replyId, postId, replyContent, replyerId, replyCreateDate, replyUpdateDate)
+		VALUES (
+			null , 
+			#{postId}, 
+			#{replyContent}, 
+			#{replyerId}, 
+			date_format(now(), '%Y%m%d%H%i%s'),
+			null
+		);
+		
+
+	</insert>
+	
+	
+</mapper>
