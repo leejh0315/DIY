@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,13 +34,19 @@ import project.DIY.domain.Post;
 import project.DIY.domain.Reply;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
+import project.DIY.repository.ReplyRepository;
 import project.DIY.session.SessionVar;
 
 @Controller
 @RequiredArgsConstructor
 public class PostController {
+	
+	@Autowired
 	private final PostRepository postRepository;
+	@Autowired
 	private final MemberRepository memberRepository;
+	@Autowired
+	private final ReplyRepository replyRepository;
 	
     @Value("${resource.handler}")
     private String resourceHandler;
@@ -147,6 +154,18 @@ public class PostController {
 		postItem = postRepository.selectByPostCode(postCode);
 		int postWriteMemberCode = postItem.getMemberId();
 		Member postWriteMember = memberRepository.selectByCode(postWriteMemberCode);
+		List<Reply> r = replyRepository.getReply(postCode);
+		ArrayList<String> nickNames = new ArrayList<String>();
+		
+			for(int i =0; i<r.size();i++) {
+				String nickName = replyRepository.selectNickname(r.get(i).getReplyerId());
+				nickNames.add(nickName);
+			};
+		System.out.println(nickNames);
+//		System.out.println(r);
+		//1. r 렝슴스만큼 포문 돌려
+		//2. 포문 안에서 r[i].getMemberId(); 1 2 3 4
+		//3. 1 2 3 4 가 id 인 사ㅏㄻ의 닉네임을 가쟈ㅕ오는 쿼리가 잇어야겟지?
 		
 		String targetTumb = postItem.getTargetThumbnail();
 		
@@ -162,7 +181,9 @@ public class PostController {
 		model.addAttribute("targetTumb", targetTumb);
 		model.addAttribute("member", member);
 		
-		
+		model.addAttribute("replylist",r);
+		model.addAttribute("nickNames", nickNames);
+			
 		return "post/post";
 	}
 	

@@ -29,7 +29,7 @@
 					<p th:text="${postWriteMember.nickName}" class="nickName"></p>    
 					<p th:text="${post.createOn}" class="createOn"></p>
 					<i class="fas fa-ellipsis-h fa-sm"></i>
-			</div>
+				</div>
 		</th:block>
 				
 		<th:block th:if="${postWriteMember.profileSrc != null}"> <!-- 프로필 이미지 있을때-->
@@ -72,6 +72,13 @@
 		<div class="replycnt">댓글<div>2</div></div>
 		<hr>
 			<!-- 댓글리스트 -->
+			<tr th:each="replylist :${replylist}">
+				<td th:text="${replylist.replyerId}"></td>
+				<td th:text="${replylist.replyContent}"></td>
+			</tr>
+			<tr th:each="nickNames :${nickNames}">
+				<td th:text="${nickNames}"></td>
+			</tr>
 		<hr>
 			<!-- 댓글 작성 -->
 			<div class="replyWrite">
@@ -79,7 +86,6 @@
 					<img th:src="@{member.profileSrc}">
 				</div>
 				<div>
-					    
 					<form action="/replypost" method="post">
 						<p th:text="${member.nickName}" class="nickName"></p>
 						<input  th:field="*{reply.replyContent}" type="text" class="" placeholder="댓글을 입력하세요">
