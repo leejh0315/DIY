@@ -33,14 +33,14 @@ public class WebConfig implements WebMvcConfigurer{
 	    registry.addResourceHandler("/img/**",
 	                                 "/css/**",
 	                                 "/temp/**",
-	                                 "/image/**",
+	                                 "/mypage/**",
 	                                 "/**",
 	                                "/js/**,")
                                // + resourceHandler)
 	             .addResourceLocations("classpath:/static/img/",
 	                                   "classpath:/static/css/",
 	                                   "file:/C:/image/temp/",
-	                                   "file:/C:/image/real/",
+	                                   "file:/C:/image/profile/",
 	                                   "classpath:/static/temp/",
 	                                   "classpath:/static/js/");
 	                                  // + resourceLocation)

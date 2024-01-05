@@ -1,5 +1,7 @@
 package project.DIY.repository.mybatis;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
@@ -35,6 +37,12 @@ public class MybatisPostRepository implements PostRepository{
 	@Override
 	public Post selectByPostCode(int postCode) {
 		Post post = postMapper.selectByPostCode(postCode);
+		return post;
+	}
+
+	@Override
+	public List<Post> selectByType(String type) {
+		List<Post> post = postMapper.selectByType(type);
 		return post;
 	}
 	

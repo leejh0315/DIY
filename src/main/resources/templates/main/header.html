@@ -12,14 +12,16 @@
 <body>
 	<th:block th:fragment="headFrag(uuid)">
 	<nav>
-        <div class="logo">
-            <img th:src="@{/img/logo.png}" alt="">
-        </div>
+		<a href="/">
+	        <div class="logo">
+            	<img th:src="@{/img/logo.png}" alt="">
+	        </div>
+	    </a>
 
         <ul>
-            <li><a href="#">책</a></li>
-            <li><a href="#">영화</a></li>
-            <li><a href="#">공연</a></li>
+            <li><a href="/menu/book">책</a></li>
+            <li><a href="/menu/movie">영화</a></li>
+            <li><a href="/menu/concert">공연</a></li>
         </ul>
 
         <input class="search" type="text" placeholder="Search">
@@ -28,16 +30,20 @@
 			<a href="/login">Login</a>
 		</th:block>
 		
-		<th:block th:if="${uuid != null}"> 
-	        <div class="userinfo">
-	            <div class="profileimg">
-	                <img th:src="@{/img/defalut_profileimg.jpg}" alt="">
-	            </div>
-	            <p th:text="${member.nickName}"></p>
-		            <form th:action="@{/logout}" method="post">
-						<button type="submit">로그아웃</button>
-					</form>
-	        </div>
+		<th:block th:if="${uuid != none}"> 
+	        
+		        <div class="userinfo">
+			            <div class="profileimg">
+		    	            <img th:src="@{/img/defalut_profileimg.jpg}" alt="">
+		        	    </div>
+		        	    <a th:href="@{|/myPage/${member.id}|}">
+		            		<p th:text="${member.nickName}"></p>
+						</a>
+	        	</div>
+	        
+        <form th:action="@{/logout}" method="post">
+			<button type="submit">로그아웃</button>
+		</form>
 		</th:block>
 			
     </nav>

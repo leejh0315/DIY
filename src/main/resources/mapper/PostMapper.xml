@@ -21,7 +21,8 @@
             #{title},
             #{content},
 			date_format(now(), '%Y%m%d%H%i%s'),
-			null
+			null,
+			"Y"
 			);
 
 	</insert>
@@ -42,5 +43,8 @@
 		select * from diydb.post where postCode = #{postCode};
 	</select>
 	
-	
+	<select id="selectByType" resultType="Post">
+		select * from diydb.post where postCtCode = #{type}
+		order by postcode DESC limit 0,5;
+	</select>
 </mapper>

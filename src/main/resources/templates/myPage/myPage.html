@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/mypage.css}">
+	<style>
+		img{
+			width: 100px;
+			height: 100px;
+		}
+	</style>
+</head>
+<body>
+	<th:block th:if="${member == null}">
+		<div th:replace="main/header :: headFrag(${none})"></div>
+	</th:block>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+	
+	<h1>MyPage</h1>
+	
+	    <div class="top_wrap">
+        <div class="recordchart">
+            <p>나의 기록 통계</p>
+            <canvas id="pie-chart" width="200" height="200"></canvas>
+        </div>
+        <div class="recordchart">
+            <p>월별 기록 통계</p>
+            <canvas id="bar-chart" width="200" height="200"></canvas>
+        </div>
+        <div class="user_wrap">
+            <a th:href="@{|/myPage/update/${member.id}|}">
+            <i class="fa-solid fa-gear"></i>
+            </a>
+            <div class="userimg">
+                <img src="defalut_profileimg.jpg" alt="">
+            </div>
+            <div class="userid">유저명</div>
+            <div class="userintro">한줄소개</div>
+            <div class="followinfo">
+                팔로잉<div class="follower">123</div>
+                팔로워<div class="following">456</div>
+            </div>
+            <button>
+                글 작성
+            </button>
+        </div>
+    </div>
+	
+	
+	
+	
+	<script>
+		
+	new Chart(document.getElementById("pie-chart"), {
+    type: 'pie',
+    data: {
+      labels: ["책", "영화", "공연"],
+      datasets: [{
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
+        data: [20,30,3]
+      }]
+    },
+    options: {
+        responsive: false,
+        legend : {position : "bottom",
+        align :'end',
+        labels: {
+              boxWidth: 20
+          }
+        
+        },
+       
+    }
+});
+
+new Chart(document.getElementById("bar-chart"), {
+    type: 'bar',
+    data: {
+      labels: ["11월", "12월", "1월", ],
+      datasets: [
+        {
+          
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f",],
+          data: [2,8,6,]
+        }
+      ]
+    },
+    options: {
+        responsive: false,
+      legend: { display: false },
+      scales: {
+        yAxes: [{display: true,
+                ticks: {
+                    suggestedMin: 0,
+                },}
+            
+        ]
+    },
+}
+});
+			
+		
+	</script>
+</body>
+</html>

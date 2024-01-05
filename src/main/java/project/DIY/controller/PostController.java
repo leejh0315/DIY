@@ -79,6 +79,15 @@ public class PostController {
 		return "post/selectPost";
 	}
 
+	@RequestMapping(value = "/tempThumb", produces = "application/json; charset=utf8")
+	@ResponseBody
+	public String tempThumb(@RequestParam("temp") MultipartFile multipartFile, HttpServletRequest request) {
+		
+		
+		return "a";
+	}
+	
+		
 
     // 서머노트 이미지 업로드 temp 저장
     @RequestMapping(value = "/writePost/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
@@ -123,7 +132,7 @@ public class PostController {
         // JSON 객체를 문자열로 변환하여 반환
         String a = jsonObject.toString();
         System.out.println(a);
-    	System.out.println("uploadSummernoteImageFile Post 요청 수행 완료");
+    	
         return a;
     }
     
@@ -151,6 +160,9 @@ public class PostController {
 			, HttpServletRequest req) {
 
 		
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
 		postItem = postRepository.selectByPostCode(postCode);
 		int postWriteMemberCode = postItem.getMemberId();
 		Member postWriteMember = memberRepository.selectByCode(postWriteMemberCode);
@@ -171,9 +183,8 @@ public class PostController {
 		
 		System.out.println(postItem);
 		System.out.println(postWriteMember);
-		HttpSession session = req.getSession(false);
-		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		System.out.println(member);
+		
+
 		model.addAttribute("post",postItem);
 		model.addAttribute("postCode", postCode);
 		model.addAttribute("reply",reply);
