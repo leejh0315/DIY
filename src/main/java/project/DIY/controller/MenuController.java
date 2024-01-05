@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import project.DIY.domain.Member;
 import project.DIY.domain.Post;
 import project.DIY.repository.PostRepository;
+import project.DIY.session.SessionVar;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,6 +24,9 @@ public class MenuController {
 	
 	@GetMapping("/menu/{type}")
 	public String getBook(Model model, @PathVariable("type") String type, HttpServletRequest req) {
+		
+		HttpSession session = req.getSession();
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
 		List<Post> post = postRepository.selectByType(type);
 		System.out.println(post);
@@ -33,6 +39,7 @@ public class MenuController {
 			model.addAttribute("typeName", "공연");
 		}
 		
+		model.addAttribute("member", member);
 		model.addAttribute("type", post);
 		
 		return "menu/type";

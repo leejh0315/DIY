@@ -125,7 +125,7 @@ public class PostController {
         // JSON 객체를 문자열로 변환하여 반환
         String a = jsonObject.toString();
         System.out.println(a);
-    	System.out.println("uploadSummernoteImageFile Post 요청 수행 완료");
+    	
         return a;
     }
     
@@ -152,9 +152,6 @@ public class PostController {
 			Model model, @PathVariable("postCode") int postCode, @ModelAttribute("post") Post postItem
 			, HttpServletRequest req) {
 
-		
-		HttpSession session = req.getSession(false);
-		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);

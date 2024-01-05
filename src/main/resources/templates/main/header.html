@@ -30,16 +30,20 @@
 			<a href="/login">Login</a>
 		</th:block>
 		
-		<th:block th:if="${uuid != null}"> 
-	        <div class="userinfo">
-	            <div class="profileimg">
-	                <img th:src="@{/img/defalut_profileimg.jpg}" alt="">
-	            </div>
-	            <p th:text="${member.nickName}"></p>
-		            <form th:action="@{/logout}" method="post">
-						<button type="submit">로그아웃</button>
-					</form>
-	        </div>
+		<th:block th:if="${uuid != none}"> 
+	        
+		        <div class="userinfo">
+			            <div class="profileimg">
+		    	            <img th:src="@{/img/defalut_profileimg.jpg}" alt="">
+		        	    </div>
+		        	    <a th:href="@{|/myPage/${member.id}|}">
+		            		<p th:text="${member.nickName}"></p>
+						</a>
+	        	</div>
+	        
+        <form th:action="@{/logout}" method="post">
+			<button type="submit">로그아웃</button>
+		</form>
 		</th:block>
 			
     </nav>

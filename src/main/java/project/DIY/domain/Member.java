@@ -16,6 +16,7 @@ public class Member {
 	private Date createOn;
 	private Date updateOn;
 	private String profileSrc;
+	private String memberIntro;
 }
 
 

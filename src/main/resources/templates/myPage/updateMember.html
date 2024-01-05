@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+	<div id="newProfile">
+		<img th:src="@{/img/defalut_profileimg.jpg}" alt="">
+	</div>
+	<form method="post" action="/" enctype="multipart/form-data">
+	    <input type="file" name="files" multiple="multiple" id="profileSrc"/>
+	    <input type="submit" id="submit" value="전송"/>
+	</form>
+	<script>
+		let profileSrc = document.getElementById("profileSrc");
+		let newProfile = document.getElementById("newProfile");	
+		
+		profileSrc.addEventListener("change", (e)=>{
+			e.preventDefault();
+			
+			let image = e.target.files[0];
+			data = new FormData();
+			data.append('file', image);
+			 $.ajax({
+	            data: data,
+	            type: 'POST',
+	            url: '/myPage/profileImage',
+	            contentType: false,
+	            enctype: 'multipart/form-data',
+	            processData: false,
+	            success: function (imageData) {
+					console.log(imageData.src);
+					newProfile.innerHTML = "<img src='"+imageData.src+"'>";
+	        
+            },
+        })
+		});
+		
+		
+	</script>
+</body>
+</html>
