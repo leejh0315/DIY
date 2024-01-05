@@ -1,5 +1,7 @@
 package project.DIY.repository.mybatis;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import project.DIY.domain.Reply;
@@ -7,5 +9,6 @@ import project.DIY.domain.Reply;
 @Mapper
 public interface ReplyMapper {
 	public void insertReply(Reply reply);
-
+	public List<Reply> getReply(int postId);
+	public String selectNickname(int replyerId);
 }

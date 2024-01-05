@@ -1,5 +1,7 @@
 package project.DIY.repository.mybatis;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
@@ -19,5 +21,20 @@ public class MybatisReplyRepository implements ReplyRepository{
 		replyMapper.insertReply(reply);
 		
 	}
+
+	@Override
+	public List<Reply> getReply(int postId) {
+		List<Reply> reply = replyMapper.getReply(postId);
+		return reply;
+	}
+
+	@Override
+	public String selectNickname(int replyerId) {
+		String nickName = replyMapper.selectNickname(replyerId);
+		return nickName;
+	}
+	
+	
+	
 	
 }

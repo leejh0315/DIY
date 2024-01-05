@@ -20,5 +20,12 @@
 
 	</insert>
 	
+	<select id="getReply" resultType="Reply">
+		select * from diydb.reply where postId=#{postId} order by replyId asc;
+	</select>
+	
+	<select id="selectNickname" resultType="String">
+		select nickName from diydb.member where id = #{replyerId};
+	</select>
 	
 </mapper>
