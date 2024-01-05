@@ -1,5 +1,7 @@
 package project.DIY.repository.mybatis;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import project.DIY.domain.Post;
@@ -11,6 +13,7 @@ public interface PostMapper {
 	public Post selectPost();
 	public Post getLastPost();
 	public Post selectByPostCode(int postCode);
+	public List<Post> selectByType(String type);
 		
 	
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+	<th:block th:if="${member == null}">
+		<div th:replace="main/header :: headFrag(${none})"></div>
+	</th:block>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+	
+	<div th:text="${typeName}"></div>
+	<hr>
+	<div th:each="post,i : ${type}">
+		<div id="postComp">
+			<div th:id="${i.index}"></div>
+			<div th:text="${post.targetName}"></div>
+			<div th:text="${post.targetSubName}"></div>
+			<div th:text="${post.targetAuthor}"></div>
+			<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
+			<div th:text="${post.memberNick}"></div>
+			<div th:text="${post.starCount}"></div>
+			<div th:text="${post.title}"></div>
+		</div>
+		<hr>
+	</div>
+	
+	<script>
+		$( document ).ready(function() {
+    		let targetThumb = document.querySelectorAll("#targetThumb");
+    		let postComp = document.querySelectorAll("#postComp");
+    		
+    		for(let i = 0; i<targetThumb.length; i++){
+				postComp[i].innerHTML += "<img src='"+targetThumb[i].value+"'>";
+			}
+		});
+		
+	</script>
+</body>
+</html>

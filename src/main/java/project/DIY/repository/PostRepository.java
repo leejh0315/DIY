@@ -1,5 +1,7 @@
 package project.DIY.repository;
 
+import java.util.List;
+
 import project.DIY.domain.Post;
 
 public interface PostRepository {
@@ -7,5 +9,5 @@ public interface PostRepository {
 	public Post selectPost();
 	public Post getLastPost();
 	public Post selectByPostCode(int postCode);
-
+	public List<Post> selectByType(String type);
 }

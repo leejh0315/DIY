@@ -2,7 +2,6 @@ package project.DIY.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.http.HttpRequest;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -72,6 +71,15 @@ public class PostController {
 		return "post/selectPost";
 	}
 
+	@RequestMapping(value = "/tempThumb", produces = "application/json; charset=utf8")
+	@ResponseBody
+	public String tempThumb(@RequestParam("temp") MultipartFile multipartFile, HttpServletRequest request) {
+		
+		
+		return "a";
+	}
+	
+		
 
     // 서머노트 이미지 업로드 temp 저장
     @RequestMapping(value = "/writePost/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
@@ -142,6 +150,9 @@ public class PostController {
 	public String getPostByPostId(Model model, @PathVariable("postCode") int postCode, @ModelAttribute("post") Post postItem
 			, HttpServletRequest req) {
 		
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
 		postItem = postRepository.selectByPostCode(postCode);
 		int postWriteMemberCode = postItem.getMemberId();
 		Member postWriteMember = memberRepository.selectByCode(postWriteMemberCode);
@@ -150,8 +161,7 @@ public class PostController {
 		
 		System.out.println(postItem);
 		System.out.println(postWriteMember);
-		HttpSession session = req.getSession();
-		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
 
 		model.addAttribute("post",postItem);
 		model.addAttribute("postWriteMember", postWriteMember);
