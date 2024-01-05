@@ -40,13 +40,13 @@
             <i class="fa-solid fa-gear"></i>
             </a>
             <div class="userimg">
-                <img src="defalut_profileimg.jpg" alt="">
+                <img th:src="${member.profileSrc}" alt="">
             </div>
-            <div class="userid">유저명</div>
-            <div class="userintro">한줄소개</div>
+            <div class="userid" th:text="*{member.nickName}"></div>
+            <div class="userintro" th:text="*{member.memberIntro}"></div>
             <div class="followinfo">
-                팔로잉<div class="follower">123</div>
-                팔로워<div class="following">456</div>
+                팔로잉<div class="follower">1</div>
+                팔로워<div class="following">4</div>
             </div>
             <button>
                 글 작성

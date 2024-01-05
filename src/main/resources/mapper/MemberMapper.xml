@@ -42,4 +42,13 @@
 	<select id="selectByCode" resultType="Member">
 		select * from diydb.member where id = #{code};
 	</select>
+	
+	<update id="updateById" parameterType="project.DIY.domain.Member">
+		update diydb.member set 
+		nickName = #{nickName},
+		profileSrc = #{profileSrc},		
+		memberIntro = #{memberIntro}
+		where id = #{id};
+	</update>
+	
 </mapper>

@@ -8,7 +8,9 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,12 +20,17 @@ import com.google.gson.JsonObject;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.repository.MemberRepository;
 import project.DIY.session.SessionVar;
 
 @Controller
+@RequiredArgsConstructor
 public class MyPageController {
 
+	private final MemberRepository memberRepository;
+	
 	@GetMapping("/myPage/{id}")
 	public String getMyPage(@PathVariable("id") String id, HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession(false);
@@ -41,7 +48,24 @@ public class MyPageController {
 		
 		model.addAttribute("member", member);
 		
+		
+		
 		return "myPage/updateMember";
+	}
+	
+	@PostMapping("/myPage/update/")
+	public String postMyPageUpdate(HttpServletRequest req, @ModelAttribute Member member) {
+		HttpSession session = req.getSession(false);
+		Member sessionMember = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
+		member.setId(sessionMember.getId());
+		String path = Integer.toString(member.getId());
+		memberRepository.updateById(member);
+		member.setActiveUUID(UUID.randomUUID().toString());
+		memberRepository.updateUUID(member);
+		session.setAttribute(SessionVar.LOGIN_MEMBER, member);
+		
+		return "redirect:/myPage/" + path;
 	}
 	
 	

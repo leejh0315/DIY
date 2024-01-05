@@ -34,7 +34,7 @@
 	        
 		        <div class="userinfo">
 			            <div class="profileimg">
-		    	            <img th:src="@{/img/defalut_profileimg.jpg}" alt="">
+		    	            <img th:src="${member.profileSrc}"  alt="">
 		        	    </div>
 		        	    <a th:href="@{|/myPage/${member.id}|}">
 		            		<p th:text="${member.nickName}"></p>
