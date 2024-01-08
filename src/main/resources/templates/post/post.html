@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 	<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/postdetail.css}">
 
@@ -73,11 +74,12 @@
 		<hr>
 			<!-- 댓글리스트 -->
 			<tr th:each="replylist :${replylist}">
-				<td th:text="${replylist.replyerId}"></td>
-				<td th:text="${replylist.replyContent}"></td>
-			</tr>
-			<tr th:each="nickNames :${nickNames}">
-				<td th:text="${nickNames}"></td>
+				<img  th:src="@{replylist.userProfileSrc}" alt=""></img>
+				<div><td th:text ="${replylist.nickName}"></td></div>
+				<div><td th:text="${replylist.replyContent}"></td></div>
+				<div><td th:text="${replylist.replyCreateDate}"></td></div>
+				<div id="reReply", class="reReply" style="cursor: pointer;">답글</div>
+				 
 			</tr>
 		<hr>
 			<!-- 댓글 작성 -->
@@ -99,12 +101,17 @@
 			
 	</div>
 	<script>
-		let targetInformation = document.getElementById("targetInformation");
+		
+		$( document ).ready(function() {
+   			
+   			let targetInformation = document.getElementById("targetInformation");
 		let thumb = document.getElementById("targetThumb");
 		let likes = document.getElementById("likes");
 		let postCode = document.getElementById("postCode");
 		let postCodeDiv = document.getElementById("postCodeDiv");
-		
+		let reReply = document.querySelectorAll(".reReply");
+		console.log(reReply);
+		console.log(reReply.length);
 		postCode.value = postCodeDiv.innerText;
 
 		
@@ -115,7 +122,28 @@
 			targetInformation.innerHTML+="<img class='targetThumb' src='"+thumb.value+"'>"		
 		}
 		
-
+   			
+   		
+   			
+			
+			
+			for(let i=0; i<reReply.length; i++){
+				reReply[i].addEventListener("click", (e)=>{
+					e.preventDefault();
+					reReply[i].appendChild += "\
+					<form action='/reReplypost' method='post'>\
+							<input type='text'>\
+							<button type='submit'>작성</button>\
+						 </form>"
+					});
+					
+				
+			}
+			
+			
+			
+		});
+		
 		
 		
 		

@@ -167,22 +167,18 @@ public class PostController {
 		int postWriteMemberCode = postItem.getMemberId();
 		Member postWriteMember = memberRepository.selectByCode(postWriteMemberCode);
 		List<Reply> r = replyRepository.getReply(postCode);
-		ArrayList<String> nickNames = new ArrayList<String>();
-		
+		System.out.println("r.size : " + r.size() );
 			for(int i =0; i<r.size();i++) {
-				String nickName = replyRepository.selectNickname(r.get(i).getReplyerId());
-				nickNames.add(nickName);
+				List<Member> nickAndSrc = replyRepository.selectNickname(r.get(i).getReplyerId());
+				r.get(i).setNickName(nickAndSrc.get(0).getNickName());
+				r.get(i).setUserProfileSrc((nickAndSrc.get(0).getProfileSrc()));
 			};
-		System.out.println(nickNames);
-//		System.out.println(r);
-		//1. r 렝슴스만큼 포문 돌려
-		//2. 포문 안에서 r[i].getMemberId(); 1 2 3 4
-		//3. 1 2 3 4 가 id 인 사ㅏㄻ의 닉네임을 가쟈ㅕ오는 쿼리가 잇어야겟지?
+		System.out.println(r);
+
 		
 		String targetTumb = postItem.getTargetThumbnail();
 		
-		System.out.println(postItem);
-		System.out.println(postWriteMember);
+
 		
 
 		model.addAttribute("post",postItem);
@@ -193,7 +189,6 @@ public class PostController {
 		model.addAttribute("member", member);
 		
 		model.addAttribute("replylist",r);
-		model.addAttribute("nickNames", nickNames);
 			
 		return "post/post";
 	}
