@@ -13,7 +13,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @Configuration
 @PropertySource("classpath:application.properties")
 public class EmailConfig {
- 
+	
     @Value("${mail.smtp.port}")
     private int port;
     @Value("${mail.smtp.socketFactory.port}")

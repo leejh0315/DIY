@@ -9,16 +9,28 @@
 </head>
 
 <body>
+	<h1>updateMember</h1>
 	<div id="newProfile">
 		<img th:src="@{/img/defalut_profileimg.jpg}" alt="">
 	</div>
-	<form method="post" action="/" enctype="multipart/form-data">
+	
+	<form method="post" action="/myPage/update/" enctype="multipart/form-data">
 	    <input type="file" name="files" multiple="multiple" id="profileSrc"/>
-	    <input type="submit" id="submit" value="전송"/>
+	    <input th:field="*{member.profileSrc}" id="profilePath">
+	    
+	    
+	    <label>닉네임<input th:field="*{member.nickName}"></label>
+	    <label>한줄소개<input th:field="*{member.memberIntro}"></label>
+	     
+	    <button type="submit" id="submit">전송</button>
+	    
 	</form>
 	<script>
 		let profileSrc = document.getElementById("profileSrc");
 		let newProfile = document.getElementById("newProfile");	
+		let profilePath = document.getElementById("profilePath");
+		
+		
 		
 		profileSrc.addEventListener("change", (e)=>{
 			e.preventDefault();
@@ -36,6 +48,7 @@
 	            success: function (imageData) {
 					console.log(imageData.src);
 					newProfile.innerHTML = "<img src='"+imageData.src+"'>";
+					profilePath.value = imageData.src;
 	        
             },
         })

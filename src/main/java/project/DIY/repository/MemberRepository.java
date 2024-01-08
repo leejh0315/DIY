@@ -8,5 +8,5 @@ public interface MemberRepository {
 	public Integer idCheck(String loginId);
 	public void insertMember(Member member);
 	public Member selectByCode(int code);
-	
+	public void updateById(Member member);
 }

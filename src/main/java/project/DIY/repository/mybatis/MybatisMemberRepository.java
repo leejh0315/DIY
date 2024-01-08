@@ -47,5 +47,10 @@ public class MybatisMemberRepository implements MemberRepository{
 		Member member = memberMapper.selectByCode(code);
 		return member;
 	}
+
+	@Override
+	public void updateById(Member member) {
+		memberMapper.updateById(member);
+	}
 	
 }
