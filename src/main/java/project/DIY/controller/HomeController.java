@@ -1,6 +1,11 @@
 package project.DIY.controller;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -9,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,6 +32,7 @@ import project.DIY.session.SessionVar;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/home")
 public class HomeController {
 	
 	@Autowired
@@ -33,7 +40,10 @@ public class HomeController {
 	private final LoginService loginService;
 	private final RedisUtils redisUtils;
 	
-	@GetMapping("/")
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@GetMapping("/home")
 	public String getMain(Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
@@ -59,24 +69,37 @@ public class HomeController {
 		System.out.println(joinForm);
 		validateJoinForm(joinForm, bindingResult);
 
+/*		String salt = getSalt();
+		String res = getEncrypt(joinForm.getPassword(), salt);
+		System.out.println(res);
+	*/	
+		
+		//BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		//String res = passwordEncoder.encode(joinForm.getPassword());
 		
 		if(bindingResult.hasErrors()) {
+			/* 회원가입 실패 시 입력 데이터 값 유지 */
+			//model.addAttribute("userDto", userDto);
+			
 			return "join/join";
 		}else if(!redisUtils.getData(joinForm.getLoginId()).equals("Y") || redisUtils.getData(joinForm.getLoginId())=="") {
 			return "join/join";
 		}
 		else {
 			Member member = new Member();
+	
 			member.setLoginId(joinForm.getLoginId());
-			member.setPassword(joinForm.getPassword());
+			member.setPassword(passwordEncoder.encode(joinForm.getPassword()));
 			member.setNickName(joinForm.getNickName());
 			memberRepository.insertMember(member);
-			return "redirect:/";	
+			return "redirect:/" + "home/home";	
 		}
 		
 	}
 	
-	@GetMapping("/login")
+	
+	
+	@GetMapping("/dologin")
 	public String login(Model model, HttpServletRequest req) {
 		LoginForm loginForm = new LoginForm();
 		
@@ -96,13 +119,17 @@ public class HomeController {
 			, HttpServletRequest req
 			, @RequestParam(name="redirectURL", defaultValue = "/") String redirectURL ) {
 
+		System.out.println(loginForm);
 		validateLoginForm(loginForm, bindingResult);
+		/*String salt = getSalt();
+		String res = getEncrypt(loginForm.getPassWord(), salt);
+		System.out.println(res);
+		*/
+		Member memberVO = loginService.login(loginForm.getLoginId(), loginForm.getPassWord());
 		
 		if(bindingResult.hasErrors()) {
 			return "login/login";
 		}
-		Member memberVO = loginService.login(loginForm.getLoginId(), loginForm.getPassWord());
-		
 		if(memberVO == null) { //계정정보가 없거나, 비밀번호가 안맞거나 로그인 실패
 			bindingResult.reject("loginForm", "아이디 또는 비밀번호를 잘못 입력했습니다.");
 			return "login/login";
@@ -124,8 +151,8 @@ public class HomeController {
 		memberVO.setActiveUUID(session.getId());
 		memberRepository.updateUUID(memberVO);
 
-//		return "redirect:" + redirectURL; 
-		return "redirect:/";
+		//return "redirect:" + redirectURL; 
+		return "redirect:/" + "home/home";
 	}
 	
 	@PostMapping("/logout")
@@ -137,7 +164,7 @@ public class HomeController {
 			memberRepository.updateUUID(memberVO);
 			session.invalidate();
 		}
-		return "redirect:/";
+		return "redirect:/" + "home/home";
 	}
 
 	public void validateLoginForm(LoginForm loginForm, Errors errors) {
@@ -182,4 +209,45 @@ public class HomeController {
 		return cnt;
 	}
 	
+	
+	public String getSalt() {
+		SecureRandom r = new SecureRandom();
+		byte[] salt = new byte[20];
+		r.nextBytes(salt);
+		
+		StringBuffer sb = new StringBuffer();
+		for(byte b : salt) {
+			sb.append((String.format("%02x", b)));
+		}
+		
+		return sb.toString();
+	}
+	
+	public String getEncrypt(String pwd, String salt) {
+		String result = "";
+		try {
+			//1. SHA256 알고리즘 객체 생성
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			
+			//2. pwd와 salt 합친 문자열에 SHA 256 적용
+			
+			md.update((pwd+salt).getBytes());
+			byte[] pwdsalt = md.digest();
+			
+			//3. byte To String (10진수의 문자열로 변경)
+			StringBuffer sb = new StringBuffer();
+			for (byte b : pwdsalt) {
+				sb.append(String.format("%02x", b));
+			}
+			
+			result=sb.toString();
+			
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+		
+	}
 }

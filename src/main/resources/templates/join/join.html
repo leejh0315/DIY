@@ -24,7 +24,7 @@
 	<div class="join_wrap">
 	<h1>회원가입</h1>
 	<p class="sub">문득에서 문화 기록을 시작하세요</p>
-	<form action="/join" method="post" th:object="${joinForm}" id="joinForm" name="joinForm">
+	<form action="/home/join" method="post" th:object="${joinForm}" id="joinForm" name="joinForm">
 		<div id="emailInputBox" class="emailInputBox">
 			<p>이메일</p><br>
 			<div class="input_wrap">
@@ -109,7 +109,7 @@
 		email = email1.value.toString();
 		$.ajax({
 				type : "POST",
-				url : "/joongbok",
+				url : "/home/joongbok",
 				data : {
 					"email" : email
 				}, success : function(data){
@@ -147,7 +147,7 @@
 		$("#numberCheckButton").removeAttr("disabled");
 		$.ajax({
 				type : "POST",
-				url : "/emailConfirm",
+				url : "/email/emailConfirm",
 				data : {
 					"email" : email
 				},success : function(){
@@ -167,7 +167,7 @@
 
 		$.ajax({
 				type : "POST",
-				url : "/numberCheck",
+				url : "/email/numberCheck",
 				data : {
 					"number" : number
 				}, success : function(data){

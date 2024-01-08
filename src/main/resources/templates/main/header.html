@@ -12,7 +12,7 @@
 <body>
 	<th:block th:fragment="headFrag(uuid)">
 	<nav>
-		<a href="/">
+		<a href="/home/home">
 	        <div class="logo">
             	<img th:src="@{/img/logo.png}" alt="">
 	        </div>
@@ -27,7 +27,7 @@
         <input class="search" type="text" placeholder="Search">
         
         <th:block th:if="${uuid == none}"> 
-			<a href="/login">Login</a>
+			<a href="/dologin">Login</a>
 		</th:block>
 		
 		<th:block th:if="${uuid != none}"> 
@@ -41,7 +41,7 @@
 						</a>
 	        	</div>
 	        
-        <form th:action="@{/logout}" method="post">
+        <form th:action="@{/home/logout}" method="post">
 			<button type="submit">로그아웃</button>
 		</form>
 		</th:block>

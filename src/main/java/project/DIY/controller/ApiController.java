@@ -123,7 +123,6 @@ public String movie(@PathVariable("keyword") String keyword){
                 .queryParam("query", encode)
                 .queryParam("startCount", 0)
                 .queryParam("listCount", 10)
-                
                 .queryParam("ServiceKey", "4RJCFW83684G62B74F89")
                 .encode(StandardCharsets.UTF_8)
                 .build()

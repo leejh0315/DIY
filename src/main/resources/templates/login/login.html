@@ -20,7 +20,7 @@
   <div class="login_wrap">
     <h1>로그인</h1>
     <p>문득에서 문화 기록을 시작하세요</p>
-    <form action="/login" method="post" th:object="${loginForm}" id="loginForm">
+    <form action="/home/login" method="post" th:object="${loginForm}" id="loginForm">
 	    <label><input id="loginId" class="loginId" th:field="*{loginId}" placeholder="이메일"></label><br>
 	    <label><input id="loginPw" class="loginPw" type="password" th:field="*{passWord}" placeholder="비밀번호"></label><br>
       
@@ -57,7 +57,7 @@
 
     <div class="joinBtn_wrap">
       <p>아직 회원이 아니신가요?</p>
-      <a a href="/join">
+      <a a href="/home/join">
       	<button class="joinBtn">회원가입</button>
       </a>
     </div>
