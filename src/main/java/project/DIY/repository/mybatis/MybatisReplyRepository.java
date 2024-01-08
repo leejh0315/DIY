@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
+import project.DIY.domain.Member;
 import project.DIY.domain.Reply;
 import project.DIY.repository.ReplyRepository;
 @Repository
@@ -29,9 +30,9 @@ public class MybatisReplyRepository implements ReplyRepository{
 	}
 
 	@Override
-	public String selectNickname(int replyerId) {
-		String nickName = replyMapper.selectNickname(replyerId);
-		return nickName;
+	public List<Member> selectNickname(int replyerId) {
+		List<Member> nickAndSrc = replyMapper.selectNickname(replyerId);
+		return nickAndSrc;
 	}
 	
 	

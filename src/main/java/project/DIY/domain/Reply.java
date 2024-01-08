@@ -11,4 +11,7 @@ public class Reply {
 	private int replyerId;
 	private Date replyCreateDate;
 	private Date replyUpdateDate;
+	
+	private String nickName;
+	private String userProfileSrc;
 }
