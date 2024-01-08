@@ -161,7 +161,14 @@ public class PostController {
 
 		
 		HttpSession session = req.getSession(false);
-		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
+		if(session == null) {
+			
+		}else {
+			Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+			model.addAttribute("member", member);
+		}
+		
 		
 		postItem = postRepository.selectByPostCode(postCode);
 		int postWriteMemberCode = postItem.getMemberId();
@@ -186,7 +193,7 @@ public class PostController {
 		model.addAttribute("reply",reply);
 		model.addAttribute("postWriteMember", postWriteMember);
 		model.addAttribute("targetTumb", targetTumb);
-		model.addAttribute("member", member);
+		
 		
 		model.addAttribute("replylist",r);
 			

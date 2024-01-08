@@ -145,7 +145,7 @@ public class HomeController {
 		
 		System.out.println("로그인성공");
 		
-		HttpSession session = req.getSession();
+		HttpSession session = req.getSession(true);
 		session.setAttribute(SessionVar.LOGIN_MEMBER, memberVO);
 
 		memberVO.setActiveUUID(session.getId());

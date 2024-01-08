@@ -88,13 +88,16 @@
 					<img th:src="@{member.profileSrc}">
 				</div>
 				<div>
-					<form action="/replypost" method="post">
-						<p th:text="${member.nickName}" class="nickName"></p>
-						<input  th:field="*{reply.replyContent}" type="text" class="" placeholder="댓글을 입력하세요">
-						<input th:field="*{reply.postId}" type="hidden" id="postCode">
-						<div th:text="*{postCode}" id="postCodeDiv" style="display: none;"></div>
-						<button id="submitBtn" class="submitBtn" type="submit">등록</button>
-					</form>
+					<!-- 로그인 안한 사람은 이거 못봤나...? 만약 못보는거면 th:block 여는태그 닫는태그 지워버리면 될듯 -->
+					<th:block th:if="${member != null}">
+						<form action="/replypost" method="post">
+							<p th:text="${member.nickName}" class="nickName"></p>
+							<input  th:field="*{reply.replyContent}" type="text" class="" placeholder="댓글을 입력하세요">
+							<input th:field="*{reply.postId}" type="hidden" id="postCode">
+							<div th:text="*{postCode}" id="postCodeDiv" style="display: none;"></div>
+							<button id="submitBtn" class="submitBtn" type="submit">등록</button>
+						</form>
+					</th:block>
 				</div>
 				
 			</div>
