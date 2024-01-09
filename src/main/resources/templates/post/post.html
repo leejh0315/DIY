@@ -78,6 +78,7 @@
 				<div><td th:text ="${replylist.nickName}"></td></div>
 				<div><td th:text="${replylist.replyContent}"></td></div>
 				<div><td th:text="${replylist.replyCreateDate}"></td></div>
+				
 				<div id="reReply", class="reReply" style="cursor: pointer;">답글</div>
 				 
 			</tr>
@@ -135,36 +136,35 @@
 			targetInformation.innerHTML+="<img class='targetThumb' src='"+thumb.value+"'>"		
 		}
 		
-   			
-   		var reReplyClick = [];
-   		for(let i=0; i<reReply.length; i++){
-				reReplyClick[i]=true;
-
-		}
-		console.log(reReplyClick);	
-		console.log(reReply);	
+   		
+		var addedDiv = document.createElement("div");
 			
 			for(let i=0; i<reReply.length; i++){
-
-				if(reReplyClick[i]==true){
+				
 					reReply[i].addEventListener("click", (e)=>{
 						e.preventDefault();
-						reReply[i].innerHTML += "<div id='" + i +"' onclick='select(this)'>\
+						
+						
+	 					
+	 					if(document.getElementById(i+'Div')){
+							 document.getElementById(i+'Div').remove();
+						 } else {
+							 addedDiv.id = i +'Div';
+						reReply[i].appendChild(addedDiv);
+						addedDiv.innerHTML = "<div id='" + i +"' onclick='select(this)'>\
 						<form action='/reReplypost' method='post' id='reReplyform'>\
 								<input type='text'>\
 								<button type='submit'>작성</button>\
 							 </form></div>";
-						
-						reReplyClick[i]=false;
-						console.log(reReplyClick[i]);
+						 }
 						
 						});
-				} else if(reReplyClick[i]==false){
-						console.log("하이");
-				}
-					
 				
+						
 			}
+			
+			
+			
 			
 			
 			
