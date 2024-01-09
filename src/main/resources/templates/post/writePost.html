@@ -323,6 +323,11 @@ $("#spinner").css("display","none");
 					console.log(res);
 					searchBookList = res.documents;
 					for(let i = 0 ; i < res.documents.length; i++){
+						
+						if(res.documents[i].thumbnail == ""){
+							res.documents[i].thumbnail = "/img/thumbnail_default.png";
+						}
+						
 						if(res.documents[i].authors == "" || res.documents[i].authors == null){
 							res.documents[i].authors = "작가 없음";
 							searchResult.innerHTML +=
@@ -358,6 +363,7 @@ $("#spinner").css("display","none");
 					//contentType:"application/json",
 				}).done(function(res) {	
 					hideSpinner();
+					console.log(res);
 					let resTextToString = $(res).text().toString();	
 					resultC = resTextToString.split('        ');
 					for(let i = 2 ; i< resultC.length; i++){
@@ -406,12 +412,23 @@ $("#spinner").css("display","none");
 					for(let i = 0 ; i < serachMovieListLength; i++){
 						let tempImageUrl = searchMovieList[i].posters;
 						let a = tempImageUrl.indexOf('|');
-
 						let tempTitle = searchMovieList[i].title.replace(/!HE/g, '');
 						tempTitle = tempTitle.replace(/!HS/g, '');
 						searchMovieList[i].directors = searchMovieList[i].directors.director[0].directorNm 
 						searchMovieList[i].title = tempTitle;
-						if(a != -1){
+						
+						if(searchMovieList[i].posters == ""){
+							tempImageUrl = tempImageUrl.substr(0, a);
+							searchMovieList[i].posters = tempImageUrl;
+
+							searchResult.innerHTML += 
+							"<div class='result' onclick='selectMovie(this)' id='"+ i + "'> <img src='/img/thumbnail_default.png'><div><p class='title'>"+
+							tempTitle+
+							"</p><p>"+searchMovieList[i].prodYear+"."+ searchMovieList[i].nation +"</p>\
+							<p>"+
+							searchMovieList[i].directors+"</p></div></div>";
+							
+						}else if(a != -1){
 							tempImageUrl = tempImageUrl.substr(0, a);
 							searchMovieList[i].posters = tempImageUrl;
 
@@ -422,7 +439,6 @@ $("#spinner").css("display","none");
 							"</p><p>"+searchMovieList[i].prodYear+"."+ searchMovieList[i].nation +"</p>\
 							<p>"+
 							searchMovieList[i].directors+"</p></div></div>";
-							
 						}else{
 							searchResult.innerHTML += 
 							"<div class='result' onclick='selectMovie(this)' id='"+ i + "'> <img src='"+searchMovieList[i].posters +
@@ -461,6 +477,10 @@ function selectedBook(e){
 	selectedWork.innerHTML = "";
 	let tempNumber = parseInt($(e).attr('id'));
 	
+	if(searchBookList[tempNumber].thumbnail == ""){
+		searchBookList[tempNumber].thumbnail = "/img/thumbnail_default.png";		
+	}
+	
 	targetName.value = searchBookList[tempNumber].title;
 	targetAuthor.value = searchBookList[tempNumber].authors;
 	targetThumbnail.value = searchBookList[tempNumber].thumbnail;
@@ -477,7 +497,9 @@ function selectedBook(e){
 function selectMovie(e){
 	selectedWork.innerHTML = "";
 	let tempNumber = parseInt($(e).attr('id'));
-	
+	if(searchMovieList[tempNumber].posters == ""){
+		searchMovieList[tempNumber].posters = "/img/thumbnail_default.png";		
+	}
 	targetName.value = searchMovieList[tempNumber].title;
 	targetAuthor.value = searchMovieList[tempNumber].directors;
 	targetSubName.value = searchMovieList[tempNumber].prodYear +"." + searchMovieList[tempNumber].nation;
