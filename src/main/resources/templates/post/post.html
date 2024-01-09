@@ -53,8 +53,8 @@
 		
 			<div class="infotitle">작품정보</div>
 			<div id="targetInformation" class="targetInformation">
-				<input type="hidden" id="targetThumb" class="targetThumb" th:value = "${post.targetThumbnail}"
-					style="width: 100px;">
+				
+				<img th:src="${post.targetThumbnail}" class='targetThumb'>
 				<div class="infodetail">
 					<div th:text="${post.targetName}"></div>
 					<div th:text="${post.targetSubName}"></div>
@@ -114,7 +114,7 @@
    			
    		let targetInformation = document.getElementById("targetInformation");
 
-		let thumb = document.getElementById("targetThumb");
+		
 		let likes = document.getElementById("likes");
 		let postCode = document.getElementById("postCode");
 		let postCodeDiv = document.getElementById("postCodeDiv");
@@ -125,12 +125,9 @@
 		postCode.value = postCodeDiv.innerText;
 
 		
-		console.log(thumb.value);
-		if(thumb.value == null || thumb.value == ""){
-			
-		}else{
-			targetInformation.innerHTML+="<img class='targetThumb' src='"+thumb.value+"'>"		
-		}
+		
+		
+		
 		
    		
 		var addedDiv = document.createElement("div");
@@ -139,9 +136,6 @@
 				
 					reReply[i].addEventListener("click", (e)=>{
 						e.preventDefault();
-						
-						
-	 					
 	 					if(document.getElementById(i+'Div')){
 							 document.getElementById(i+'Div').remove();
 						 } else {

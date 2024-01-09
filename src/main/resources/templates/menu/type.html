@@ -22,6 +22,8 @@
 		<a th:href="@{|/posts/${post.postCode}|}">
 			<div id="postComp">
 				<div th:id="${i.index}"></div>
+				
+				<img th:src="${post.targetThumbnail}">
 				<div th:text="${post.targetName}"></div>
 				<div th:text="${post.targetSubName}"></div>
 				<div th:text="${post.targetAuthor}"></div>
@@ -35,14 +37,7 @@
 	</div>
 	
 	<script>
-		$( document ).ready(function() {
-    		let targetThumb = document.querySelectorAll("#targetThumb");
-    		let postComp = document.querySelectorAll("#postComp");
-    		
-    		for(let i = 0; i<targetThumb.length; i++){
-				postComp[i].innerHTML += "<img src='"+targetThumb[i].value+"'>";
-			}
-		});
+		
 		
 	</script>
 </body>
