@@ -109,11 +109,7 @@
 			
 	</div>
 	<script>
-		function select(e){
-			var deleteDiv = document.getElementById($(e).attr('id'));
-			deleteDiv.remove();
-			
-		};
+		
 		$( document ).ready(function() {
    			
    		let targetInformation = document.getElementById("targetInformation");
@@ -149,9 +145,9 @@
 	 					if(document.getElementById(i+'Div')){
 							 document.getElementById(i+'Div').remove();
 						 } else {
-							 addedDiv.id = i +'Div';
-						reReply[i].appendChild(addedDiv);
-						addedDiv.innerHTML = "<div id='" + i +"' onclick='select(this)'>\
+						addedDiv.id = i +'Div';
+						reReply[i].after(addedDiv);
+						addedDiv.innerHTML = "<div id='" + i +"'>\
 						<form action='/reReplypost' method='post' id='reReplyform'>\
 								<input type='text'>\
 								<button type='submit'>작성</button>\
