@@ -1,11 +1,14 @@
 package project.DIY.repository.mybatis;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
-import project.DIY.form.JoinForm;
+import project.DIY.domain.Post;
 import project.DIY.repository.MemberRepository;
 
 @Repository
@@ -14,7 +17,7 @@ import project.DIY.repository.MemberRepository;
 public class MybatisMemberRepository implements MemberRepository{
 
 	private final MemberMapper memberMapper;
-	
+
 	@Override
 	public Member selectById(String loginId) {
 		Member member = memberMapper.selectById(loginId);
@@ -51,6 +54,12 @@ public class MybatisMemberRepository implements MemberRepository{
 	@Override
 	public void updateById(Member member) {
 		memberMapper.updateById(member);
+	}
+
+	@Override
+	public List<Map<String,String>>thisMonthWriteKing(int month) {
+		List<Map<String,String>> post = memberMapper.thisMonthWriteKing(month);
+		return post;
 	}
 	
 }

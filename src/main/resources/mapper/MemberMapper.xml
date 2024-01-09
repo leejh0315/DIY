@@ -52,4 +52,14 @@
 		where id = #{id};
 	</update>
 	
+	<select id="thisMonthWriteKing" resultType="Post">
+		 select
+ 		memberNick,
+ 		count(memberNick)
+  		as cnt 
+ 		from diydb.post
+ 		where Month(createon)= #{month}
+ 		group by memberNick order by cnt desc;
+	</select>
+	
 </mapper>

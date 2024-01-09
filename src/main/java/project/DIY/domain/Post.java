@@ -16,7 +16,7 @@ public class Post {
 	
 	private int memberId;		//회원 id		
 	private String memberNick;	//회원 닉네임
-	private int starCount;		//작품에 남긴 별점
+	private double starCount;		//작품에 남긴 별점
 	private String title;		//게시글 제목
 	private String content;		//게시글 내용
 	private Date createOn;		//게시글 작성 날짜

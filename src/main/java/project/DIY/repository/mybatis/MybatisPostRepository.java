@@ -29,9 +29,9 @@ public class MybatisPostRepository implements PostRepository{
 	}
 
 	@Override
-	public Post getLastPost() {
-		Post post = postMapper.getLastPost();
-		return post;
+	public String getLastPost() {
+		String postCode = postMapper.getLastPost();
+		return postCode;
 	}
 
 	@Override
@@ -47,12 +47,19 @@ public class MybatisPostRepository implements PostRepository{
 	}
 
 	@Override
+<<<<<<< HEAD
 	public List<Post> selectUserPostbyId(int meberId) {
 		List<Post> post = postMapper.selectUserPostbyId(meberId);
 		return post;
 	}
 	
 	
+=======
+	public List<Post> selectByPostCtCodeHome(String postCtCode) {
+		List<Post> post = postMapper.selectByPostCtCodeHome(postCtCode);
+		return post;
+	}
+>>>>>>> c8323e938397b24466f62554e3c5b290c7d36b97
 	
 
 }

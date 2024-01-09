@@ -319,7 +319,8 @@ $("#spinner").css("display","none");
 					contentType:"application/json",
 				}).done(function(res) {
 					$("#spinner").css("display","none");
-					console.log("책 api 호출 시작")
+					console.log("책 api 호출 시작");
+					console.log(res);
 					searchBookList = res.documents;
 					for(let i = 0 ; i < res.documents.length; i++){
 						if(res.documents[i].authors == "" || res.documents[i].authors == null){
@@ -418,14 +419,17 @@ $("#spinner").css("display","none");
 							"<div class='result' onclick='selectMovie(this)' id='"+ i + "'> <img src='"+tempImageUrl +
 							"'><div><p class='title'>"+
 							tempTitle+
-							"</p><p>"+
+							"</p><p>"+searchMovieList[i].prodYear+"."+ searchMovieList[i].nation +"</p>\
+							<p>"+
 							searchMovieList[i].directors+"</p></div></div>";
+							
 						}else{
 							searchResult.innerHTML += 
 							"<div class='result' onclick='selectMovie(this)' id='"+ i + "'> <img src='"+searchMovieList[i].posters +
 							"'><div><p class='title'>"+
 							tempTitle+
-							"</p><p>"+
+							"</p><p>"+searchMovieList[i].prodYear+"."+ searchMovieList[i].nation +"</p>\
+							<p>"+
 							searchMovieList[i].directors + "</p></div></div>";
 						}
 					}
@@ -476,12 +480,14 @@ function selectMovie(e){
 	
 	targetName.value = searchMovieList[tempNumber].title;
 	targetAuthor.value = searchMovieList[tempNumber].directors;
+	targetSubName.value = searchMovieList[tempNumber].prodYear +"." + searchMovieList[tempNumber].nation;
 	targetThumbnail.value = searchMovieList[tempNumber].posters;
 	postCtcode.value = "movie";
 	selectedWork.innerHTML += 
 	"<img src='" + searchMovieList[tempNumber].posters + "'>\
 	<div>\
 	<div>"+searchMovieList[tempNumber].title+"</div>\
+	<div>"+searchMovieList[tempNumber].prodYear +"." + searchMovieList[tempNumber].nation+"</div>\
 	<div>"+searchMovieList[tempNumber].directors +"</div>\
 	</div>"
 	$(".searchModal").css("display","none");

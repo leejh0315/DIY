@@ -1,5 +1,8 @@
 package project.DIY.repository;
 
+import java.util.List;
+import java.util.Map;
+
 import project.DIY.domain.Member;
 
 public interface MemberRepository {
@@ -9,4 +12,5 @@ public interface MemberRepository {
 	public void insertMember(Member member);
 	public Member selectByCode(int code);
 	public void updateById(Member member);
+	public List<Map<String, String>> thisMonthWriteKing(int month);
 }

@@ -3,6 +3,9 @@ package project.DIY.controller;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,9 +27,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.domain.Post;
 import project.DIY.form.JoinForm;
 import project.DIY.form.LoginForm;
 import project.DIY.repository.MemberRepository;
+import project.DIY.repository.PostRepository;
 import project.DIY.service.LoginService;
 import project.DIY.service.RedisUtils;
 import project.DIY.session.SessionVar;
@@ -37,6 +43,8 @@ public class HomeController {
 	
 	@Autowired
 	private final MemberRepository memberRepository;
+	
+	private final PostRepository postRepository;
 	private final LoginService loginService;
 	private final RedisUtils redisUtils;
 	
@@ -47,11 +55,32 @@ public class HomeController {
 	public String getMain(Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-
+		
+		LocalDate now = LocalDate.now();
+		int monthValue = now.getMonthValue();
+		
+		List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
+		List<Post> post = postRepository.selectByPostCtCodeHome("book");
+		
+		
+		
 		model.addAttribute("member", member);
+		model.addAttribute("king", king);
+		model.addAttribute("post", post);
 
 		return "main/main";
 	}
+	
+	@PostMapping("/{type}")
+	@ResponseBody
+	public List<Post> mainTypeResp(@PathVariable("type") String type, Model model) {
+		
+		if(type.equals("movie")) 	{return postRepository.selectByPostCtCodeHome(type);}
+		else if(type.equals("book")){return postRepository.selectByPostCtCodeHome(type);}
+		else 						{return postRepository.selectByPostCtCodeHome(type);}
+
+	}
+	
 	
 	@GetMapping("/join")
 	public String getJoin(Model model) {
