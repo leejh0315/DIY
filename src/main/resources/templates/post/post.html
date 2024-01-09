@@ -98,16 +98,24 @@
 							<button id="submitBtn" class="submitBtn" type="submit">등록</button>
 						</form>
 					</th:block>
+					<th:block th:if="${member == null}">
+						<input th:field="*{reply.postId}" type="hidden" id="postCode">
+						<div th:text="*{postCode}" id="postCodeDiv" style="display: none;"></div>
+					 </th:block>
 				</div>
 				
 			</div>
 			
 	</div>
 	<script>
-		
+		function select(e){
+			var deleteDiv = document.getElementById($(e).attr('id'));
+			deleteDiv.remove();
+			
+		};
 		$( document ).ready(function() {
    			
-   			let targetInformation = document.getElementById("targetInformation");
+   		let targetInformation = document.getElementById("targetInformation");
 		let thumb = document.getElementById("targetThumb");
 		let likes = document.getElementById("likes");
 		let postCode = document.getElementById("postCode");
@@ -126,19 +134,32 @@
 		}
 		
    			
-   		
-   			
-			
+   		var reReplyClick = [];
+   		for(let i=0; i<reReply.length; i++){
+				reReplyClick[i]=true;
+
+		}
+		console.log(reReplyClick);	
+		console.log(reReply);	
 			
 			for(let i=0; i<reReply.length; i++){
-				reReply[i].addEventListener("click", (e)=>{
-					e.preventDefault();
-					reReply[i].appendChild += "\
-					<form action='/reReplypost' method='post'>\
-							<input type='text'>\
-							<button type='submit'>작성</button>\
-						 </form>"
-					});
+
+				if(reReplyClick[i]==true){
+					reReply[i].addEventListener("click", (e)=>{
+						e.preventDefault();
+						reReply[i].innerHTML += "<div id='" + i +"' onclick='select(this)'>\
+						<form action='/reReplypost' method='post' id='reReplyform'>\
+								<input type='text'>\
+								<button type='submit'>작성</button>\
+							 </form></div>";
+						
+						reReplyClick[i]=false;
+						console.log(reReplyClick[i]);
+						
+						});
+				} else if(reReplyClick[i]==false){
+						console.log("하이");
+				}
 					
 				
 			}
