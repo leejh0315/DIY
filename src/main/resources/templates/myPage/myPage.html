@@ -56,7 +56,23 @@
     </div>
 	
 	
-	
+	<!-- 하단 -->
+	<div th:each="post,i : ${post}">
+		<a th:href="@{|/posts/${post.postCode}|}">
+			<div id="postComp">
+				<div th:id="${i.index}"></div>
+				<div th:text="${post.targetName}"></div>
+				<div th:text="${post.targetSubName}"></div>
+				<img th:src="${post.targetThumbnail}" class='targetThumb'>
+				<div th:value="${post.createOn}"></div>
+				<div th:text="${post.memberNick}"></div>
+				<div th:text="${post.starCount}"></div>
+				<div th:text="${post.title}"></div>
+				<div th:text="${post.content}"></div>
+			</div>
+		</a>
+		<hr>
+	</div>
 	
 	<script>
 		
@@ -108,7 +124,7 @@ new Chart(document.getElementById("bar-chart"), {
 }
 });
 			
-		
+	
 	</script>
 </body>
 </html>

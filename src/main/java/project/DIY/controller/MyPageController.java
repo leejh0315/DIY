@@ -1,10 +1,11 @@
 package project.DIY.controller;
-
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,13 +23,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.domain.Post;
 import project.DIY.repository.MemberRepository;
+import project.DIY.repository.PostRepository;
 import project.DIY.session.SessionVar;
 
 @Controller
 @RequiredArgsConstructor
 public class MyPageController {
 
+	@Autowired
+	private final PostRepository postRepository;
 	private final MemberRepository memberRepository;
 	
 	@GetMapping("/myPage/{id}")
@@ -36,6 +41,19 @@ public class MyPageController {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
+		List<Post> myPost = postRepository.selectUserPostbyId(Integer.parseInt(id));
+		
+
+		for(int i=0; i<myPost.size();i++) {
+			String contentTemp = myPost.get(i).getContent();
+			String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
+			myPost.get(i).setContent(plainText);
+			System.out.println(plainText);
+		};
+	
+		
+		System.out.println(myPost);
+		model.addAttribute("post",myPost);
 		model.addAttribute("member", member);
 		
 		return "myPage/myPage";
@@ -113,5 +131,7 @@ public class MyPageController {
 		
 		return a;
 	}
+	
+	
 }
 

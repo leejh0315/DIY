@@ -80,7 +80,6 @@
 				<div><td th:text="${replylist.replyCreateDate}"></td></div>
 				
 				<div id="reReply", class="reReply" style="cursor: pointer;">답글</div>
-				 
 			</tr>
 		<hr>
 			<!-- 댓글 작성 -->
@@ -99,6 +98,7 @@
 							<button id="submitBtn" class="submitBtn" type="submit">등록</button>
 						</form>
 					</th:block>
+
 					<th:block th:if="${member == null}">
 						<input th:field="*{reply.postId}" type="hidden" id="postCode">
 						<div th:text="*{postCode}" id="postCodeDiv" style="display: none;"></div>
