@@ -147,13 +147,21 @@ public class PostController {
     
 
 	@PostMapping("/writePost")                                                        
-    public String setArticle(@ModelAttribute Post post, Model model) {                
-    	System.out.println(post);
+    public String setArticle(@ModelAttribute Post post, Model model, HttpServletRequest req) {                
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		post.setMemberId(member.getId());
+		post.setMemberNick(member.getNickName());
+		
+		
+		System.out.println(post);
+		
     	System.out.println("writePost Post요청 접근");
     	
     	postRepository.insertPost(post);
-    	//return "redirect:/article/" + post.getPostCode();
-    	return "redirect:/";
+    	String postCode = postRepository.getLastPost();
+
+    	return "redirect:/posts/" + postCode;
     }
 	
 	@GetMapping("/posts/{postCode}")

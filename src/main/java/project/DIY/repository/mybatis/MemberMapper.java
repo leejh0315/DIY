@@ -1,9 +1,11 @@
 package project.DIY.repository.mybatis;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import project.DIY.domain.Member;
-import project.DIY.form.JoinForm;
 
 @Mapper
 public interface MemberMapper {
@@ -13,4 +15,5 @@ public interface MemberMapper {
 	public void insertMember(Member member);
 	public Member selectByCode(int code);
 	public void updateById(Member member);
+	public List<Map<String,String>> thisMonthWriteKing(int month);
 }

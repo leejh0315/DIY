@@ -35,8 +35,8 @@
 
 	</select>
 	
-	<select id="getLastPost" resultType="Post">
-		select * from diydb.post order by postCode desc limit 1;
+	<select id="getLastPost" resultType="String">
+		SELECT postCode FROM diydb.post ORDER BY createOn DESC LIMIT 1;
 	</select>
 	
 	<select id="selectByPostCode" resultType="Post">
@@ -46,5 +46,20 @@
 	<select id="selectByType" resultType="Post">
 		select * from diydb.post where postCtCode = #{type}
 		order by postcode DESC limit 0,5;
+	</select>
+	
+	<select id="selectByPostCtCodeHome" resultType="Post">
+		select
+			 targetName,
+			 targetAuthor,
+			 targetThumbnail,
+			 avg(starCount) as starCount,
+			 targetSubName,
+			 count(targetName)
+			  as cnt 
+			 from diydb.post
+			where postCtCode = #{postCtCode}
+			 group by targetName order by cnt desc;
+		
 	</select>
 </mapper>

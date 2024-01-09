@@ -11,9 +11,10 @@ public interface PostMapper {
 
 	public void insertPost(Post post);
 	public Post selectPost();
-	public Post getLastPost();
+	public String getLastPost();
 	public Post selectByPostCode(int postCode);
 	public List<Post> selectByType(String type);
+	public List<Post> selectByPostCtCodeHome(String postCtCode);
 		
 	
 }

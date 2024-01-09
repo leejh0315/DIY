@@ -29,9 +29,9 @@ public class MybatisPostRepository implements PostRepository{
 	}
 
 	@Override
-	public Post getLastPost() {
-		Post post = postMapper.getLastPost();
-		return post;
+	public String getLastPost() {
+		String postCode = postMapper.getLastPost();
+		return postCode;
 	}
 
 	@Override
@@ -43,6 +43,12 @@ public class MybatisPostRepository implements PostRepository{
 	@Override
 	public List<Post> selectByType(String type) {
 		List<Post> post = postMapper.selectByType(type);
+		return post;
+	}
+
+	@Override
+	public List<Post> selectByPostCtCodeHome(String postCtCode) {
+		List<Post> post = postMapper.selectByPostCtCodeHome(postCtCode);
 		return post;
 	}
 	
