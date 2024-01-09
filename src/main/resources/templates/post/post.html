@@ -98,6 +98,7 @@
 							<button id="submitBtn" class="submitBtn" type="submit">등록</button>
 						</form>
 					</th:block>
+
 				</div>
 				
 			</div>
@@ -107,7 +108,7 @@
 		
 		$( document ).ready(function() {
    			
-   			let targetInformation = document.getElementById("targetInformation");
+   		let targetInformation = document.getElementById("targetInformation");
 		let thumb = document.getElementById("targetThumb");
 		let likes = document.getElementById("likes");
 		let postCode = document.getElementById("postCode");
@@ -115,6 +116,7 @@
 		let reReply = document.querySelectorAll(".reReply");
 		console.log(reReply);
 		console.log(reReply.length);
+		
 		postCode.value = postCodeDiv.innerText;
 
 		
@@ -133,7 +135,8 @@
 			for(let i=0; i<reReply.length; i++){
 				reReply[i].addEventListener("click", (e)=>{
 					e.preventDefault();
-					reReply[i].appendChild += "\
+					console.log("why");
+					reReply[i].innerHTML += "\
 					<form action='/reReplypost' method='post'>\
 							<input type='text'>\
 							<button type='submit'>작성</button>\
