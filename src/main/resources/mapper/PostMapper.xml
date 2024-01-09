@@ -48,6 +48,11 @@
 		order by postcode DESC limit 0,5;
 	</select>
 	
+
+	
+	<select id="selectUserPostbyId" resultType="Post">
+		select * from diydb.post where memberId= #{memberId};
+	</select>
 	<select id="selectByPostCtCodeHome" resultType="Post">
 		select
 			 targetName,

@@ -47,6 +47,14 @@ public class MybatisPostRepository implements PostRepository{
 	}
 
 	@Override
+
+	public List<Post> selectUserPostbyId(int meberId) {
+		List<Post> post = postMapper.selectUserPostbyId(meberId);
+		return post;
+	}
+	
+	
+
 	public List<Post> selectByPostCtCodeHome(String postCtCode) {
 		List<Post> post = postMapper.selectByPostCtCodeHome(postCtCode);
 		return post;
