@@ -181,28 +181,22 @@ public class PostController {
 		List<Reply> r = replyRepository.getReply(postCode);
 		
 		if(session == null) {
-			
-		}else {
-			Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-			
-
-			Likes likes = new Likes();
-			
-			likes.setMemberId(member.getId());
-			likes.setPostCode(postCode);
-			
-			int likescnt = aboutPostRepository.selectLikes(likes);
-			
+			Member member = new Member();
 			
 			model.addAttribute("member", member);
-			model.addAttribute("likescnt",likescnt);
+		}else {
+			Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+			if(member != null) {
+				Likes likes = new Likes();
+				likes.setMemberId(member.getId());
+				likes.setPostCode(postCode);
+				int likescnt = aboutPostRepository.selectLikes(likes);
+				model.addAttribute("likescnt",likescnt);
+			}
+			model.addAttribute("member", member);
 		}
 		
-		
 		postItem = postRepository.selectByPostCode(postCode);
-		int postWriteMemberCode = postItem.getMemberId();
-		Member postWriteMember = memberRepository.selectByCode(postWriteMemberCode);
-		List<Reply> r = replyRepository.getReply(postCode);
 		System.out.println("r.size : " + r.size() );
 			for(int i =0; i<r.size();i++) {
 				List<Member> nickAndSrc = replyRepository.selectNickname(r.get(i).getReplyerId());
