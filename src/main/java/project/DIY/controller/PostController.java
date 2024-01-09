@@ -29,9 +29,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Category;
+import project.DIY.domain.Likes;
 import project.DIY.domain.Member;
 import project.DIY.domain.Post;
 import project.DIY.domain.Reply;
+import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
 import project.DIY.repository.ReplyRepository;
@@ -47,6 +49,8 @@ public class PostController {
 	private final MemberRepository memberRepository;
 	@Autowired
 	private final ReplyRepository replyRepository;
+	@Autowired
+	private final AboutPostRepository aboutPostRepository;
 	
     @Value("${resource.handler}")
     private String resourceHandler;
@@ -176,7 +180,18 @@ public class PostController {
 			
 		}else {
 			Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+			
+
+			Likes likes = new Likes();
+			
+			likes.setMemberId(member.getId());
+			likes.setPostCode(postCode);
+			
+			int likescnt = aboutPostRepository.selectLikes(likes);
+			
+			
 			model.addAttribute("member", member);
+			model.addAttribute("likescnt",likescnt);
 		}
 		
 		
@@ -195,7 +210,7 @@ public class PostController {
 		
 		String targetTumb = postItem.getTargetThumbnail();
 		
-
+		
 		
 
 		model.addAttribute("post",postItem);

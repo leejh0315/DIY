@@ -69,7 +69,8 @@
 		
 		<div class="postcontent" th:utext="${post.content}"></div>
 		<div class="likes" id="likes">
-			<i class="far fa-heart" style="color: #9A9E7B;" id="likesicon"></i><p>좋아요</p>
+			<input th:value="${likescnt}" type="hidden" id="likescnt">
+			<i class="far fa-heart" style="color: #9A9E7B;" id="likesicon"></i><p >좋아요</p>
 		</div>
 
 		<div class="replycnt">댓글<div>2</div></div>
@@ -111,7 +112,7 @@
 			
 	</div>
 	<script>
-
+		
    			
    		let targetInformation = document.getElementById("targetInformation");
 
@@ -120,20 +121,23 @@
 		let postCode = document.getElementById("postCode");
 		let postCodeDiv = document.getElementById("postCodeDiv");
 		let reReply = document.querySelectorAll(".reReply");
-
-		
+		let likescnt = document.getElementById("likescnt");
+		let likesicon = document.getElementById("likesicon");
 		postCode.value = postCodeDiv.innerText;
 
 		
+		let cnt =likescnt.value;
 		
-		
+		if(cnt==0){
+			likesicon.className='far fa-heart';
+		} else{
+			likesicon.className='fas fa-heart';
+		};
 		
 		likes.addEventListener("click", (e)=>{
 			e.preventDefault();
 			console.log("눌림");
-			let likesicon = document.getElementById("likesicon");
-			likesicon.className='fas fa-heart';
-			//mI pC
+			
 			$.ajax({
 	            type: 'POST',
 	            url: '/insertLike',
@@ -142,7 +146,11 @@
 					} ,
 	            
 	            success: function (data) {
-					console.log(data);
+					if(data ==1){
+						likesicon.className='fas fa-heart';
+					}else{
+						likesicon.className='far fa-heart';
+					};
 					
             },
         })
@@ -174,14 +182,7 @@
 						
 			}
 			
-			
-			
-			
-			
-			
-		
-		
-		
+
 		
 	</script>
     

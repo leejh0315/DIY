@@ -4,15 +4,18 @@
 
 <mapper	namespace="project.DIY.repository.mybatis.AboutPostMapper">
 
-	<insert id="insertLikes" parameterType="hashMap">
+	<insert id="insertLikes" parameterType="Likes">
 		insert into diydb.likepost values(
-			#{arg0}, #{arg1}
+			#{memberId}, #{postCode}
 		);
 	</insert>
 	
-	<select id="selectByCode" resultType="Member">
-		select * from diydb.member where id = #{code};
+	<select id="selectLikes" parameterType="Likes">
+		select count(*) from diydb.likepost where memberid=#{memberId} and postCode=#{postCode};
 	</select>
 	
+	<delete id="deleteLikes" parameterType="Likes">
+		delete from diydb.likepost where memberid=#{memberId} and postCode=#{postCode};
+	</delete>
 	
 </mapper>
