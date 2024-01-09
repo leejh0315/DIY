@@ -19,16 +19,18 @@
 	<div th:text="${typeName}"></div>
 	<hr>
 	<div th:each="post,i : ${type}">
-		<div id="postComp">
-			<div th:id="${i.index}"></div>
-			<div th:text="${post.targetName}"></div>
-			<div th:text="${post.targetSubName}"></div>
-			<div th:text="${post.targetAuthor}"></div>
-			<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
-			<div th:text="${post.memberNick}"></div>
-			<div th:text="${post.starCount}"></div>
-			<div th:text="${post.title}"></div>
-		</div>
+		<a th:href="@{|/posts/${post.postCode}|}">
+			<div id="postComp">
+				<div th:id="${i.index}"></div>
+				<div th:text="${post.targetName}"></div>
+				<div th:text="${post.targetSubName}"></div>
+				<div th:text="${post.targetAuthor}"></div>
+				<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
+				<div th:text="${post.memberNick}"></div>
+				<div th:text="${post.starCount}"></div>
+				<div th:text="${post.title}"></div>
+			</div>
+		</a>
 		<hr>
 	</div>
 	
