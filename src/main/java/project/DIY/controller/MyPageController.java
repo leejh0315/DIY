@@ -78,7 +78,7 @@ public class MyPageController {
         JsonObject jsonObject = new JsonObject();
 
         // 이미지 파일이 저장될 경로 설정
-        String fileRoot  = "C:\\image\\profile\\"; 
+        String fileRoot  = "C:\\DIY\\src\\main\\resources\\static\\image\\profile\\"; 
 
         // 업로드된 파일의 원본 파일명과 확장자 추출
         String originalFileName = multipartFile.getOriginalFilename();
@@ -98,7 +98,7 @@ public class MyPageController {
             FileUtils.copyInputStreamToFile(fileStream, targetFile);
 
             // JSON 객체에 이미지 URL과 응답 코드 추가
-            jsonObject.addProperty("src", "/mypage/" + savedFileName);
+            jsonObject.addProperty("src", "/image/profile/" + savedFileName);
             jsonObject.addProperty("responseCode", "success");
         } catch (IOException e) {
             // 파일 저장 중 오류가 발생한 경우 해당 파일 삭제 및 에러 응답 코드 추가

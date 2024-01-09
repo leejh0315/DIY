@@ -32,16 +32,24 @@ public class WebConfig implements WebMvcConfigurer{
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 	    registry.addResourceHandler("/img/**",
 	                                 "/css/**",
-	                                 "/temp/**",
-	                                 "/mypage/**",
-	                                 "/**",
+	                                 
+	                                 
+	                                 
+	                                 
+	                                 "/image/post/**",
+	                                 "/image/profile/**",
+	                                 
 	                                "/js/**,")
                                // + resourceHandler)
 	             .addResourceLocations("classpath:/static/img/",
 	                                   "classpath:/static/css/",
-	                                   "file:/C:/image/temp/",
-	                                   "file:/C:/image/profile/",
-	                                   "classpath:/static/temp/",
+	                                   
+	                                 
+	                                 
+	                                   
+	                                   "file:/C:/DIY/src/main/resources/static/image/post/",
+	                                   "file:/C:/DIY/src/main/resources/static/image/profile/",
+	                                   
 	                                   "classpath:/static/js/");
 	                                  // + resourceLocation)
 	             
