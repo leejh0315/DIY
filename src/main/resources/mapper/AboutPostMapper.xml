@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="project.DIY.repository.mybatis.AboutPostMapper">
+
+	<insert id="insertLikes" parameterType="Likes">
+		insert into diydb.likepost values(
+			#{memberId}, #{postCode}
+		);
+	</insert>
+	
+	<select id="selectLikes" parameterType="Likes">
+		select count(*) from diydb.likepost where memberid=#{memberId} and postCode=#{postCode};
+	</select>
+	
+	<delete id="deleteLikes" parameterType="Likes">
+		delete from diydb.likepost where memberid=#{memberId} and postCode=#{postCode};
+	</delete>
+	
+</mapper>

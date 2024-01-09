@@ -53,7 +53,10 @@
 			</div>
 			<hr>
 		<div class="postcontent" th:utext="${post.content}"></div>
-		<div class="likes" id="likes"><i class="far fa-heart" style="color: #9A9E7B;"></i><p>좋아요</p></div>
+		<div class="likes" id="likes">
+			<input th:value="${likescnt}" type="hidden" id="likescnt">
+			<i class="far fa-heart" style="color: #9A9E7B;" id="likesicon"></i><p >좋아요</p>
+		</div>
 
 		<div class="replycnt">댓글<div>2</div></div>
 		<hr>
@@ -95,25 +98,50 @@
 	</div>
 	<script>
 		
-		$( document ).ready(function() {
    			
    		let targetInformation = document.getElementById("targetInformation");
 
-		
+
 		let likes = document.getElementById("likes");
 		let postCode = document.getElementById("postCode");
 		let postCodeDiv = document.getElementById("postCodeDiv");
 		let reReply = document.querySelectorAll(".reReply");
-		console.log(reReply);
-		console.log(reReply.length);
-		
+		let likescnt = document.getElementById("likescnt");
+		let likesicon = document.getElementById("likesicon");
 		postCode.value = postCodeDiv.innerText;
 
 		
+		let cnt =likescnt.value;
 		
+		if(cnt==0){
+			likesicon.className='far fa-heart';
+		} else{
+			likesicon.className='fas fa-heart';
+		};
 		
-		
-		
+		likes.addEventListener("click", (e)=>{
+			e.preventDefault();
+			console.log("눌림");
+			
+			$.ajax({
+	            type: 'POST',
+	            url: '/insertLike',
+	            data:{
+				 "postCode" : postCode.value
+					} ,
+	            
+	            success: function (data) {
+					if(data ==1){
+						likesicon.className='fas fa-heart';
+					}else{
+						likesicon.className='far fa-heart';
+					};
+					
+            },
+        })
+			
+		});
+
    		
 		var addedDiv = document.createElement("div");
 			
@@ -121,6 +149,7 @@
 				
 					reReply[i].addEventListener("click", (e)=>{
 						e.preventDefault();
+
 	 					if(document.getElementById(i+'Div')){
 							 document.getElementById(i+'Div').remove();
 						 } else {
@@ -138,15 +167,7 @@
 						
 			}
 			
-			
-			
-			
-			
-			
-		});
-		
-		
-		
+
 		
 	</script>
     
