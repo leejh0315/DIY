@@ -59,6 +59,12 @@ public class MybatisPostRepository implements PostRepository{
 		List<Post> post = postMapper.selectByPostCtCodeHome(postCtCode);
 		return post;
 	}
+
+	@Override
+	public void updatePostByPostCode(Post post) {
+		postMapper.updatePostByPostCode(post);
+		
+	}
 	
 
 }

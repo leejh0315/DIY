@@ -166,11 +166,15 @@ public class PostController {
 	
 	@GetMapping("/posts/{postCode}")
 	public String getPostByPostId(@ModelAttribute Reply reply,
-			Model model, @PathVariable("postCode") int postCode, @ModelAttribute("post") Post postItem
+			Model model, @PathVariable("postCode") int postCode
 			, HttpServletRequest req) {
 
-		
 		HttpSession session = req.getSession(false);
+		
+		Post postItem = postRepository.selectByPostCode(postCode);
+		int postWriteMemberCode = postItem.getMemberId();
+		Member postWriteMember = memberRepository.selectByCode(postWriteMemberCode);
+		List<Reply> r = replyRepository.getReply(postCode);
 		
 		if(session == null) {
 			
@@ -178,51 +182,41 @@ public class PostController {
 			Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 			model.addAttribute("member", member);
 		}
-		
-		
-		postItem = postRepository.selectByPostCode(postCode);
-		int postWriteMemberCode = postItem.getMemberId();
-		Member postWriteMember = memberRepository.selectByCode(postWriteMemberCode);
-		List<Reply> r = replyRepository.getReply(postCode);
-		System.out.println("r.size : " + r.size() );
-			for(int i =0; i<r.size();i++) {
-				List<Member> nickAndSrc = replyRepository.selectNickname(r.get(i).getReplyerId());
-				r.get(i).setNickName(nickAndSrc.get(0).getNickName());
-				r.get(i).setUserProfileSrc((nickAndSrc.get(0).getProfileSrc()));
-			};
-		System.out.println(r);
-
-		
-		String targetTumb = postItem.getTargetThumbnail();
-		
-
-		
-
+		for(int i =0; i<r.size();i++) {
+			List<Member> nickAndSrc = replyRepository.selectNickname(r.get(i).getReplyerId());
+			r.get(i).setNickName(nickAndSrc.get(0).getNickName());
+			r.get(i).setUserProfileSrc((nickAndSrc.get(0).getProfileSrc()));
+		};
 		model.addAttribute("post",postItem);
 		model.addAttribute("postCode", postCode);
 		model.addAttribute("reply",reply);
 		model.addAttribute("postWriteMember", postWriteMember);
-		model.addAttribute("targetTumb", targetTumb);
-		
-		
 		model.addAttribute("replylist",r);
 			
 		return "post/post";
 	}
 	
+	@GetMapping("/update/{postCode}")
+	public String getUpdatePostByPostId(Model model, @PathVariable("postCode") int postCode, HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		Post post = postRepository.selectByPostCode(postCode);
+		
+		if(member.getId() != post.getMemberId()) {
+			return "redirect:/home/home";
+		}
+		model.addAttribute("member", member);
+		model.addAttribute("post", post);
+		
+		return "post/updatePost";
+	}
 	
-//	@PostMapping("/writePost")
-//	public String postPost(@ModelAttribute Post post, HttpServletRequest req) {
-//		
-//		
-//		System.out.println(post);
-//		
-//		//HttpSession session = req.getSession(false);
-//		//Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-//		//System.out.println(member);
-//		//postRepository.insertPost(post);
-//		return "redirect:/";
-//	}
+	@PostMapping("/update/{postCode}")
+	public String postUpdatePostByPostId(@ModelAttribute Post post, @PathVariable("postCode") int postCode, HttpServletRequest req) {
+		System.out.println(post);
+		postRepository.updatePostByPostCode(post);
+		return "redirect:/posts/{postCode}";
+	}
 	
 	private void deleteFile(String filePath, String fileName) {
 		Path path = Paths.get(filePath, fileName);

@@ -16,4 +16,5 @@ public interface MemberMapper {
 	public Member selectByCode(int code);
 	public void updateById(Member member);
 	public List<Map<String,String>> thisMonthWriteKing(int month);
+
 }

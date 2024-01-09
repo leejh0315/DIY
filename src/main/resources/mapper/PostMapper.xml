@@ -67,4 +67,16 @@
 			 group by targetName order by cnt desc;
 		
 	</select>
+	
+	<update id="updatePostByPostCode" parameterType="Post">
+		 UPDATE diydb.post
+			SET 
+				starcount = #{starCount},
+				title = #{title},
+				content = #{content},
+				updateOn = date_format(now(), '%Y%m%d%H%i%s')
+				WHERE postcode = #{postCode}; 
+
+		
+	</update>
 </mapper>

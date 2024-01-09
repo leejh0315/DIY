@@ -22,35 +22,22 @@
 	<div class="posts_wrap">
 	<div class="posttitle" th:text="${post.title}"></div>
 	
-		<th:block th:if="${postWriteMember.profileSrc == null}"> <!-- 프로필 이미지 없을때-->
-			<div class="writerinfo">
-				<div class="writer_profileimg">
-					<img th:src="@{/img/defalut_profileimg.jpg}" alt="">
-				</div>
-					<p th:text="${postWriteMember.nickName}" class="nickName"></p>    
-					<p th:text="${post.createOn}" class="createOn"></p>
-					<i class="fas fa-ellipsis-h fa-sm"></i>
-				</div>
-		</th:block>
+	<div class="writerinfo">
+		<div class="writer_profileimg">
+			<img th:src="${postWriteMember.profileSrc}"  alt="">
+		</div>
+		<p th:text="${postWriteMember.nickName}" class="nickName"></p>    
+		<p th:text="${post.createOn}" class="createOn"></p>
+		<i class="fas fa-ellipsis-h fa-sm"></i>
+	</div>
 				
-		<th:block th:if="${postWriteMember.profileSrc != null}"> <!-- 프로필 이미지 있을때-->
-			<div class="userinfo">
-				<div class="profileimg">
-				<img th:src="@{postWriteMember.profileSrc}">
-				</div>
-					<p th:text="${postWriteMember.nickName}" class="nickName"></p>
-					<p th:text="${post.createOn}" class="createOn"></p>
-					<i class="fas fa-ellipsis-h fa-sm"></i>   
-			</div>
+		
+	<th:block th:if="${member != null}">
+		<th:block th:if="${member.id == postWriteMember.id}">
+			<a th:href="@{|/update/${post.postCode}|}">수정하기</a>
 		</th:block>
-
-		
-
-		<div></div>
-		
+	</th:block>
 		<hr>
-
-		
 			<div class="infotitle">작품정보</div>
 			<div id="targetInformation" class="targetInformation">
 				
@@ -64,9 +51,7 @@
 					★<p th:text="${post.starCount}" style="padding-left: 5px;"></p>
 				</div>
 			</div>
-		
 			<hr>
-		
 		<div class="postcontent" th:utext="${post.content}"></div>
 		<div class="likes" id="likes"><i class="far fa-heart" style="color: #9A9E7B;"></i><p>좋아요</p></div>
 
@@ -84,13 +69,13 @@
 		<hr>
 			<!-- 댓글 작성 -->
 			<div class="replyWrite">
-				<div class="replyer_profileimg">
-					<img th:src="@{member.profileSrc}">
-				</div>
 				<div>
 					<!-- 로그인 안한 사람은 이거 못봤나...? 만약 못보는거면 th:block 여는태그 닫는태그 지워버리면 될듯 -->
 					<th:block th:if="${member != null}">
 						<form action="/replypost" method="post">
+							<div class="replyer_profileimg">
+								<img th:src="${member.profileSrc}"  alt="">
+							</div>
 							<p th:text="${member.nickName}" class="nickName"></p>
 							<input  th:field="*{reply.replyContent}" type="text" class="" placeholder="댓글을 입력하세요">
 							<input th:field="*{reply.postId}" type="hidden" id="postCode">
