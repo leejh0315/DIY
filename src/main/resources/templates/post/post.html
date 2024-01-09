@@ -78,6 +78,7 @@
 				<div><td th:text ="${replylist.nickName}"></td></div>
 				<div><td th:text="${replylist.replyContent}"></td></div>
 				<div><td th:text="${replylist.replyCreateDate}"></td></div>
+				
 				<div id="reReply", class="reReply" style="cursor: pointer;">답글</div>
 				 
 			</tr>
@@ -98,7 +99,10 @@
 							<button id="submitBtn" class="submitBtn" type="submit">등록</button>
 						</form>
 					</th:block>
-
+					<th:block th:if="${member == null}">
+						<input th:field="*{reply.postId}" type="hidden" id="postCode">
+						<div th:text="*{postCode}" id="postCodeDiv" style="display: none;"></div>
+					 </th:block>
 				</div>
 				
 			</div>
@@ -109,6 +113,7 @@
 		$( document ).ready(function() {
    			
    		let targetInformation = document.getElementById("targetInformation");
+
 		let thumb = document.getElementById("targetThumb");
 		let likes = document.getElementById("likes");
 		let postCode = document.getElementById("postCode");
@@ -127,24 +132,35 @@
 			targetInformation.innerHTML+="<img class='targetThumb' src='"+thumb.value+"'>"		
 		}
 		
-   			
    		
-   			
-			
+		var addedDiv = document.createElement("div");
 			
 			for(let i=0; i<reReply.length; i++){
-				reReply[i].addEventListener("click", (e)=>{
-					e.preventDefault();
-					console.log("why");
-					reReply[i].innerHTML += "\
-					<form action='/reReplypost' method='post'>\
-							<input type='text'>\
-							<button type='submit'>작성</button>\
-						 </form>"
-					});
-					
 				
+					reReply[i].addEventListener("click", (e)=>{
+						e.preventDefault();
+						
+						
+	 					
+	 					if(document.getElementById(i+'Div')){
+							 document.getElementById(i+'Div').remove();
+						 } else {
+						addedDiv.id = i +'Div';
+						reReply[i].after(addedDiv);
+						addedDiv.innerHTML = "<div id='" + i +"'>\
+						<form action='/reReplypost' method='post' id='reReplyform'>\
+								<input type='text'>\
+								<button type='submit'>작성</button>\
+							 </form></div>";
+						 }
+						
+						});
+				
+						
 			}
+			
+			
+			
 			
 			
 			
