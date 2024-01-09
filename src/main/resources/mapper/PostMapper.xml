@@ -48,11 +48,11 @@
 		order by postcode DESC limit 0,5;
 	</select>
 	
-<<<<<<< HEAD
+
 	
 	<select id="selectUserPostbyId" resultType="Post">
 		select * from diydb.post where memberId= #{memberId};
-=======
+	</select>
 	<select id="selectByPostCtCodeHome" resultType="Post">
 		select
 			 targetName,
@@ -66,6 +66,5 @@
 			where postCtCode = #{postCtCode}
 			 group by targetName order by cnt desc;
 		
->>>>>>> c8323e938397b24466f62554e3c5b290c7d36b97
 	</select>
 </mapper>
