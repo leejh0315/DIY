@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/join.css}">
+</head>
+<body>
+   <th:block th:if="${member == null}">
+      <div th:replace="main/header :: headFrag(${none})"></div>
+   </th:block>
+   <th:block th:if="${member != null}">
+      <div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+   </th:block>
+
+
+   
+   <!-- join -->
+   <div class="join_wrap">
+   <h1>회원가입</h1>
+   <p class="sub">문득에서 문화 기록을 시작하세요</p>
+   <form action="/home/join2" method="post" th:object="${joinForm}" id="joinForm" name="joinForm">
+
+      <div id="passwordBox">
+         <p>비밀번호</p><br>
+         <input id="password" type="password" name="password" th:value="${joinForm.password}" placeholder="비밀번호를 입력하세요"><br>
+         <div th:errors="*{password}"></div>
+         <p>비밀번호 확인</p><br>
+         <input id="passwordCheck" type="password" name="passwordCheck"  th:value="${joinForm.passwordCheck}" placeholder="비밀번호를 입력하세요">
+         <div th:errors="*{passwordCheck}"></div>
+      </div>
+   
+      <div id="nameBox">
+         <p>닉네임</p><br>
+         <input id="name" name="nickName"  th:value="${joinForm.nickName}" placeholder="사용할 닉네임을 입력해주세요">
+         <div th:errors="*{nickName}"></div>
+      </div>
+         
+   <div th:if="${#fields.hasGlobalErrors()}">
+      <p th:each="error : ${#fields.globalErrors()}" th:text="${error}">
+      글로벌오류
+      </p>
+   </div>
+      <button id="joinButton" class="joinButton">회원가입</button>
+   </form>
+</div>
+
+</body>
+</html>
