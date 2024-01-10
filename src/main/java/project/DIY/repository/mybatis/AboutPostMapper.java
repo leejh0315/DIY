@@ -12,5 +12,6 @@ public interface AboutPostMapper {
 	public void deleteLikes(Likes likes);
 	
 	public void insertReportPost(ReportPost reportpost);
+	public int selectReportPost(ReportPost reportpost);
 }	
 	

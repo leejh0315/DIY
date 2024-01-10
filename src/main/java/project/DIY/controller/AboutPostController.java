@@ -55,19 +55,35 @@ public class AboutPostController {
 	@PostMapping("/insertReportPost")
 	@ResponseBody
 	public Integer insertReportPost(@RequestParam(value = "postCode") int postCode, HttpServletRequest req) {
-		ReportPost reportPost = new ReportPost();
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		Post currentPost = postRepository.selectByPostCode(postCode);
 		int userid = member.getId();
+		
+	
+		
+		ReportPost reportPost = new ReportPost();
 		
 		reportPost.setPostCode(postCode);
 		reportPost.setTitle(currentPost.getTitle());
 		reportPost.setContent(currentPost.getContent());
 		reportPost.setMemberId(currentPost.getMemberId());
 		reportPost.setReporterId(userid);
-
-		return 0;
+		
+		System.out.println(reportPost);
+		
+		int selectReportPostcnt = aboutPostRepository.selectReportPost(reportPost);
+		
+		System.out.println(selectReportPostcnt);
+		if (selectReportPostcnt == 0) {
+			aboutPostRepository.insertReportPost(reportPost);
+			return 1;
+		}else {
+			return 0;
+		}
+		
+		
+		
 	}
 	
 	

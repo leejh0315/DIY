@@ -28,7 +28,7 @@
 				text-align:center;
 				box-sizing:border-box; padding:74px 0;
 				line-height:23px; cursor:pointer;">
-					<div>글을 신고하시겠습니까?</div>
+					<div id="modalcontent">글을 신고하시겠습니까?</div>
 					<div id="reportCancle">취소</div>
 					<div id="reportConfirm">신고</div>
 				</div>
@@ -75,7 +75,7 @@
 		
 			<th:block th:if="${member != null}">
 				<th:block th:if="${member.id != postWriteMember.id}" >
-
+						<input th:value="${reportpostcnt}" type="hidden" id="reportedcheck">
 						<button class="reportbtn" id="reportbtn" >신고</button>
 					
 				</th:block>
@@ -128,6 +128,7 @@
 
 		let reportbtn=document.getElementById("reportbtn");
 		let reportCheckModal = document.getElementById("reportCheckModal");
+		let modalcontent = document.getElementById("modalcontent");
 		let reportCancle = document.getElementById("reportCancle");
 		let reportConfirm = document.getElementById("reportConfirm");
 		let likes = document.getElementById("likes");
@@ -135,18 +136,24 @@
 		let postCodeDiv = document.getElementById("postCodeDiv");
 		let reReply = document.querySelectorAll(".reReply");
 		let likescnt = document.getElementById("likescnt");
+		let reportpostcnt =document.getElementById("reportedcheck");
 		let likesicon = document.getElementById("likesicon");
 		postCode.value = postCodeDiv.innerText;
 
 		
 		let cnt =likescnt.value;
-		
+		let reportcnt = reportedcheck.value;
 		if(cnt==0){
 			likesicon.className='far fa-heart';
 		} else{
 			likesicon.className='fas fa-heart';
 		};
 		
+		if(reportcnt==1){
+			modalcontent.innerText = "이미 신고한 글입니다.";
+			reportCancle.innerText = "확인";
+			reportConfirm.style.display = "none";
+		}
 		likes.addEventListener("click", (e)=>{
 			e.preventDefault();
 			console.log("눌림");
@@ -216,8 +223,12 @@
 					} ,
 	            
 	            success: function (data) {
-					console.log("오케이");
-					
+					if(data == 1){
+						modalcontent.innerText = "신고되었습니다.";
+						reportCancle.innerText = "확인";
+						reportConfirm.style.display = "none";
+					}
+				
             },
         })
 					

@@ -42,6 +42,13 @@ public class MybatisAboutPostRepository implements AboutPostRepository {
 		aboutPostMapper.insertReportPost(reportpost);
 		
 	}
+
+
+	@Override
+	public int selectReportPost(ReportPost reportpost) {
+		int selectReportPostcnt = aboutPostMapper.selectReportPost(reportpost);
+		return selectReportPostcnt;
+	}
 	
 	
 	

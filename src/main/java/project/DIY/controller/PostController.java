@@ -33,6 +33,7 @@ import project.DIY.domain.Likes;
 import project.DIY.domain.Member;
 import project.DIY.domain.Post;
 import project.DIY.domain.Reply;
+import project.DIY.domain.ReportPost;
 import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
@@ -188,10 +189,20 @@ public class PostController {
 			Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 			if(member != null) {
 				Likes likes = new Likes();
+				ReportPost reportPost = new ReportPost();
 				likes.setMemberId(member.getId());
 				likes.setPostCode(postCode);
+				
+				reportPost.setPostCode(postCode);
+				reportPost.setTitle(postItem.getTitle());
+				reportPost.setContent(postItem.getContent());
+				reportPost.setMemberId(postItem.getMemberId());
+				reportPost.setReporterId(member.getId());
 				int likescnt = aboutPostRepository.selectLikes(likes);
+				int reportpostcnt = aboutPostRepository.selectReportPost(reportPost);
 				model.addAttribute("likescnt",likescnt);
+				model.addAttribute("reportpostcnt",reportpostcnt);
+				
 			}
 			model.addAttribute("member", member);
 		}
