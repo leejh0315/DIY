@@ -1,5 +1,7 @@
 package project.DIY.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,13 +13,18 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Likes;
 import project.DIY.domain.Member;
+import project.DIY.domain.Post;
+import project.DIY.domain.ReportPost;
 import project.DIY.repository.AboutPostRepository;
+import project.DIY.repository.PostRepository;
 import project.DIY.session.SessionVar;
 @Controller
 @RequiredArgsConstructor
 public class AboutPostController {
 	@Autowired
 	private final AboutPostRepository aboutPostRepository;
+	@Autowired
+	private final PostRepository postRepository;
 	
 	@PostMapping("/insertLike")
 	@ResponseBody
@@ -38,11 +45,30 @@ public class AboutPostController {
 			//likes 가 삭제되어야 한다.
 			aboutPostRepository.deleteLikes(likes);
 			return 0;
-		}		
+		}
+		
+	
 	
 	
 	}
 	
+	@PostMapping("/insertReportPost")
+	@ResponseBody
+	public Integer insertReportPost(@RequestParam(value = "postCode") int postCode, HttpServletRequest req) {
+		ReportPost reportPost = new ReportPost();
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		Post currentPost = postRepository.selectByPostCode(postCode);
+		int userid = member.getId();
+		
+		reportPost.setPostCode(postCode);
+		reportPost.setTitle(currentPost.getTitle());
+		reportPost.setContent(currentPost.getContent());
+		reportPost.setMemberId(currentPost.getMemberId());
+		reportPost.setReporterId(userid);
+
+		return 0;
+	}
 	
 	
 }
