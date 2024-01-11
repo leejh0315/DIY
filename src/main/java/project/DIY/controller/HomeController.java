@@ -78,9 +78,30 @@ public class HomeController {
    @ResponseBody
    public List<Post> mainTypeResp(@PathVariable("type") String type, Model model) {
       
-      if(type.equals("movie"))    {return postRepository.selectByPostCtCodeHome(type);}
-      else if(type.equals("book")){return postRepository.selectByPostCtCodeHome(type);}
-      else                   {return postRepository.selectByPostCtCodeHome(type);}
+      if(type.equals("movie"))    {
+    	  List<Post> l =postRepository.selectByPostCtCodeHome(type);
+    	  for(int i = 0 ; i < l.size(); i++) {
+    		  System.out.println(l.get(i).getTargetName());
+    	  }
+    	  System.out.println("------------------------------------");
+    	  return postRepository.selectByPostCtCodeHome(type);
+	  }
+      else if(type.equals("book")){
+    	  List<Post> l =postRepository.selectByPostCtCodeHome(type);
+    	  for(int i = 0 ; i < l.size(); i++) {
+    		  System.out.println(l.get(i).getTargetName());
+    	  }
+    	  System.out.println("------------------------------------");
+    	  return postRepository.selectByPostCtCodeHome(type);
+	  }
+      else{
+    	  List<Post> l =postRepository.selectByPostCtCodeHome(type);
+    	  for(int i = 0 ; i < l.size(); i++) {
+    		  System.out.println(l.get(i).getTargetName());
+    	  }
+    	  System.out.println("------------------------------------");
+    	  return postRepository.selectByPostCtCodeHome(type);
+	  }
 
    }
    

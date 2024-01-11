@@ -76,22 +76,12 @@ public class PostController {
 		return "post/writePost";
 	}
 	
-	
-	@GetMapping("/selectPost")
-	public String selectPost(Model model) {
-		Post post = postRepository.selectPost();
-		model.addAttribute("post", post);
-		return "post/selectPost";
-	}
 
-	@RequestMapping(value = "/tempThumb", produces = "application/json; charset=utf8")
-	@ResponseBody
-	public String tempThumb(@RequestParam("temp") MultipartFile multipartFile, HttpServletRequest request) {
-		
-		
-		return "a";
-	}
-	
+//	@RequestMapping(value = "/tempThumb", produces = "application/json; charset=utf8")
+//	@ResponseBody
+//	public String tempThumb(@RequestParam("temp") MultipartFile multipartFile, HttpServletRequest request) {
+//		return "a";
+//	}
 		
 
     // 서머노트 이미지 업로드 temp 저장

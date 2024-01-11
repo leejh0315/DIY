@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
+import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
 import project.DIY.repository.PostRepository;
 
@@ -20,12 +21,6 @@ public class MybatisPostRepository implements PostRepository{
 	public void insertPost(Post post) {
 		postMapper.insertPost(post);
 		
-	}
-
-	@Override
-	public Post selectPost() {
-		Post post = postMapper.selectPost();
-		return post;
 	}
 
 	@Override
@@ -65,6 +60,13 @@ public class MybatisPostRepository implements PostRepository{
 		postMapper.updatePostByPostCode(post);
 		
 	}
+
+	@Override
+	public List<Post> getPostsByPageByMemberId(PaginationVo paginationVo) {
+		List<Post> post = postMapper.getPostsByPageByMemberId(paginationVo);
+		return post;
+	}
+
 	
 
 }

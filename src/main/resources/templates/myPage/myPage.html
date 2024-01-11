@@ -14,6 +14,9 @@
 			width: 100px;
 			height: 100px;
 		}
+		.chooseType{
+			border: solid 1px black;
+		}
 	</style>
 </head>
 <body>
@@ -36,6 +39,12 @@
             <canvas id="bar-chart" width="200" height="200"></canvas>
         </div>
         <div class="user_wrap">
+			
+			<input type="hidden" th:value="${member.id}" id="memberId">
+			<input type="hidden" th:value="${type}" id="thisType">
+		
+			
+			
             <a th:href="@{|/myPage/update/${member.id}|}">
             <i class="fa-solid fa-gear"></i>
             </a>
@@ -54,7 +63,15 @@
             </button>
         </div>
     </div>
-	
+	<form>
+	<div class="chooseType">
+		<p>종류</p>
+		<label onclick="checked(this, 0)"><input type="checkbox" name="chooseType" value="all" class="checkType all">전체</label>
+		<label onclick="checked(this, 1)"><input type="checkbox" name="chooseType" value="book" class="checkType book">책</label>
+		<label onclick="checked(this, 2)"><input type="checkbox" name="chooseType" value="concert" class="checkType concert">공연</label>
+		<label onclick="checked(this, 3)"><input type="checkbox" name="chooseType" value="movie" class="checkType movie">영화</label>
+	</div>
+	</form>
 	
 	<!-- 하단 -->
 	<div th:each="post,i : ${post}">
@@ -74,7 +91,70 @@
 		<hr>
 	</div>
 	
+<div id="pagination">
+	<!-- 맨 처음 페이지로 이동하는 버튼 -->
+    <span th:if="${pageVo.startPage > 1}">
+        <a th:href="@{'/myPage/' + member.id + '?page=1&type=' + ${type}}" th:text="'처음&emsp;'"></a>
+    </span>
+
+	<!-- 이전 블록으로 이동하는 버튼 -->
+    <span th:if="${pageVo.isPrev == true}">
+    	<a th:href="@{'/myPage/' + member.id + '?page=' + (pageVo.startPage - 1) + '&type=' + ${type}}" th:text="'이전'"></a>
+    </span>
+
+    <!-- 시퀀스 보여주는 값을 변경. -->
+    <span th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
+        <a class="div2" th:href="@{'/myPage/'+ ${member.id} +'?page='+${pageNum}+'&type='+${type}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
+    </span>
+	
+    <!-- 다음 블록으로 이동하는 버튼 -->
+    <span th:if="${pageVo.isNext == true}">
+	<a th:href="@{'/myPage/${member.id}?page='+|${pageVo.endPage + 1}|+'&type='+${type}}" th:text="'다음'"></a>
+    </span>
+	
+    <!-- 맨 뒷 페이지로 이동하는 버튼 -->
+    <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
+	<a th:href="@{'/myPage/${member.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
+    </span>
+</div>
+	
+	
 	<script>
+	let types = document.querySelectorAll(".checkType");
+	
+	let memberId = document.getElementById("memberId");
+	let memberIdVal = memberId.value;
+	
+	let thisType = document.getElementById("thisType");
+	let thisTypeVal = thisType.value;
+	
+	for(let i = 0; i<types.length; i++){
+		if(types[i].value == thisTypeVal){
+			types[i].checked = true;
+		}
+	}
+	
+	
+	function checked(e, number){
+		let value;
+		for(let i = 0; i<types.length; i++){
+			if(i != number){
+				types[i].checked = false;				
+			}
+			console.log('types', [i], ' : ',types[i].checked);
+		};
+		if(types[0].checked == false && types[1].checked == false && types[2].checked == false && types[3].checked == false){
+			types[0].checked = true;
+		}
+		for(let i = 0; i<types.length; i++){
+			if(types[i].checked == true){
+				value = types[i].value;
+				window.location.href = '/myPage/'+memberIdVal+'?page=1&type='+value;
+			}
+		}
+		
+			
+	};
 		
 	new Chart(document.getElementById("pie-chart"), {
     type: 'pie',

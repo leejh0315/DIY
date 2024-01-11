@@ -26,6 +26,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
 import project.DIY.form.PasswordUpdateForm;
 import project.DIY.repository.MemberRepository;
@@ -46,24 +47,47 @@ public class MyPageController {
 	@Autowired
 	private final PasswordEncoder passwordEncoder;
 	
+	
 	@GetMapping("/myPage/{id}")
-	public String getMyPage(@PathVariable("id") String id, HttpServletRequest req, Model model) {
+	public String getMyPage(@PathVariable("id") String id,HttpServletRequest req, Model model,
+			 
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "type", defaultValue = "all") String type
+			 
+			)throws Exception {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		
 		List<Post> myPost = postRepository.selectUserPostbyId(Integer.parseInt(id));
+		System.out.println(type);
+//		for(int i=0; i<myPost.size();i++) {
+//			String contentTemp = myPost.get(i).getContent();
+//			String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
+//			myPost.get(i).setContent(plainText);
+////			System.out.println(plainText);
+//		};
+		//-------------------------------------------------------------------------------------------
 		
-
-		for(int i=0; i<myPost.size();i++) {
-			String contentTemp = myPost.get(i).getContent();
+		PaginationVo paginationVo = new PaginationVo(myPost.size(), page);
+		paginationVo.setMemberId(member.getId());
+		paginationVo.setType(type);
+		List<Post> list = postRepository.getPostsByPageByMemberId(paginationVo);
+		
+		for(int i=0; i<list.size();i++) {
+			String contentTemp = list.get(i).getContent();
 			String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
-			myPost.get(i).setContent(plainText);
-			System.out.println(plainText);
-		};
-	
+			plainText = plainText.replaceAll("&nbsp;", "");
+			list.get(i).setContent(plainText);
+//			System.out.println(plainText);
+		}
 		
-		System.out.println(myPost);
-		model.addAttribute("post",myPost);
+//	    model.addAttribute("boardList", list);
+		model.addAttribute("type", type);
+	    model.addAttribute("page", page);
+	    model.addAttribute("pageVo", paginationVo);
+		
+		//-------------------------------------------------------------------------------------------
+		
+		model.addAttribute("post",list);
 		model.addAttribute("member", member);
 		
 		return "myPage/myPage";

@@ -30,17 +30,19 @@
 	<div class="type 2" id="type_2" onclick="selected(this, 'movie')">영화</div>
 	<div class="type 3" id="type_2" onclick="selected(this, 'concert')">공연</div>
 	
-	<div th:each="post,i:${post}" id="mostPosted">
-			<div id="postComp">
-				<div th:id="${i.index}"></div>
-				<img th:src="${post.targetThumbnail}">
-				<div th:text="${post.targetName}"></div>
-				<div th:text="${post.targetSubName}"></div>
-				<div th:text="${post.targetAuthor}"></div>
-				<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
-				<div th:text="${post.starCount}"></div>
-			</div>
-			<hr>
+	<div id="container">
+		<div th:each="post,i:${post}" id="mostPosted">
+				<div id="postComp">
+					<div th:id="${i.index}"></div>
+					<img th:src="${post.targetThumbnail}">
+					<div th:text="${post.targetName}"></div>
+					<div th:text="${post.targetSubName}"></div>
+					<div th:text="${post.targetAuthor}"></div>
+					<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
+					<div th:text="${post.starCount}"></div>
+				</div>
+				<hr>
+		</div>
 	</div>
 	<div id="post-container"></div>
 				
@@ -71,9 +73,8 @@
 			$(types).css("background-color", "white")			
 			$(e).css("background-color", "lightgray");
 			
-			$("#mostPosted").remove();
-			$("#postComp").remove();
-        	$("#post-container").empty();
+			
+			
         	
 			$.ajax({
 				type : "POST",
@@ -83,8 +84,9 @@
 				},success: function (data) {
                 	console.log(data);
                 	
+						$("#container").empty();
                 	$.each(data, function (index, post) {
-                    	$('#post-container').append('<div id="' + index + '">' +
+                    	$('#container').append('<div id="' + index + '">' +
                         '<img src="'+post.targetThumbnail+'">' +
                         '<div>' + post.targetName + '</div>' +
                         '<div>' + post.targetSubName + '</div>' +
