@@ -38,6 +38,13 @@ public class SecurityConfig {
                 .usernameParameter("id")
                 .passwordParameter("password")
                 .loginProcessingUrl("/login");
+        http
+        	.formLogin()
+        	.loginPage("/myPage/updatePassword")
+        	.defaultSuccessUrl("/")
+        	.usernameParameter("originPasswordCheck")
+        	.passwordParameter("originPassword")
+        	.loginProcessingUrl("/updatePassword");
 
         return http.build();
     }

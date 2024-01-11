@@ -6,31 +6,37 @@
     <title>Document</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<style>
+	img{
+		width: 100px;
+		height: 100px;
+	}
+</style>
 </head>
-
 <body>
 	<h1>updateMember</h1>
 	<div id="newProfile">
-		<img th:src="@{/img/defalut_profileimg.jpg}" alt="">
+		<img th:src="${member.profileSrc}">
 	</div>
 	
 	<form method="post" action="/myPage/update/" enctype="multipart/form-data">
 	    <input type="file" name="files" multiple="multiple" id="profileSrc"/>
-	    <input th:field="*{member.profileSrc}" id="profilePath">
+	    <input th:field="*{member.profileSrc}" id="profilePath" type="hidden">
 	    
 	    
 	    <label>닉네임<input th:field="*{member.nickName}"></label>
 	    <label>한줄소개<input th:field="*{member.memberIntro}"></label>
 	     
 	    <button type="submit" id="submit">전송</button>
-	    
 	</form>
+	<br>
+	<a th:href="@{|/directlyUpdatepassword/${member.id}|}">
+		<p>비밀번호 변경하기</p>
+	</a>
 	<script>
 		let profileSrc = document.getElementById("profileSrc");
 		let newProfile = document.getElementById("newProfile");	
 		let profilePath = document.getElementById("profilePath");
-		
-		
 		
 		profileSrc.addEventListener("change", (e)=>{
 			e.preventDefault();

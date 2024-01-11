@@ -35,6 +35,7 @@
 			date_format(now(), '%Y%m%d%H%i%s'),
 			null,
 			null,
+			null,
 			null
 			);
 		
@@ -62,4 +63,22 @@
  		group by memberNick order by cnt desc;
 	</select>
 	
+	<select id="passwordUpdateSixMonth" resultType="Member">
+		 select * from diydb.member where 
+		 date(passwordUpdate) <![CDATA[ < ]]> date(subdate(now(), interval 6 day));
+	</select>
+	
+	<update id="reAlertUpdatePassword">
+		 UPDATE diydb.member
+		SET passwordUpdate = DATE_ADD(passwordUpdate, INTERVAL 7 DAY)
+		WHERE id = #{id};
+	</update>
+	
+	
+	<update id="updatePasswordById" parameterType="Member">
+		update diydb.member set 
+		password = #{password},
+		passwordUpdate = date_format(now(), '%Y%m%d%H%i%s')
+		where id = #{id};
+	</update>
 </mapper>

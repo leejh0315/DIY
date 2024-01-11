@@ -61,5 +61,22 @@ public class MybatisMemberRepository implements MemberRepository{
 		List<Map<String,String>> post = memberMapper.thisMonthWriteKing(month);
 		return post;
 	}
+
+	@Override
+	public List<Member> passwordUpdateSixMonth() {
+		List<Member> member = memberMapper.passwordUpdateSixMonth();
+		return member;
+	}
+
+	@Override
+	public void reAlertUpdatePassword(int id) {
+		memberMapper.reAlertUpdatePassword(id);
+		
+	}
+
+	@Override
+	public void updatePasswordById(Member member) {
+		memberMapper.updatePasswordById(member);
+	}
 	
 }

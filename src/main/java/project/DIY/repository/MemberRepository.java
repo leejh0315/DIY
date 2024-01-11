@@ -13,4 +13,7 @@ public interface MemberRepository {
 	public Member selectByCode(int code);
 	public void updateById(Member member);
 	public List<Map<String, String>> thisMonthWriteKing(int month);
+	public List<Member> passwordUpdateSixMonth();
+	public void reAlertUpdatePassword(int id);
+	public void updatePasswordById(Member member);
 }

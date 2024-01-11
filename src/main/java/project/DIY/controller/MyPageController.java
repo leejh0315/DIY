@@ -6,8 +6,11 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +27,10 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
 import project.DIY.domain.Post;
+import project.DIY.form.PasswordUpdateForm;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
+import project.DIY.service.PasswordUpdateService;
 import project.DIY.session.SessionVar;
 
 @Controller
@@ -34,7 +39,12 @@ public class MyPageController {
 
 	@Autowired
 	private final PostRepository postRepository;
+	@Autowired
 	private final MemberRepository memberRepository;
+	@Autowired
+	private final PasswordUpdateService passwordUpdateService;
+	@Autowired
+	private final PasswordEncoder passwordEncoder;
 	
 	@GetMapping("/myPage/{id}")
 	public String getMyPage(@PathVariable("id") String id, HttpServletRequest req, Model model) {
@@ -132,6 +142,69 @@ public class MyPageController {
 		return a;
 	}
 	
+	@GetMapping("/myPage/passwordUpdate/{id}")
+	public String getPasswordUpdate(@PathVariable("id") String id, HttpServletRequest req, Model model, PasswordUpdateForm passwordUpdateForm) {
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		System.out.println(passwordEncoder.encode("12341234"));
+		model.addAttribute("passwordUpdateForm", passwordUpdateForm);
+		model.addAttribute("member", member);
+		return "myPage/updatePassword";
+	}
 	
+	@GetMapping("/password/reAlert/{id}")
+	public String passwordUpdateReAlertUser(@PathVariable("id") String id) {
+		memberRepository.reAlertUpdatePassword(Integer.parseInt(id));
+		return "redirect:/home/home";
+	}
+	
+	@PostMapping("/myPage/updatePassword/{id}")
+	public String postPasswordUpdate(@ModelAttribute PasswordUpdateForm passwordUpdateForm, Model model,
+			@PathVariable("id") String id,
+			BindingResult bindingResult,  HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
+		String originPasswordCheck = passwordUpdateForm.getOriginPassword();
+
+		String type;
+		if(passwordUpdateForm.getType().equals("sixMonth")) {
+			type = "/myPage/updatePassword";
+		}else {
+			type = "/mypage/directlyUpdatepassword";
+		}
+		
+		passwordUpdateService.validatePasswordUpdateForm(passwordUpdateForm, bindingResult, originPasswordCheck, member.getLoginId());
+		
+		 if(bindingResult.hasErrors()) {
+			 System.out.println("에러");
+	    	  model.addAttribute("passwordUpdateForm", passwordUpdateForm);
+	    	  model.addAttribute("member", member);
+	         return type;
+		 }else {
+			 member.setPassword(passwordEncoder.encode(passwordUpdateForm.getNewPassword()));
+			 memberRepository.updatePasswordById(member);
+			 SecurityContextHolder.clearContext();
+			 session.invalidate();
+	         return "redirect:/" + "home/dologin";   
+	      }
+	}
+	
+	@GetMapping("/directlyUpdatepassword/{id}")
+	public String getDirectlyUpdatepassword(@ModelAttribute PasswordUpdateForm passwordUpdateForm, Model model,
+			@PathVariable("id") String id,
+			BindingResult bindingResult,  HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		model.addAttribute("member", member);
+		model.addAttribute("passwordUpdateForm", passwordUpdateForm);		
+		return "myPage/directlyUpdatepassword";
+	}
+	
+//	@PostMapping("directlyUpdatepassword/{id}")
+//	public String postDirectlyUpdatepassword(@ModelAttribute PasswordUpdateForm passwordUpdateForm) {
+//		System.out.println("요청 옴");
+//		return "redirect:/home/dologin";
+//	}
 }
 

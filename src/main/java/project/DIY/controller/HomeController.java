@@ -144,13 +144,10 @@ public class HomeController {
    @GetMapping("/dologin")
    public String login(Model model, HttpServletRequest req) {
       LoginForm loginForm = new LoginForm();
-      
       HttpSession session = req.getSession();
       Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-
       model.addAttribute("member", member);
       model.addAttribute("loginForm", loginForm);
-
    
       return "login/login";
    }
@@ -158,7 +155,7 @@ public class HomeController {
    @PostMapping("/login")
    public String doLogin(@ModelAttribute LoginForm loginForm,
          BindingResult bindingResult, HttpServletResponse resp
-         , HttpServletRequest req
+         , HttpServletRequest req, Model model
          , @RequestParam(name="redirectURL", defaultValue = "/") String redirectURL ) {
 
       System.out.println(loginForm);
@@ -166,6 +163,7 @@ public class HomeController {
       Member memberVO = loginService.login(loginForm.getLoginId(), loginForm.getPassWord());
       
       if(bindingResult.hasErrors()) {
+    	  model.addAttribute("loginForm", loginForm);
          return "login/login";
       }
       if(memberVO == null) { //계정정보가 없거나, 비밀번호가 안맞거나 로그인 실패
@@ -180,7 +178,6 @@ public class HomeController {
          bindingResult.reject("loginForm", "활동정지된 회원입니다. 관리자에게 문의해주세요.");
          return "login/login";
       }
-      
       System.out.println("로그인성공");
       
       HttpSession session = req.getSession(true);
@@ -188,8 +185,13 @@ public class HomeController {
 
       memberVO.setActiveUUID(session.getId());
       memberRepository.updateUUID(memberVO);
-
-      //return "redirect:" + redirectURL; 
+      
+      List<Member> member = memberRepository.passwordUpdateSixMonth();
+      for(int i = 0 ; i < member.size(); i++) {
+    	  if(member.get(i).getLoginId().equals(memberVO.getLoginId())) {
+    		  return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
+    	  }
+      }
       return "redirect:/" + "home/home";
    }
    
@@ -217,24 +219,30 @@ public class HomeController {
    public void validateJoinForm(JoinForm joinForm, Errors errors) {
 	    if (!StringUtils.hasText(joinForm.getLoginId())) {
 	        errors.rejectValue("loginId", null, "아이디 필수 입력입니다.");
+	    } else if (!joinForm.getLoginId().matches("^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$")) {
+	        errors.rejectValue("loginId", null, "올바른 이메일 형식이 아닙니다.");
 	    }
 
 	    if (!StringUtils.hasText(joinForm.getPassword())) {
 	        errors.rejectValue("password", null, "비밀번호 필수 입력입니다.");
 	    } else if (joinForm.getPassword().length() < 8) {
 	        errors.rejectValue("password", null, "비밀번호는 8자 이상으로 입력해주세요.");
+	    } else if (!joinForm.getPassword().matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}$")) {
+	        errors.rejectValue("password", null, "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야 합니다.");
 	    }
 
 	    if (!StringUtils.hasText(joinForm.getPasswordCheck())) {
 	        errors.rejectValue("passwordCheck", null, "비밀번호 확인을 해주세요.");
 	    } else if (!joinForm.getPassword().equals(joinForm.getPasswordCheck())) {
-	        errors.rejectValue("passwordCheck", null, "비밀번호가 올바르지 않습니다.");
+	        errors.rejectValue("passwordCheck", null, "비밀번호가 일치하지 않습니다.");
 	    } else if (joinForm.getPassword().length() < 8) {
 	        errors.rejectValue("passwordCheck", null, "비밀번호는 8자 이상으로 입력해주세요.");
 	    }
 
 	    if (!StringUtils.hasText(joinForm.getNickName())) {
 	        errors.rejectValue("nickName", null, "닉네임을 입력해주세요.");
+	    } else if (!joinForm.getNickName().matches("^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$")) {
+	        errors.rejectValue("nickName", null, "닉네임은 특수문자를 제외한 2~10자리여야 합니다.");
 	    }
 	}
 
