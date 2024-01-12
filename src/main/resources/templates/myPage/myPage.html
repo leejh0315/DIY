@@ -12,6 +12,7 @@
 
 
 
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
@@ -143,7 +144,7 @@
 		<a th:href="@{'/myPage/${member.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
     </span> -->
 </div>
-	
+
 <script th:inline="javascript">
     var myData = /*[[${posts}]]*/ [];
 </script>
@@ -323,5 +324,6 @@ new Chart(document.getElementById("bar-chart"), {
 			
 	
 	</script>
+			<script th:src="@{/js/nav.js}"></script>
 </body>
 </html>

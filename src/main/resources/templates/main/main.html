@@ -7,6 +7,7 @@
     <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<script th:src="@{/js/nav.js}"></script>
 <style>
 	.type{
 		border: solid 1px black;
@@ -63,7 +64,6 @@
     </p>
 	</footer>
 	
-	
 	<script>
 		let types = document.querySelectorAll(".type");
 		
@@ -100,30 +100,9 @@
 		});
 		
 		}
-		let searchKeyword = document.getElementById("searchKeyword");
-		let doSearch = document.getElementById("doSearch");
-		
-		
-		doSearch.addEventListener("click", (e)=>{
-			console.log('눌림');
-			let keywordValue = searchKeyword.value;
-			console.log(keywordValue);
-			if(keywordValue == ""){
-				alert("검색어를 입력해주세요.");
-				return false;
-			}else{
-					$.ajax({
-				type : "POST",
-				url : "/home/search/" + keywordValue,
-				data : {
-					keywordValue
-				},success:function (data) {
-					window.location.href = '/home/searchResult?searchKeyword='+keywordValue+'&totalCount='+data +'&page=1';
-				}
-			});
-			}
-		
-		});
+
 	</script>
+	
+	<script th:src="@{/js/nav.js}"></script>
 </body>
 </html>
