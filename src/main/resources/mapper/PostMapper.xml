@@ -79,17 +79,30 @@
 				WHERE postcode = #{postCode}; 
 	</update>
 	
+	<select id="getPostsCountByMemberId" resultType="int">
+		SELECT count(*)
+    	FROM diydb.post
+    	where memberId = #{memberId}
+    	<if test="type != 'all'">
+    		AND postCtCode = #{type}
+		</if>
+	</select>
+	
+	
     <select id="getPostsByPageByMemberId" resultType="Post">
            SELECT * 
 		    FROM diydb.post
 		    where memberId = #{memberId} 
-		    	  <if test="type != 'all'">
+	    	   <if test="type != 'all'">
         		AND postCtCode = #{type}
-    			</if>
+				</if>
 		    ORDER BY postCode DESC 
 		    LIMIT #{rowCount}
 		    OFFSET #{offset};
     </select>
-
+    <select id="selecetPosCnttBySearch">
+	    SELECT count(*) FROM diydb.post
+		WHERE targetName LIKE '%#{search}%';
+	</select>
 	
 </mapper>

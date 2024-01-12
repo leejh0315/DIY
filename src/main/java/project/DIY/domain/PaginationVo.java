@@ -28,24 +28,18 @@ public class PaginationVo {
     int     offset;            // 얼만큼 끊어서 가져올 것인가.
 
     public PaginationVo(final int totalCount, final int page) {
-    
-	// 총 페이지 개수 구하기
-	setTotalPageCount(totalCount, this.rowCount); 
-
-	// 한 블럭의 첫 페이지 구하기
-	setStartPage(this.startPage, page, this.pageCount);
-
-	// 한 블럭의 끝 페이지 구하기
-	setEndpage(this.startPage, this.pageCount, this.totalPageCount); 
-
-	// 이전 블록 버튼 유무 판별하기
-	isPrev(page, this.pageCount); 
-
-	// 다음 블록 버튼 유무 판별하기
-	isNext(this.endPage, this.totalPageCount); 
-
-	// offset 구하기
-	setOffset(page, this.rowCount); 
+		// 총 페이지 개수 구하기
+		setTotalPageCount(totalCount, this.rowCount); 
+		// 한 블럭의 첫 페이지 구하기
+		setStartPage(this.startPage, page, this.pageCount);
+		// 한 블럭의 끝 페이지 구하기
+		setEndpage(this.startPage, this.pageCount, this.totalPageCount); 
+		// 이전 블록 버튼 유무 판별하기
+		isPrev(page, this.pageCount); 
+		// 다음 블록 버튼 유무 판별하기
+		isNext(this.endPage, this.totalPageCount); 
+		// offset 구하기
+		setOffset(page, this.rowCount); 
     }
 
 
@@ -63,7 +57,10 @@ public class PaginationVo {
 
     // 한 블럭의 끝 페이지 구하기
     private void setEndpage(final int startPage, final int pageCount, final int totalPageCount) {
-        this.endPage = ((startPage - 1) + pageCount) < totalPageCount ? (startPage - 1) + pageCount : totalPageCount;
+        this.endPage = (
+        		(startPage - 1) + pageCount) < totalPageCount ? 
+        				(startPage - 1) + pageCount : 
+        					totalPageCount;
     }
 
 

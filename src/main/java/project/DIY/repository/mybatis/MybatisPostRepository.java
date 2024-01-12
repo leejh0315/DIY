@@ -67,6 +67,20 @@ public class MybatisPostRepository implements PostRepository{
 		return post;
 	}
 
+	@Override
+	public int getPostsCountByMemberId(PaginationVo paginationVo) {
+		int cnt = postMapper.getPostsCountByMemberId(paginationVo);
+		return cnt;
+	}
+
+	@Override
+	public int selecetPosCnttBySearch(String search) {
+		int cnt = postMapper.selecetPosCnttBySearch(search);
+		return cnt;
+	}
+	
+	
+
 	
 
 }

@@ -18,4 +18,7 @@ public interface PostMapper {
 	public List<Post> selectByPostCtCodeHome(String postCtCode);
 	public void updatePostByPostCode(Post post);
 	public List<Post> getPostsByPageByMemberId(PaginationVo paginationVo);
+	public int getPostsCountByMemberId(PaginationVo paginationVo);
+	
+	public int selecetPosCnttBySearch(String search);
 }
