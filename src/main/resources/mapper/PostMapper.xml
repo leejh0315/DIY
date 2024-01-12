@@ -31,7 +31,9 @@
 	
 	<!-- 마지막 작성된 post의 code를 반환 -->
 	<select id="getLastPost" resultType="String">
-		SELECT postCode FROM diydb.post ORDER BY createOn DESC LIMIT 1;
+		SELECT postCode FROM diydb.post 
+		where memberId = #{arg0}
+		ORDER BY createOn DESC LIMIT 1;
 	</select>
 	
 	<!-- postCode로 해당 post 조회 -->
@@ -100,9 +102,18 @@
 		    LIMIT #{rowCount}
 		    OFFSET #{offset};
     </select>
-    <select id="selecetPosCnttBySearch">
+    
+    <select id="selecetPosCntBySearch">
 	    SELECT count(*) FROM diydb.post
-		WHERE targetName LIKE '%#{search}%';
+		WHERE targetName LIKE '%${search}%';
 	</select>
 	
+	<select id="selecetPostBySearch" resultType="Post">
+        SELECT * 
+	    FROM diydb.post
+	    where targetName LIKE '%${type}%'
+	    ORDER BY postCode DESC 
+   		LIMIT #{rowCount}
+	    OFFSET #{offset}
+	</select>
 </mapper>

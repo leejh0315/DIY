@@ -53,11 +53,6 @@ public class PostController {
 	@Autowired
 	private final AboutPostRepository aboutPostRepository;
 	
-    @Value("${resource.handler}")
-    private String resourceHandler;
-
-    @Value("${resource.location}")
-    private String resourceLocation;
 	
 	@GetMapping("/writePost")
 	public String getPost(Model model, HttpServletRequest req) {
@@ -154,7 +149,7 @@ public class PostController {
     	System.out.println("writePost Post요청 접근");
     	
     	postRepository.insertPost(post);
-    	String postCode = postRepository.getLastPost();
+    	String postCode = postRepository.getLastPost(member.getId());
 
     	return "redirect:/posts/" + postCode;
     }
@@ -208,9 +203,6 @@ public class PostController {
 
 		
 		String targetTumb = postItem.getTargetThumbnail();
-		
-		
-		
 
 		model.addAttribute("post",postItem);
 		model.addAttribute("postCode", postCode);
