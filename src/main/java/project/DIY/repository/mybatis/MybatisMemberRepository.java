@@ -1,5 +1,6 @@
 package project.DIY.repository.mybatis;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,8 +87,8 @@ public class MybatisMemberRepository implements MemberRepository{
 	}
 
 	@Override
-	public void updateUserStatusCode(String statusCode,String id) {
-		memberMapper.updateUserStatusCode(statusCode, id);
+	public void updateUserStatusCode(HashMap<String, String> map) {
+		memberMapper.updateUserStatusCode(map);
 	}
 	
 }
