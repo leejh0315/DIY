@@ -6,6 +6,7 @@
     <title>Document</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<script th:src="@{/js/nav.js}"></script>
 <style>
 	
 </style>
@@ -20,8 +21,21 @@
 	
 	<h1>SearchResult</h1>
 	
-	<script>
-		
-	</script>
+	<h2 th:text="*{searchKeyword}"></h2><h2>검색결과</h2>
+	
+	
+	<div th:each="post,i:${post}" id="mostPosted">
+		<div id="postComp">
+			<div th:id="${i.index}"></div>
+			<img th:src="${post.targetThumbnail}">
+			<div th:text="${post.targetName}"></div>
+			<div th:text="${post.targetSubName}"></div>
+			<div th:text="${post.targetAuthor}"></div>
+			<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
+			<div th:text="${post.starCount}"></div>
+		</div>
+		<hr>
+		</div>
+		<script th:src="@{/js/nav.js}"></script>
 </body>
 </html>

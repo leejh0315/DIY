@@ -51,13 +51,11 @@ public class SearchController {
 		//page ==2 이면 10
 		//page ==3 이면 20
 		//page ==4 이면 30
-		pageVo.setOffset(1);
+		pageVo.setOffset((page-1)*10);
 		pageVo.setTotalCount(totalCount);
 		List<Post> post = postRepository.selecetPostBySearch(pageVo);
-		System.out.println(post);
-		
-		
-		
+		model.addAttribute("post", post);
+		model.addAttribute("searchKeyword", searchKeyword);
 		return "main/searchResult";
 	}	
 	

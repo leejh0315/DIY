@@ -143,7 +143,7 @@ public class PostController {
 		post.setMemberId(member.getId());
 		post.setMemberNick(member.getNickName());
 		
-		
+		post.setTargetName(post.getTargetName().trim());
 		System.out.println(post);
 		
     	System.out.println("writePost Post요청 접근");

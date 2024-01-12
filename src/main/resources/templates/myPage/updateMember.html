@@ -6,6 +6,7 @@
     <title>Document</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<script th:src="@{/js/nav.js}"></script>
 <style>
 	img{
 		width: 100px;
@@ -33,6 +34,7 @@
 	<a th:href="@{|/directlyUpdatepassword/${member.id}|}">
 		<p>비밀번호 변경하기</p>
 	</a>
+
 	<script>
 		let profileSrc = document.getElementById("profileSrc");
 		let newProfile = document.getElementById("newProfile");	
@@ -60,7 +62,8 @@
         })
 		});
 		
-		
+
 	</script>
+			<script th:src="@{/js/nav.js}"></script>
 </body>
 </html>
