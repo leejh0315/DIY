@@ -11,7 +11,7 @@ import project.DIY.domain.Post;
 public interface PostMapper {
 
 	public void insertPost(Post post);
-	public String getLastPost();
+	public String getLastPost(int memberId);
 	public Post selectByPostCode(int postCode);
 	public List<Post> selectByType(String type);
 	public List<Post> selectUserPostbyId(int meberId);
@@ -20,5 +20,6 @@ public interface PostMapper {
 	public List<Post> getPostsByPageByMemberId(PaginationVo paginationVo);
 	public int getPostsCountByMemberId(PaginationVo paginationVo);
 	
-	public int selecetPosCnttBySearch(String search);
+	public int selecetPosCntBySearch(String search);
+	public List<Post>selecetPostBySearch(PaginationVo paginationVo);
 }

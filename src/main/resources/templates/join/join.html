@@ -113,7 +113,11 @@
                   emailCheckMsg.innerHTML="<div class='emailCheckMsg'><i class='fas fa-times-circle'></i>  사용불가능한 이메일입니다.</div>";
                   emailCheckMsg.style.color="#E52834";
                   email1.focus();
-               }else{
+               }else if(data == 3){
+				   emailCheckMsg.innerHTML="<div class='emailCheckMsg'><i class='fas fa-times-circle'></i> 올바른 정보를 입력해주세요.</div>";
+				   
+			   }
+               else{
                   emailCheckMsg.innerHTML="<div class='emailCheckMsg'><i class='fas fa-check-circle'></i>  사용가능한 이메일입니다.</div>";
                   emailCheckMsg.style.color="#2C28E5";
                   $("#joongbok").css("display", "none");

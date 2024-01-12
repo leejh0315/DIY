@@ -116,6 +116,7 @@ public class HomeController {
    }
    
    @PostMapping("/tempEmailSave")
+   @ResponseBody
    public void tempEmailSave(@RequestParam(value = "email") String email) {
 	   userTempEmail = email;
    }
@@ -143,6 +144,7 @@ public class HomeController {
    public String postJoin(@ModelAttribute JoinForm joinForm, Model model, BindingResult bindingResult){
       System.out.println(joinForm);
       validateJoinForm(joinForm, bindingResult);
+      joinForm.setLoginId(userTempEmail);
       if(bindingResult.hasErrors()) {
     	  model.addAttribute("joinForm", joinForm);
          return "join/join2";
@@ -236,13 +238,19 @@ public class HomeController {
          errors.rejectValue("passWord", null, "비밀번호 필수 입력입니다.");
       }
    }
-   
-   public void validateJoinForm(JoinForm joinForm, Errors errors) {
-	    if (!StringUtils.hasText(joinForm.getLoginId())) {
-	        errors.rejectValue("loginId", null, "아이디 필수 입력입니다.");
-	    } else if (!joinForm.getLoginId().matches("^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$")) {
-	        errors.rejectValue("loginId", null, "올바른 이메일 형식이 아닙니다.");
+   public void validateEmail(String email, Errors errors) {
+	    if (!StringUtils.hasText(email)) {
+       errors.rejectValue("loginId", null, "아이디 필수 입력입니다.");
+	    } else if (email.matches("^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$")) {
+       errors.rejectValue("loginId", null, "올바른 이메일 형식이 아닙니다.");
 	    }
+   }
+   public void validateJoinForm(JoinForm joinForm, Errors errors) {
+//	    if (!StringUtils.hasText(joinForm.getLoginId())) {
+//	        errors.rejectValue("loginId", null, "아이디 필수 입력입니다.");
+//	    } else if (!joinForm.getLoginId().matches("^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$")) {
+//	        errors.rejectValue("loginId", null, "올바른 이메일 형식이 아닙니다.");
+//	    }
 
 	    if (!StringUtils.hasText(joinForm.getPassword())) {
 	        errors.rejectValue("password", null, "비밀번호 필수 입력입니다.");
@@ -271,11 +279,18 @@ public class HomeController {
    @ResponseBody
    @PostMapping("/joongbok")
    public int idCheck(@RequestParam("email") String email) {
-      System.out.println("중복체크 진입");
-      System.out.println("email:" + email);
-      int cnt = memberRepository.idCheck(email);
-      System.out.println("cnt : " + cnt);
-      return cnt;
+	   if (!StringUtils.hasText(email)) {
+	       return 3;
+	    } 
+	    if (!email.matches("^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$")) {
+	    	return 3;
+	    }else {
+	        System.out.println("중복체크 진입");
+	        System.out.println("email:" + email);
+	        int cnt = memberRepository.idCheck(email);
+	        System.out.println("cnt : " + cnt);
+	        return cnt;
+	    }
    }
    
    
