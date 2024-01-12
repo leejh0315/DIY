@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 @RestController
 public class ApiController {
@@ -46,7 +49,7 @@ public String kakaoBookSearch(@PathVariable("keyword") String keyword){
 }
 
 @GetMapping("/concert/{keyword}")
-public String concert(@PathVariable("keyword") String keyword){
+public String concert(@PathVariable("keyword") String keyword) throws Exception{
         
 		LocalDateTime now = LocalDateTime.now();
 	
@@ -102,8 +105,64 @@ public String concert(@PathVariable("keyword") String keyword){
                 .build();
         
         ResponseEntity<String> result = restTemplate.exchange(req, String.class);
+        
+        
+        String xmlString = result.getBody().toString();
+        String jsonString = convertXmlToJson(xmlString);
+ 
+        System.out.println(jsonString);
         System.out.println("공연api 호출 끝");
-        return result.getBody();
+        
+        return jsonString;
+}
+
+/*
+@GetMapping("/concert/{keyword}")
+public String concert(@PathVariable("keyword") String keyword) throws Exception{
+	StringBuilder urlBuilder = new StringBuilder("http://www.culture.go.kr/openapi/rest/publicperformancedisplays/period"); 
+    urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=9IuGmiSd7pOZ7fIy3Y5R8s4VuJjxNCUVjNGgj2VNuXemnFlqr8%2BEIxVizvUEsiY%2BNqJKPaa8gYB1rxtDu%2Fp%2FNw%3D%3D"); 
+    urlBuilder.append("&" + URLEncoder.encode("keyword","UTF-8") + "=" + URLEncoder.encode(keyword, "UTF-8")); 
+    urlBuilder.append("&" + URLEncoder.encode("sortStdr","UTF-8") + "=" + URLEncoder.encode("2", "UTF-8"));
+    urlBuilder.append("&" + URLEncoder.encode("from","UTF-8") + "=" + URLEncoder.encode("20100101", "UTF-8")); 
+    urlBuilder.append("&" + URLEncoder.encode("to","UTF-8") + "=" + URLEncoder.encode("20231201", "UTF-8")); 
+    urlBuilder.append("&" + URLEncoder.encode("cPage","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); 
+    urlBuilder.append("&" + URLEncoder.encode("rows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); 
+
+    URL url = new URL(urlBuilder.toString());
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    conn.setRequestMethod("GET");
+    conn.setRequestProperty("Content-type", "application/json");
+    System.out.println("Response code: " + conn.getResponseCode());
+    BufferedReader rd;
+    if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+        rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    } else {
+        rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+    }
+    // ObjectMapper를 사용하여 XML을 JSON으로 변환
+
+    StringBuilder sb = new StringBuilder();
+    String line;
+    while ((line = rd.readLine()) != null) {
+        sb.append(line);
+    }
+    rd.close();
+    conn.disconnect();
+    String xmlString = sb.toString();
+    String jsonString = convertXmlToJson(xmlString);
+    System.out.println(jsonString);
+    
+    return jsonString;
+}
+*/
+public static String convertXmlToJson(String xmlString) throws Exception {
+    // XmlMapper를 사용하여 XML을 JsonNode로 변환
+    XmlMapper xmlMapper = new XmlMapper();
+    JsonNode jsonNode = xmlMapper.readTree(xmlString);
+
+    // ObjectMapper를 사용하여 JsonNode를 JSON 문자열로 변환
+    ObjectMapper objectMapper = new ObjectMapper();
+    return objectMapper.writeValueAsString(jsonNode);
 }
 
 @GetMapping("/movie/{keyword}")
@@ -135,6 +194,9 @@ public String movie(@PathVariable("keyword") String keyword){
                 .build();
         
         ResponseEntity<String> result = restTemplate.exchange(req, String.class);
+        System.out.println(result);
+        
+        
         System.out.println("영화api 호출 끝");
         return result.getBody();
 }

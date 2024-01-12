@@ -332,21 +332,21 @@
 							res.documents[i].authors = "작가 없음";
 							searchResult.innerHTML +=
 							"<div class='result' onclick='selectedBook(this)' id='" + i +"'>\
-								 <img src='"+res.documents[i].thumbnail +"'> \
-								 <div>\
-								 <p class='title'>"+res.documents[i].title+"</p>\
-								 <p>"+res.documents[i].authors+"</p>\
-								 </div>\
-								 </div>";
+								<img src='"+res.documents[i].thumbnail +"'> \
+								<div>\
+								<p class='title'>"+res.documents[i].title+"</p>\
+								<p>"+res.documents[i].authors+"</p>\
+								</div>\
+								</div>";
 						}else{
 							searchResult.innerHTML += 
 							"<div class='result' onclick='selectedBook(this)' id='" + i +"'>\
-								 <img src='"+res.documents[i].thumbnail +"'>\
-								 <div>\
-								 <p class='title' >"+res.documents[i].title+"</p>\
-								 <p>"+res.documents[i].authors+"</p>\
+								<img src='"+res.documents[i].thumbnail +"'>\
+								<div>\
+								<p class='title' >"+res.documents[i].title+"</p>\
+								<p>"+res.documents[i].authors+"</p>\
 									</div>\
-								 </div>";
+								</div>";
 						}
 					};
 					console.log("책 api 호출 완료")
@@ -359,24 +359,32 @@
 				$.ajax({
 					type: "GET",
 					url: "concert/"+keyword,
-					dataType: "xml",
-					//contentType:"application/json",
+					dataType: "json",
+					contentType:"application/json",
 				}).done(function(res) {	
 					hideSpinner();
 					console.log(res);
-					let resTextToString = $(res).text().toString();	
-					resultC = resTextToString.split('        ');
-					for(let i = 2 ; i< resultC.length; i++){
-						if(i%9 == 2){
-							resultC_name.push(resultC[i]);
-						}
-						if(i%9 == 7){
-							resultC_type.push(resultC[i]);
-						}
-						if(i%9 == 6){
-							resultC_thumb.push(resultC[i]);
-						}
+					console.log(res.db);
+					for(let i=0;i<res.db.length;i++){
+						resultC_name.push(res.db[i].prfnm);
+						resultC_type.push(res.db[i].genrenm);
+						resultC_thumb.push(res.db[i].poster);
 					}
+					console.log(resultC_name);
+					console.log(resultC_type);
+					console.log(resultC_thumb);
+					
+					
+
+					/* --공공데이터포털 공연 API
+					resultC = res.msgBody.perforList;
+					console.log(resultC);
+					for(let i =0;i<resultC.length;i++){
+						resultC_name.push(resultC[i].title);
+						resultC_type.push(resultC[i].place);
+						resultC_thumb.push(resultC[i].thumbnail);
+					}
+					*/
 					
 					for(let i = 0 ; i < resultC_name.length; i++){
 						searchResult.innerHTML += 
@@ -396,7 +404,7 @@
 						type: "GET",
 						url: "movie/"+keyword,
 						dataType: "json",
-						//contentType:"application/json",
+						contentType:"application/json",
 						}).done(function(res) {	
 						hideSpinner();
 						console.log(res);
