@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>문득 관리자 페이지</title>
+</head>
+<body>
+    <h1>문득 관리자 페이지</h1>
+	
+    <h2>유저관리</h2>
+	<div id="container">
+		<div th:each="allUsers, i : ${allUsers}" >
+            <div><td th:text="${i.index+1}"></td></div>
+			<div class="userId"><td th:text="${allUsers.id}" ></td></div>
+			<div class="statusCode"><td th:text="${allUsers.statusCode}" ></td></div>
+			<div><td th:text="${allUsers.loginId}"></td></div>
+			<div><td th:text="${allUsers.password}"></td></div>
+			<div><td th:text="${allUsers.nickName}"></td></div>
+            <div><td th:text="${allUsers.profileSrc}"></td></div>
+            <div><td th:text="${allUsers.memberIntro}"></td></div>
+			<div><td th:text="${allUsers.createOn}"></td></div>
+			<div><td th:text="${allUsers.passwordUpdate}"></td></div>
+			
+			
+			
+             <button th:if="${allUsers.statusCode}=='N'" class="btn UserDeactive">유저 활성화</button>
+           
+            
+             <button th:if="${allUsers.statusCode}=='Y'" class="btn UserActivate">유저 비활성화</button>
+            
+            
+            
+            
+		</div>
+	</div>
+
+    <script>
+        let UserStatusbtn = document.querySelectorAll(".btn");
+		let UserIddiv = document.querySelectorAll(".userId");
+		let StatusCode = document.querySelectorAll(".statusCode");
+        
+        $( document ).ready(function() {
+			
+			for(let i =0; i<UserStatusbtn.length; i++){
+				let UserId = UserIddiv[i].innerHTML;
+				console.log(UserId);
+				let statusCode = StatusCode[i].innerHTML;
+				console.log(statusCode);
+				
+				UserStatusbtn[i].addEventListener("click",(e)=>{
+					e.preventDefault();
+					
+					$.ajax({
+	            	type: 'POST',
+		            url: '/updateUserStatusCode',
+		            data:{
+                        "statusCode" : statusCode,
+					    "id" : UserId
+						} ,
+	            
+		            success: function (data) {
+						if(data == 1){
+							console.log("업데이트 성공");
+						}
+				
+            },
+        })
+				});
+			}
+			
+		}
+)
+
+
+    </script>
+</body>
+</html>

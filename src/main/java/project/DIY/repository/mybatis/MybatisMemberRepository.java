@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
-import project.DIY.domain.Post;
+
 import project.DIY.repository.MemberRepository;
 
 @Repository
@@ -77,6 +77,17 @@ public class MybatisMemberRepository implements MemberRepository{
 	@Override
 	public void updatePasswordById(Member member) {
 		memberMapper.updatePasswordById(member);
+	}
+
+	@Override
+	public List<Member> selectAllUser() {
+		List<Member> members =memberMapper.selectAllUser();
+		return members;
+	}
+
+	@Override
+	public void updateUserStatusCode(String statusCode,String id) {
+		memberMapper.updateUserStatusCode(statusCode, id);
 	}
 	
 }

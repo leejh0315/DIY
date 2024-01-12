@@ -81,4 +81,14 @@
 		passwordUpdate = date_format(now(), '%Y%m%d%H%i%s')
 		where id = #{id};
 	</update>
+	
+	
+	<select id="selectAllUser" resultType="Member">
+		 SELECT * FROM diydb.member;
+	</select>
+	
+	<update id="updateUserStatusCode" parameterType="map">
+		update diydb.member set statusCode = #{statusCode} where id = #{id};
+	</update>
+
 </mapper>
