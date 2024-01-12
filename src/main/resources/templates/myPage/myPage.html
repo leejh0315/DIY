@@ -9,6 +9,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/mypage.css}">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+
+
 	<style>
 		img{
 			width: 100px;
@@ -17,6 +28,12 @@
 		.chooseType{
 			border: solid 1px black;
 		}
+		.fc-header-toolbar {    
+			padding-top: 1em;    
+			padding-left: 1em;    
+			padding-right: 1em;  
+		}
+
 	</style>
 </head>
 <body>
@@ -63,6 +80,15 @@
             </button>
         </div>
     </div>
+    
+    
+	<div id='calendar-container'>    
+		<div id='calendar'></div>  
+	</div>
+	
+
+
+    
 	<form>
 	<div class="chooseType">
 		<p>종류</p>
@@ -113,13 +139,104 @@
     </span>
 	
     <!-- 맨 뒷 페이지로 이동하는 버튼 -->
-    <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
-	<a th:href="@{'/myPage/${member.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
-    </span>
+   <!-- <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
+		<a th:href="@{'/myPage/${member.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
+    </span> -->
 </div>
 	
-	
+<script th:inline="javascript">
+    var myData = /*[[${posts}]]*/ [];
+</script>
 	<script>
+	console.log(myData);
+	let arrDate = [];
+	let arrSrc = [];
+	
+	for(let i=0;i<myData.length;i++){
+		let createOnSrc = myData[i].createOn.substring(0,10);
+		arrDate.push(myData[i].createOnSrc);
+		arrSrc.push(myData[i].targetSrc);
+	}
+	(function(){    
+		$(function(){      // calendar element 취득      
+		var calendarEl = $('#calendar')[0];      // full-calendar 생성하기      
+		var calendar = new FullCalendar.Calendar(calendarEl, {        
+			height: '1000px',// calendar 높이 설정
+			         
+			expandRows: false, // 화면에 맞게 높이 재설정        
+			slotMinTime: '08:00', // Day 캘린더에서 시작 시간        
+			slotMaxTime: '20:00', // Day 캘린더에서 종료 시간        
+			initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)        
+			dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)        
+			locale: 'ko', // 한국어 설정        
+				eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트          
+					console.log(obj);        
+				},        
+				eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트          
+					console.log(obj);        
+				},        
+				eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트          
+					console.log(obj);        
+				},
+			
+			events: getDynamicEvents(),
+			 eventDidMount: function (arg) {
+    			addImage(arg);
+				}
+			});      // 캘린더 랜더링      
+					calendar.render();    
+				});  
+			})();
+			
+	function getDynamicEvents() {
+        let dynamicEvents = [];
+
+        for (let i = 0; i < myData.length; i++) {
+            // createOn을 yyyy-mm-dd 형식으로 변환
+            let createOnSrc = myData[i].createOn.substring(0, 10);
+            
+            // 동적으로 이벤트 추가
+            if(!dynamicEvents.some(event => event.start === createOnSrc)){
+	            dynamicEvents.push(
+					{
+	                start: createOnSrc,
+	                imageUrl: myData[i].targetThumbnail,
+            		}
+	            );
+				
+			}
+         	console.log(dynamicEvents);   
+        }
+		
+        return dynamicEvents;
+    }
+    
+    
+ function addImage(eventInfo) {
+    // Create a new element to hold the image
+    var img = document.createElement('img');
+    img.src = eventInfo.event.extendedProps.imageUrl;
+    img.style.width = '100%';  // Adjust the width as needed
+    img.style.height = '100%';  // Adjust the height as needed
+
+    // Create a new div element to hold the image element
+    var container = document.createElement('div');
+    container.appendChild(img);
+
+    // Set the content of the calendar event to be the container
+    eventInfo.el.innerHTML = '';
+    eventInfo.el.appendChild(container);
+}
+    
+    
+	let cal = document.getElementById("calendar");
+ 	cal.style.width = '30%';			
+
+	
+	
+		
+		
+			
 	let types = document.querySelectorAll(".checkType");
 	
 	let memberId = document.getElementById("memberId");

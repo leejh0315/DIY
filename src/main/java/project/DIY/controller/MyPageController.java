@@ -58,7 +58,9 @@ public class MyPageController {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		List<Post> myPost = postRepository.selectUserPostbyId(Integer.parseInt(id));
-		System.out.println(type);
+		int size = myPost.size();
+
+		
 //		for(int i=0; i<myPost.size();i++) {
 //			String contentTemp = myPost.get(i).getContent();
 //			String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
@@ -70,6 +72,14 @@ public class MyPageController {
 		PaginationVo paginationVo = new PaginationVo(myPost.size(), page);
 		paginationVo.setMemberId(member.getId());
 		paginationVo.setType(type);
+		int cnt = postRepository.getPostsCountByMemberId(paginationVo);
+		System.out.println("cnt : "+cnt);
+		for(int i =0 ;i< cnt; i++) {
+			System.out.println(myPost.get(i).getCreateOn());
+		}
+		
+		paginationVo.setOffset((page-1)*5);
+		
 		List<Post> list = postRepository.getPostsByPageByMemberId(paginationVo);
 		
 		for(int i=0; i<list.size();i++) {
@@ -80,13 +90,22 @@ public class MyPageController {
 //			System.out.println(plainText);
 		}
 		
+		System.out.println("l.size : " + list.size());
+		System.out.println("Math.ceil : " + Math.ceil(cnt/5.0));
+		int endPage = (cnt/5 <= 0)? 1 :(int)(Math.ceil(cnt/5.0));  
+		System.out.println("endPage :"+ endPage);
+		paginationVo.setEndPage(endPage);
+		
+		System.out.println("pageVo : " +paginationVo);
 //	    model.addAttribute("boardList", list);
+		model.addAttribute("size",size);
 		model.addAttribute("type", type);
 	    model.addAttribute("page", page);
 	    model.addAttribute("pageVo", paginationVo);
 		
 		//-------------------------------------------------------------------------------------------
 		
+	    model.addAttribute("posts", myPost);
 		model.addAttribute("post",list);
 		model.addAttribute("member", member);
 		
