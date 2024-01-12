@@ -1,6 +1,8 @@
 package project.DIY.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -65,17 +67,24 @@ public class AdminController {
 	@PostMapping("/updateUserStatusCode")
 	@ResponseBody
 	public Integer updateUserStatusCode(@RequestParam(value = "statusCode") String statusCode,@RequestParam(value = "id") String id) {
-		System.out.println(id);
 		System.out.println(statusCode);
+		System.out.println(id);
+		HashMap<String,String> map = new HashMap<String,String>();
 		
 		if("Y".equals(statusCode)) {
-			memberRepository.updateUserStatusCode("N",id);
+			map.put("statusCode", "N");
+	        map.put("id", id);
+			System.out.println(map);
+			memberRepository.updateUserStatusCode(map);
 		}else if("N".equals(statusCode)) {
-			memberRepository.updateUserStatusCode("Y",id);
+			 map.put("statusCode", "Y");
+		     map.put("id", id);
+			System.out.println(map);
+			memberRepository.updateUserStatusCode(map);
 		}else {
 			System.out.println("잘못됏다 여기서");
 		}
-
+		
 		return 1;
 		
 		

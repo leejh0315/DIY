@@ -1,5 +1,6 @@
 package project.DIY.repository.mybatis;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,5 +21,6 @@ public interface MemberMapper {
 	public void reAlertUpdatePassword(int id);
 	public void updatePasswordById(Member member);
 	public List<Member> selectAllUser();
-	public void updateUserStatusCode(String statusCode,String id);
+
+	public void updateUserStatusCode(HashMap<String, String> map);
 }

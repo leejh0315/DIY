@@ -87,7 +87,7 @@
 		 SELECT * FROM diydb.member;
 	</select>
 	
-	<update id="updateUserStatusCode" parameterType="map">
+	<update id="updateUserStatusCode" parameterType="HashMap">
 		update diydb.member set statusCode = #{statusCode} where id = #{id};
 	</update>
 
