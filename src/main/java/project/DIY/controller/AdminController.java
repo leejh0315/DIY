@@ -2,7 +2,7 @@ package project.DIY.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
-import project.DIY.domain.Post;
+
 import project.DIY.domain.ReportPost;
 import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.MemberRepository;
