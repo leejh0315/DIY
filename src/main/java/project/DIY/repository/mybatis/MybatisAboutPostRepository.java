@@ -1,5 +1,7 @@
 package project.DIY.repository.mybatis;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -48,6 +50,13 @@ public class MybatisAboutPostRepository implements AboutPostRepository {
 	public int selectReportPost(ReportPost reportpost) {
 		int selectReportPostcnt = aboutPostMapper.selectReportPost(reportpost);
 		return selectReportPostcnt;
+	}
+
+
+	@Override
+	public List<ReportPost> selectAllReportPost() {
+		List<ReportPost> allReportPost = aboutPostMapper.selectAllReportPost();
+		return allReportPost;
 	}
 	
 	

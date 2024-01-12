@@ -23,5 +23,9 @@
 	<select id="selectReportPost" resultType="Integer">
 		SELECT count(*) FROM diydb.reportpost where reporterId = #{reporterId} and postcode=#{postCode} ;
 	</select>
-	
+
+	<select id="selectAllReportPost" resultType="ReportPost">
+		SELECT * FROM diydb.reportpost;
+	</select>
+
 </mapper>

@@ -19,4 +19,6 @@ public interface MemberMapper {
 	public List<Member> passwordUpdateSixMonth();
 	public void reAlertUpdatePassword(int id);
 	public void updatePasswordById(Member member);
+	public List<Member> selectAllUser();
+	public void updateUserStatusCode(String statusCode,String id);
 }

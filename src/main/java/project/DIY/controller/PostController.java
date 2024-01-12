@@ -75,7 +75,7 @@ public class PostController {
 		model.addAttribute("ct", ct);
 		return "post/writePost";
 	}
-	
+
 
 //	@RequestMapping(value = "/tempThumb", produces = "application/json; charset=utf8")
 //	@ResponseBody

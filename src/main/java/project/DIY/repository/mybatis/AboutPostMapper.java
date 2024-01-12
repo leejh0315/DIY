@@ -1,5 +1,7 @@
 package project.DIY.repository.mybatis;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import project.DIY.domain.Likes;
@@ -13,5 +15,8 @@ public interface AboutPostMapper {
 	
 	public void insertReportPost(ReportPost reportpost);
 	public int selectReportPost(ReportPost reportpost);
+	public List<ReportPost> selectAllReportPost();
+	
 }	
 	
+
