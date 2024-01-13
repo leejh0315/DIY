@@ -1,6 +1,7 @@
 package project.DIY.controller;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,13 +51,17 @@ public class MyPageController {
 	
 	@GetMapping("/myPage/{id}")
 	public String getMyPage(@PathVariable("id") String id,HttpServletRequest req, Model model,
-			 
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "type", defaultValue = "all") String type
-			 
 			)throws Exception {
+		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
+		if(!id.equals(Integer.toString(member.getId()))) {
+			return "redirect:/home/home";
+		}
+		
 		List<Post> myPost = postRepository.selectUserPostbyId(Integer.parseInt(id));
 		int size = myPost.size();
 
@@ -68,15 +73,34 @@ public class MyPageController {
 ////			System.out.println(plainText);
 //		};
 		//-------------------------------------------------------------------------------------------
+		LocalDate currentDate = LocalDate.now();
+		int thisMonth = currentDate.getMonthValue();
+		int thisyear = currentDate.getYear();
+		
+		
+		LocalDate lastMonthDate = currentDate.minusMonths(1);
+		int lastMonth = lastMonthDate.getMonthValue();
+		int lastMonthyear = lastMonthDate.getYear();
+		
+		LocalDate last2MonthDate = currentDate.minusMonths(2);
+		int last2Month = last2MonthDate.getMonthValue();
+		int last2Monthyear = last2MonthDate.getYear();
+		
+		int[] dateArr = {last2Monthyear, lastMonthyear, thisyear, 
+							last2Month, lastMonth, thisMonth};
+		int[] cntArr = new int[6];
+		for(int i=0;i<3;i++) {
+			cntArr[i+3] = postRepository.countByMonth(Integer.parseInt(id), dateArr[i], dateArr[i+3]);
+			cntArr[i] = dateArr[i+3];
+		}
+		
+		model.addAttribute("cntArr", cntArr);
 		
 		PaginationVo paginationVo = new PaginationVo(myPost.size(), page);
 		paginationVo.setMemberId(member.getId());
 		paginationVo.setType(type);
 		int cnt = postRepository.getPostsCountByMemberId(paginationVo);
-		for(int i =0 ;i< cnt; i++) {
-			System.out.println(myPost.get(i).getCreateOn());
-		}
-		
+
 		paginationVo.setOffset((page-1)*5);
 		
 		List<Post> list = postRepository.getPostsByPageByMemberId(paginationVo);
@@ -91,6 +115,7 @@ public class MyPageController {
 		
 		int endPage = (cnt/5 <= 0)? 1 :(int)(Math.ceil(cnt/5.0));  
 		paginationVo.setEndPage(endPage);
+
 		
 //	    model.addAttribute("boardList", list);
 		model.addAttribute("size",size);
@@ -111,6 +136,10 @@ public class MyPageController {
 	public String getMyPageUpdate(@PathVariable("id") String id, HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
+		if(!id.equals(Integer.toString(member.getId()))) {
+			return "redirect:/home/home";
+		}
 		
 		model.addAttribute("member", member);
 		

@@ -116,4 +116,13 @@
    		LIMIT #{rowCount}
 	    OFFSET #{offset}
 	</select>
+	
+	<select id="countByMonth" resultType="Integer">
+		SELECT count(*) FROM diydb.post
+		where memberId = #{param1}
+		and
+		year(createOn) = #{param2}
+		and	
+		month(createOn) = #{param3};
+	</select>
 </mapper>

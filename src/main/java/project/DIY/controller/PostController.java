@@ -67,8 +67,8 @@ public class PostController {
 		
 		List<Category> ct = new ArrayList<>();
 		ct.add(new Category("book", "책"));
-		ct.add(new Category("concert", "공연"));
 		ct.add(new Category("movie", "영화"));
+		ct.add(new Category("concert", "공연"));
 	
 		model.addAttribute("postForm", postForm);
 		model.addAttribute("writePost", new Post());
@@ -157,8 +157,8 @@ public class PostController {
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		List<Category> ct = new ArrayList<>();
 		ct.add(new Category("book", "책"));
-		ct.add(new Category("concert", "공연"));
 		ct.add(new Category("movie", "영화"));
+		ct.add(new Category("concert", "공연"));
 		
       validateJoinForm(postForm, bindingResult);
 		

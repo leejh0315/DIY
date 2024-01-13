@@ -84,6 +84,12 @@ public class MybatisPostRepository implements PostRepository{
 		List<Post> post = postMapper.selecetPostBySearch(paginationVo);
 		return post;
 	}
+
+	@Override
+	public int countByMonth(int memberId, int year, int month) {
+		int count = postMapper.countByMonth(memberId, year, month);
+		return count;
+	}
 	
 	
 

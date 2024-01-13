@@ -95,8 +95,8 @@
 		<p>종류</p>
 		<label onclick="checked(this, 0)"><input type="checkbox" name="chooseType" value="all" class="checkType all">전체</label>
 		<label onclick="checked(this, 1)"><input type="checkbox" name="chooseType" value="book" class="checkType book">책</label>
-		<label onclick="checked(this, 2)"><input type="checkbox" name="chooseType" value="concert" class="checkType concert">공연</label>
-		<label onclick="checked(this, 3)"><input type="checkbox" name="chooseType" value="movie" class="checkType movie">영화</label>
+		<label onclick="checked(this, 2)"><input type="checkbox" name="chooseType" value="movie" class="checkType movie">영화</label>
+		<label onclick="checked(this, 3)"><input type="checkbox" name="chooseType" value="concert" class="checkType concert">공연</label>
 	</div>
 	</form>
 	
@@ -147,17 +147,23 @@
 
 <script th:inline="javascript">
     var myData = /*[[${posts}]]*/ [];
+    var cntArr = /*[[${cntArr}]]*/ [];
 </script>
 	<script>
 	console.log(myData);
+	console.log(cntArr);
 	let arrDate = [];
 	let arrSrc = [];
-	
+
 	for(let i=0;i<myData.length;i++){
 		let createOnSrc = myData[i].createOn.substring(0,10);
 		arrDate.push(myData[i].createOnSrc);
 		arrSrc.push(myData[i].targetSrc);
+		
+
+		
 	}
+
 	(function(){    
 		$(function(){      // calendar element 취득      
 		var calendarEl = $('#calendar')[0];      // full-calendar 생성하기      
@@ -171,13 +177,13 @@
 			dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)        
 			locale: 'ko', // 한국어 설정        
 				eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트          
-					console.log(obj);        
+					//console.log(obj);        
 				},        
 				eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트          
-					console.log(obj);        
+					//console.log(obj);        
 				},        
 				eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트          
-					console.log(obj);        
+					//console.log(obj);        
 				},
 			
 			events: getDynamicEvents(),
@@ -206,7 +212,7 @@
 	            );
 				
 			}
-         	console.log(dynamicEvents);   
+         	//console.log(dynamicEvents);   
         }
 		
         return dynamicEvents;
@@ -234,10 +240,6 @@
  	cal.style.width = '30%';			
 
 	
-	
-		
-		
-			
 	let types = document.querySelectorAll(".checkType");
 	
 	let memberId = document.getElementById("memberId");
@@ -274,13 +276,30 @@
 			
 	};
 		
+	let bookCount = 0;
+	let concertCount = 0;
+	let movieCount = 0;
+
+	for(let i =0;i<myData.length;i++){	
+		if(myData[i].postCtcode == "book"){
+			bookCount = bookCount+1;
+		}else if(myData[i].postCtcode == "concert"){
+			concertCount = concertCount+1;
+		}else if(myData[i].postCtcode == "movie"){
+			movieCount = movieCount+1;
+		}
+	}	
+	console.log(bookCount);
+	console.log(concertCount);
+	console.log(movieCount);
+		
 	new Chart(document.getElementById("pie-chart"), {
     type: 'pie',
     data: {
       labels: ["책", "영화", "공연"],
       datasets: [{
         backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
-        data: [20,30,3]
+        data: [bookCount, movieCount, concertCount]
       }]
     },
     options: {
@@ -295,16 +314,22 @@
        
     }
 });
+let month2 = cntArr[0];
+let month1 = cntArr[1];
+let thisMonth = cntArr[2];
+let month2Cnt = cntArr[3];
+let month1Cnt = cntArr[4];
+let thisMonthCnt = cntArr[5];
 
 new Chart(document.getElementById("bar-chart"), {
     type: 'bar',
     data: {
-      labels: ["11월", "12월", "1월", ],
+      labels: [ month2+"월",  month1+"월", thisMonth+"월",],
       datasets: [
         {
           
           backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f",],
-          data: [2,8,6,]
+          data: [month2Cnt,month1Cnt,thisMonthCnt,]
         }
       ]
     },
