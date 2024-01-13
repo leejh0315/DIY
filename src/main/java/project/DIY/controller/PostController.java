@@ -11,9 +11,11 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +36,8 @@ import project.DIY.domain.Member;
 import project.DIY.domain.Post;
 import project.DIY.domain.Reply;
 import project.DIY.domain.ReportPost;
+import project.DIY.form.JoinForm;
+import project.DIY.form.PostForm;
 import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
@@ -55,7 +59,7 @@ public class PostController {
 	
 	
 	@GetMapping("/writePost")
-	public String getPost(Model model, HttpServletRequest req) {
+	public String getPost(Model model, HttpServletRequest req, PostForm postForm) {
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 
@@ -66,6 +70,7 @@ public class PostController {
 		ct.add(new Category("concert", "공연"));
 		ct.add(new Category("movie", "영화"));
 	
+		model.addAttribute("postForm", postForm);
 		model.addAttribute("writePost", new Post());
 		model.addAttribute("ct", ct);
 		return "post/writePost";
@@ -133,21 +138,48 @@ public class PostController {
 		deleteFile(filePath, fileName);
 	}
     
-
+   public void validateJoinForm(PostForm postForm, Errors errors) {
+	    if (!StringUtils.hasText(postForm.getTargetName())) {
+	        errors.rejectValue("targetName", null, "작품을 입력해주세요.");
+	    } 
+	    if (!StringUtils.hasText(postForm.getTitle())) {
+	        errors.rejectValue("title", null, "게시글 제목을 입력해주세요.");
+	    } 
+	    if (!StringUtils.hasText(postForm.getContent())) {
+	        errors.rejectValue("content", null, "게시글 내용을 입력해주세요.");
+	    }
+   }
+	    
 	@PostMapping("/writePost")                                                        
-    public String setArticle(@ModelAttribute Post post, Model model, HttpServletRequest req) {                
+    public String setArticle(@ModelAttribute Post post,
+    		@ModelAttribute PostForm postForm, Model model, HttpServletRequest req, BindingResult bindingResult) {                
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		post.setMemberId(member.getId());
-		post.setMemberNick(member.getNickName());
-		System.out.println(post.getContent().length());
-		post.setTargetName(post.getTargetName().trim());
+		List<Category> ct = new ArrayList<>();
+		ct.add(new Category("book", "책"));
+		ct.add(new Category("concert", "공연"));
+		ct.add(new Category("movie", "영화"));
 		
-    	
-    	postRepository.insertPost(post);
-    	String postCode = postRepository.getLastPost(member.getId());
+      validateJoinForm(postForm, bindingResult);
+		
+	      if(bindingResult.hasErrors()) {
+	    	  System.out.println(postForm);
+	    	  model.addAttribute("postForm", postForm);
+	  			model.addAttribute("ct", ct);
+	         return "post/writePost";
+	      }
+	      else {
+	    	  post.setMemberId(member.getId());
+	  		post.setMemberNick(member.getNickName());
+	  		System.out.println(post.getContent().length());
+	  		post.setTargetName(post.getTargetName().trim());
+	  		
+	      	
+	      	postRepository.insertPost(post);
+	      	String postCode = postRepository.getLastPost(member.getId());
 
-    	return "redirect:/posts/" + postCode;
+	      	return "redirect:/posts/" + postCode;
+	      }
     }
 	
 	@GetMapping("/posts/{postCode}")

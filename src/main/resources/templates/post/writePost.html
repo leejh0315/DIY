@@ -21,7 +21,12 @@
 
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/post.css}">
-
+<style>
+	.error{
+		color:red;
+	}
+	
+</style>
 </head>
 <body>
 	<th:block th:if="${member == null}">
@@ -31,9 +36,7 @@
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
     
-	<form action="/writePost" method="post" name="writePost" th:object="${writePost}" enctype="multipart/form-data">
-    
-	
+	<form action="/writePost" method="post" name="postForm" th:object="${postForm}" enctype="multipart/form-data">
 
 	<div class="searchModal" id="searchModal">
 		<div>
@@ -51,10 +54,7 @@
                			 th:text="${ct.displayName}"></option>
    
 				</select>
-				
-			
-      
- 
+
 			</label>
 			<div>
 				작품명<span>    </span><input id="keyword1" placeholder="작품명을 입력해주세요">
@@ -66,9 +66,7 @@
 				<hr>
 			</div>
 			<div id="searchResult">
-				
-    				
-				
+
 			</div>
 			
 		</div>
@@ -84,14 +82,24 @@
 			
 			<div class="post_topmid">
 				<p>선택한 작품</p>
-				<div class="selectedWork" id="selectedWork"></div>	
-				<input type="hidden" id="targetName" th:field="*{targetName}">
-				<input type="hidden" id="postCtcode" th:field="*{postCtcode}">
+				<div class="selectedWork" id="selectedWork">
+					<th:block th:if="${postForm.targetName != null}">
+						<img th:src="${postForm.targetThumbnail}">
+						<div th:text="${postForm.targetName}"></div>
+						<div th:text="${postForm.targetAuthor}"></div>
+						<div th:text="${postForm.targetSubName}"></div>
+					</th:block>
+					
+					
+				</div>	
+				<input type="hidden" id="targetName" name="targetName" th:value="${postForm.targetName}">
+				<input type="hidden" id="postCtcode" name="postCtcode" th:value="${postForm.postCtcode}">
 				
-				<input type="hidden" id="targetSubName" th:field="*{targetSubName}">
-				<input type="hidden" id="targetAuthor" th:field="*{targetAuthor}">
-				<input type="hidden" id="targetThumbnail" th:field="*{targetThumbnail}">
+				<input type="hidden" id="targetSubName" name="targetSubName" th:value="${postForm.targetSubName}">
+				<input type="hidden" id="targetAuthor" name="targetAuthor" th:value="${postForm.targetAuthor}">
+				<input type="hidden" id="targetThumbnail" name="targetThumbnail" th:value="${postForm.targetThumbnail}">
 			</div>
+			<div class="error"  th:errors="*{targetName}"></div>
 		
 			 <div class="post_topright">
 				<p>나의 별점</p>
@@ -109,10 +117,15 @@
 				
 
 		 
-		<label class="title_lb">제목<span></span><input class="posttitle" th:field="*{title}" placeholder="게시글 제목을 입력해주세요"></label>
+		<label class="title_lb">제목<span></span>
+		<input class="posttitle" name="title" th:value="${postForm.title}" placeholder="게시글 제목을 입력해주세요"></label>
+		<div class="error"  th:errors="*{title}"></div>
 		<div class="content_wrap">
 		 <p>내용</p>
-		<textarea id="summernote" name="editordata" th:field="*{content}"></textarea>
+		 <div class="error" th:errors="*{content}"></div>
+		<textarea id="summernote" name="content"  th:value="${postForm.content}">
+			
+		</textarea>
 		<button id="submitBtn" class="submitBtn"type="submit">업로드</button>
 		</div>
 	</form>
