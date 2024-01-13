@@ -73,7 +73,6 @@ public class MyPageController {
 		paginationVo.setMemberId(member.getId());
 		paginationVo.setType(type);
 		int cnt = postRepository.getPostsCountByMemberId(paginationVo);
-		System.out.println("cnt : "+cnt);
 		for(int i =0 ;i< cnt; i++) {
 			System.out.println(myPost.get(i).getCreateOn());
 		}
@@ -90,13 +89,9 @@ public class MyPageController {
 //			System.out.println(plainText);
 		}
 		
-		System.out.println("l.size : " + list.size());
-		System.out.println("Math.ceil : " + Math.ceil(cnt/5.0));
 		int endPage = (cnt/5 <= 0)? 1 :(int)(Math.ceil(cnt/5.0));  
-		System.out.println("endPage :"+ endPage);
 		paginationVo.setEndPage(endPage);
 		
-		System.out.println("pageVo : " +paginationVo);
 //	    model.addAttribute("boardList", list);
 		model.addAttribute("size",size);
 		model.addAttribute("type", type);
@@ -180,7 +175,6 @@ public class MyPageController {
 
         // JSON 객체를 문자열로 변환하여 반환
         String a = jsonObject.toString();
-        System.out.println(a);
 		
 		return a;
 	}
@@ -189,7 +183,6 @@ public class MyPageController {
 	public String getPasswordUpdate(@PathVariable("id") String id, HttpServletRequest req, Model model, PasswordUpdateForm passwordUpdateForm) {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		System.out.println(passwordEncoder.encode("12341234"));
 		model.addAttribute("passwordUpdateForm", passwordUpdateForm);
 		model.addAttribute("member", member);
 		return "myPage/updatePassword";
@@ -220,7 +213,6 @@ public class MyPageController {
 		passwordUpdateService.validatePasswordUpdateForm(passwordUpdateForm, bindingResult, originPasswordCheck, member.getLoginId());
 		
 		 if(bindingResult.hasErrors()) {
-			 System.out.println("에러");
 	    	  model.addAttribute("passwordUpdateForm", passwordUpdateForm);
 	    	  model.addAttribute("member", member);
 	         return type;

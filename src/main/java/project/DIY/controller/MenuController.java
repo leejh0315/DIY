@@ -27,9 +27,8 @@ public class MenuController {
 		
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		
+
 		List<Post> post = postRepository.selectByType(type);
-		System.out.println(post);
 		
 		if(type.equals("book")) {
 			model.addAttribute("typeName", "책");

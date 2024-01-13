@@ -77,32 +77,19 @@ public class HomeController {
    @PostMapping("/{type}")
    @ResponseBody
    public List<Post> mainTypeResp(@PathVariable("type") String type, Model model) {
-      
+		
       if(type.equals("movie"))    {
-    	  List<Post> l =postRepository.selectByPostCtCodeHome(type);
-    	  for(int i = 0 ; i < l.size(); i++) {
-    		  System.out.println(l.get(i).getTargetName());
-    	  }
-    	  System.out.println("------------------------------------");
-    	  return postRepository.selectByPostCtCodeHome(type);
+    	  List<Post> post = postRepository.selectByPostCtCodeHome(type);
+    	  return post;
 	  }
       else if(type.equals("book")){
-    	  List<Post> l =postRepository.selectByPostCtCodeHome(type);
-    	  for(int i = 0 ; i < l.size(); i++) {
-    		  System.out.println(l.get(i).getTargetName());
-    	  }
-    	  System.out.println("------------------------------------");
-    	  return postRepository.selectByPostCtCodeHome(type);
+    	  List<Post> post = postRepository.selectByPostCtCodeHome(type);
+    	  return post;
 	  }
       else{
-    	  List<Post> l =postRepository.selectByPostCtCodeHome(type);
-    	  for(int i = 0 ; i < l.size(); i++) {
-    		  System.out.println(l.get(i).getTargetName());
-    	  }
-    	  System.out.println("------------------------------------");
-    	  return postRepository.selectByPostCtCodeHome(type);
+    	  List<Post> post = postRepository.selectByPostCtCodeHome(type);
+    	  return post;
 	  }
-
    }
    
    
@@ -127,10 +114,8 @@ public class HomeController {
 	  JoinForm joinForm = new JoinForm();
       model.addAttribute("joinForm", joinForm);
       if(userTempEmail == null) {
-    	  System.out.println(userTempEmail);
     	  return "join/join";
       }else if(!redisUtils.getData(userTempEmail).isEmpty()) {
-    	  System.out.println(userTempEmail);
     	  model.addAttribute("joinForm", joinForm);
     	  return "join/join2";
       }else {
@@ -142,7 +127,6 @@ public class HomeController {
    
    @PostMapping("/join2")
    public String postJoin(@ModelAttribute JoinForm joinForm, Model model, BindingResult bindingResult){
-      System.out.println(joinForm);
       validateJoinForm(joinForm, bindingResult);
       joinForm.setLoginId(userTempEmail);
       if(bindingResult.hasErrors()) {

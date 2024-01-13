@@ -28,9 +28,10 @@ public class SearchController {
 	
 	@PostMapping("/home/search/{keyword}")
 	@ResponseBody
-	public int postSearchKeyword(@PathVariable("keyword") String keyword) {
+	public String postSearchKeyword(@PathVariable("keyword") String keyword) {
 		int cnt = postRepository.selecetPosCntBySearch(keyword);
-		return cnt;
+		System.out.println(cnt);
+		return Integer.toString(cnt);
 	}
 	
 	@GetMapping("/home/searchResult")
@@ -38,9 +39,6 @@ public class SearchController {
             					  @RequestParam(value = "totalCount", required = false) Integer totalCount,
             					  @RequestParam(value = "page", required = false) Integer page,
             Model model) {
-		System.out.println("검색어 : " + searchKeyword);
-		System.out.println("총갯수 : " + totalCount);
-		System.out.println("페이지 : " + page);
 		
 		PaginationVo pageVo = new PaginationVo(totalCount, page);
 		pageVo.setRowCount(10);

@@ -85,7 +85,6 @@ public class PostController {
     public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile,
             HttpServletRequest request) {
         
-    	System.out.println("uploadSummernoteImageFile Post 요청 접근 완료");
     	// JSON 객체 생성
         JsonObject jsonObject = new JsonObject();
 
@@ -123,7 +122,6 @@ public class PostController {
 
         // JSON 객체를 문자열로 변환하여 반환
         String a = jsonObject.toString();
-        System.out.println(a);
     	
         return a;
     }
@@ -142,11 +140,9 @@ public class PostController {
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		post.setMemberId(member.getId());
 		post.setMemberNick(member.getNickName());
-		
+		System.out.println(post.getContent().length());
 		post.setTargetName(post.getTargetName().trim());
-		System.out.println(post);
 		
-    	System.out.println("writePost Post요청 접근");
     	
     	postRepository.insertPost(post);
     	String postCode = postRepository.getLastPost(member.getId());
@@ -193,7 +189,6 @@ public class PostController {
 		}
 		
 		postItem = postRepository.selectByPostCode(postCode);
-		System.out.println("r.size : " + r.size() );
 			for(int i =0; i<r.size();i++) {
 				List<Member> nickAndSrc = replyRepository.selectNickname(r.get(i).getReplyerId());
 				r.get(i).setNickName(nickAndSrc.get(0).getNickName());
@@ -202,7 +197,6 @@ public class PostController {
 		System.out.println(r);
 
 		
-		String targetTumb = postItem.getTargetThumbnail();
 
 		model.addAttribute("post",postItem);
 		model.addAttribute("postCode", postCode);
@@ -230,7 +224,6 @@ public class PostController {
 	
 	@PostMapping("/update/{postCode}")
 	public String postUpdatePostByPostId(@ModelAttribute Post post, @PathVariable("postCode") int postCode, HttpServletRequest req) {
-		System.out.println(post);
 		postRepository.updatePostByPostCode(post);
 		return "redirect:/posts/{postCode}";
 	}

@@ -7,7 +7,7 @@
     <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
-<script th:src="@{/js/nav.js}"></script>
+
 <style>
 	.type{
 		border: solid 1px black;
@@ -40,7 +40,6 @@
 					<div th:text="${post.targetName}"></div>
 					<div th:text="${post.targetSubName}"></div>
 					<div th:text="${post.targetAuthor}"></div>
-					<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
 					<div th:text="${post.starCount}"></div>
 				</div>
 				<hr>
@@ -82,13 +81,16 @@
 				url : "/home/" + type,
 				data : {
 					type
-				},success: function (data) {
+				},
+				dataType: "json",
+				contentType:"application/json",
+				success: function (data) {
                 	console.log(data);
                 	
 						$("#container").empty();
-                	$.each(data, function (index, post) {
+                		$.each(data, function (index, post) {
                     	$('#container').append('<div id="' + index + '">' +
-                        '<img src="'+post.targetThumbnail+'">' +
+                        '<img src="' + post.targetThumbnail + '">' +
                         '<div>' + post.targetName + '</div>' +
                         '<div>' + post.targetSubName + '</div>' +
                         '<div>' + post.targetAuthor + '</div>' +

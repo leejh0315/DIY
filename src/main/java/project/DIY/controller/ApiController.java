@@ -22,7 +22,7 @@ public class ApiController {
 
 @GetMapping("/kakaoBookSearch/{keyword}")
 public String kakaoBookSearch(@PathVariable("keyword") String keyword){
-        System.out.println(keyword);
+
         String query = keyword;
         ByteBuffer buffer = StandardCharsets.UTF_8.encode(query);
         String encode = StandardCharsets.UTF_8.decode(buffer).toString();
@@ -30,11 +30,13 @@ public String kakaoBookSearch(@PathVariable("keyword") String keyword){
         URI uri = UriComponentsBuilder
                 .fromUriString("https://dapi.kakao.com")
                 .path("/v3/search/book")
-                .queryParam("query", encode) 
+                .queryParam("query", encode)
+                .queryParam("size", 20)
+                	
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUri();
-        System.out.println(uri);
+
 
         RestTemplate restTemplate = new RestTemplate();
         RequestEntity<Void> req = RequestEntity
@@ -73,7 +75,7 @@ public String concert(@PathVariable("keyword") String keyword) throws Exception{
 		}
 
 		String toDay = Integer.toString(year) + month + day;
-		System.out.println("오늘 날짜는 : " + toDay);
+
 
 		if(toDay.length()!= 8) {
 			toDay = "20231225";
@@ -91,12 +93,12 @@ public String concert(@PathVariable("keyword") String keyword) throws Exception{
                 .queryParam("stdate", "20000000")
                 .queryParam("stdate", toDay)
                 .queryParam("cpage", "1")
-                .queryParam("rows", "10")
+                .queryParam("rows", "20")
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUri();
-        System.out.println(uri);
-        System.out.println();
+
+  
         RestTemplate restTemplate = new RestTemplate();
         RequestEntity<Void> req = RequestEntity
                         
@@ -109,9 +111,7 @@ public String concert(@PathVariable("keyword") String keyword) throws Exception{
         
         String xmlString = result.getBody().toString();
         String jsonString = convertXmlToJson(xmlString);
- 
-        System.out.println(jsonString);
-        System.out.println("공연api 호출 끝");
+
         
         return jsonString;
 }
@@ -172,7 +172,6 @@ public String movie(@PathVariable("keyword") String keyword){
         ByteBuffer buffer = StandardCharsets.UTF_8.encode(query);
         String encode = StandardCharsets.UTF_8.decode(buffer).toString();
         
-        System.out.println("encode: " + encode);
         
         URI uri = UriComponentsBuilder
                 .fromUriString("http://api.koreafilm.or.kr")
@@ -181,12 +180,12 @@ public String movie(@PathVariable("keyword") String keyword){
                 .queryParam("detail", "Y")
                 .queryParam("query", encode)
                 .queryParam("startCount", 0)
-                .queryParam("listCount", 10)
+                .queryParam("listCount", 20)
                 .queryParam("ServiceKey", "4RJCFW83684G62B74F89")
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUri();
-        System.out.println(uri);
+        
 
         RestTemplate restTemplate = new RestTemplate();
         RequestEntity<Void> req = RequestEntity
@@ -194,10 +193,7 @@ public String movie(@PathVariable("keyword") String keyword){
                 .build();
         
         ResponseEntity<String> result = restTemplate.exchange(req, String.class);
-        System.out.println(result);
-        
-        
-        System.out.println("영화api 호출 끝");
+
         return result.getBody();
 }
 

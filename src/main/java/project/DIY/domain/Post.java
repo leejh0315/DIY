@@ -18,6 +18,8 @@ public class Post {
 	private String memberNick;	//회원 닉네임
 	private double starCount;		//작품에 남긴 별점
 	private String title;		//게시글 제목
+	
+	
 	private String content;		//게시글 내용
 	private Date createOn;		//게시글 작성 날짜
 	private Date updateOn;		//게시글 수정 날짜

@@ -9,7 +9,7 @@
 
 	<!-- 게시글 등록 -->
 	<insert id="insertPost" parameterType="Post"> 
-		INSERT INTO diydb.post
+		INSERT INTO diydb.post(postCode, postCtCode, targetName, targetSubName, targetAuthor, targetThumbnail, memberId, memberNick, starCount, title, content, createOn, updateOn, openStatus)
 		VALUES (
 			null, 
 			#{postCtcode},
