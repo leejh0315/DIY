@@ -1,0 +1,142 @@
+.type{
+
+    border: solid 1px #9A9E7B;
+    width: 45px;
+    cursor: pointer;
+    border-radius: 15px;
+    text-align: center;
+    padding: 4px 5px;
+}
+
+.home_Wrap{
+    position: relative;
+    left: 30%;
+    margin-left: -150px;
+    top: 50%;
+    margin-top: 60px;
+}
+
+.mostPosted_Top{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+
+}
+.typeSelector {
+    font-size: 14px;
+    right: 0;
+    display:flex;
+    justify-content: end;
+    flex-direction: row;
+    gap: .8em;
+
+}
+
+.Thumb {
+    width: 100%;
+
+}
+.Thumb>img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+
+}
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 14px;
+
+}
+.title {
+    font-weight: 700;
+}
+
+.subtitle , .author{
+    color: #777777;
+}
+
+.mostPosted {
+    width: 18%;
+}
+
+.banner{
+    
+    width:50% ;
+}
+.banner>img{
+    border-radius: 20px;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.postcontent {
+    height: 20px;
+    overflow:hidden;
+	white-space:nowrap;
+    text-overflow : ellipsis ;
+}
+
+.home_Wrap  p {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.mostPosted_Wrap{
+    
+    width: 50%;
+}
+
+.king_Wrap {
+    width: fit-content;
+    height: 10%;
+    border: solid 1px #9A9E7B;
+    border-radius: 15px;
+    padding: 0 30px;
+    margin: 20px 0;
+    
+}
+.king_Wrap p {
+    margin: 10px 10px 10px 10px;
+}
+.king_Wrap>p:first-of-type{
+    position: relative;
+    left: -1.5em;
+}
+.kingcontent{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    margin:0 0 20px 0 ;
+    gap: 2em;
+}
+.rank.scd>.kingimgdiv, .rank.thd>.kingimgdiv {
+    width: 5em;
+    height: 5em;
+}
+.rank.scd, .rank.thd {
+    margin-top: 30px;
+}
+.rank>div:first-of-type{
+    font-weight: 700;
+    
+}
+.kingimgdiv{
+    width: 6em;
+    height: 6em;
+}
+.rank {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5em;
+}
+.kingimgdiv > img{
+    width: 100%;
+    height:100%;
+    border-radius: 50%;
+    object-fit: cover;
+}

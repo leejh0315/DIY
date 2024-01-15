@@ -90,5 +90,11 @@ public class MybatisMemberRepository implements MemberRepository{
 	public void updateUserStatusCode(HashMap<String, String> map) {
 		memberMapper.updateUserStatusCode(map);
 	}
+
+	@Override
+	public Member selectBymemberId(int id) {
+		Member members= memberMapper.selectBymemberId(id);
+		return members;
+	}
 	
 }

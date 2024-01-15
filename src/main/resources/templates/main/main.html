@@ -7,14 +7,9 @@
     <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/home.css}">
 
-<style>
-	.type{
-		border: solid 1px black;
-		width: 50px;
-		cursor: pointer;
-	}
-</style>
+
 </head>
 <body>
 	<th:block th:if="${member == null}">
@@ -24,55 +19,93 @@
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
 	
+	<div class="home_Wrap">
+	<div class="banner">
+		<img th:src="@{/img/bannerimg_900x200.png}" alt="" usemap="banner-map">
+		<!-- <map name="banner-map">
+			<area target="_self" alt="" title="" location.href='/writePost' coords="307,113,231,141" shape="rect">
+		</map> -->
+	</div>
+	<div class="mostPosted_Wrap">
+		<div class="mostPosted_Top">
+			<p>가장 많이 기록된 작품들</p>
+			<div class="typeSelector">
+				<div class="type 1" id="type_1" onclick="selected(this, 'book')">책</div>
+				<div class="type 2" id="type_2" onclick="selected(this, 'movie')">영화</div>
+				<div class="type 3" id="type_2" onclick="selected(this, 'concert')">공연</div>
+			</div>
+		</div>
 	
-	
-	<img th:src="@{/img/bannerimg_900x200.png}" alt="">
-	<p>가장 많이 기록된 작품들</p>
-	<div class="type 1" id="type_1" onclick="selected(this, 'book')">책</div>
-	<div class="type 2" id="type_2" onclick="selected(this, 'movie')">영화</div>
-	<div class="type 3" id="type_2" onclick="selected(this, 'concert')">공연</div>
-	
-	<div id="container">
-		<div th:each="post,i:${post}" id="mostPosted">
+	<div id="container" class="container">
+		<div th:each="post,i:${post}" id="mostPosted" class="mostPosted">
 				<div id="postComp">
 					<div th:id="${i.index}"></div>
-					<img th:src="${post.targetThumbnail}">
-					<div th:text="${post.targetName}"></div>
-					<div th:text="${post.targetSubName}"></div>
-					<div th:text="${post.targetAuthor}"></div>
-					<div th:text="${post.starCount}"></div>
+					<div  class="Thumb">
+						<img th:src="${post.targetThumbnail}">
+					</div>
+					<div class="postcontent title" th:text="${post.targetName}"></div>				
+					<div class="subtitle" th:text="${post.targetSubName}"></div>
+					<div class="postcontent author" th:text="${post.targetAuthor}"></div>
+					<div th:text="'★  '+${post.starCount}"></div>
 				</div>
-				<hr>
+				
 		</div>
 	</div>
+</div>
 	<div id="post-container"></div>
-				
+			
 	
-	
-	<p>이달의 기록왕</p>
-	<div th:text="${king[0].memberNick}"></div>
-	<div th:text="${king[1].memberNick}"></div>
-	<div th:text="${king[2].memberNick}"></div>
-	
-	<footer class="footer">
+	<div class="king_Wrap">
+		<p>이달의 기록왕</p>
+		<div class="kingcontent">
+		<div class="rank scd">
+			<div>2등</div>
+			<div class="kingimgdiv">
+				<img th:src="${kingProfileimg[1]}">
+			</div>
+			<div th:text="${king[1].memberNick}"></div>
+		</div>
+		<div class="rank fst">
+			<div>1등</div>
+			<div class="kingimgdiv">
+				<img th:src="${kingProfileimg[0]}">
+			</div>	
+			<div th:text="${king[0].memberNick}"></div>
+		</div>
+		<div class="rank thd">
+		<div>3등</div>
+			<div class="kingimgdiv">
+				<img th:src="${kingProfileimg[2]}">
+			</div>
+			<div th:text="${king[2].memberNick}"></div>
+		</div>
+
+	</div>
+	</div>
+</div>
+	<!-- <footer class="footer">
 
     <p>Copyright © 2023. DIY All rights reserved.</p>
     <p>Contact <br>
     이정현 : yijh0315@naver.com<br>
     원윤선 : ereunosun113@gmail.com 
     </p>
-	</footer>
+	</footer> -->
 	
 	<script>
 		let types = document.querySelectorAll(".type");
 		
-		$("#type_1").css("background-color", "lightgray");
+		$("#type_1").css("background-color", "#9A9E7B");
 		
 		
 		function selected(e, type){
-			$(types).css("background-color", "white")			
-			$(e).css("background-color", "lightgray");
-			
+			$(types).css("background-color", "white");
+			$(types).css("color", "black");		
+
+			$(e).css("background-color", "#9A9E7B");
+			$(e).css("color", "white");
+
+
 			
 			
         	
@@ -89,14 +122,16 @@
                 	
 						$("#container").empty();
                 		$.each(data, function (index, post) {
-                    	$('#container').append('<div id="' + index + '">' +
-                        '<img src="' + post.targetThumbnail + '">' +
-                        '<div>' + post.targetName + '</div>' +
+                    	$('#container').append('<div class="mostPosted">'+
+						'<div id="' + index + '">' +
+						'<div class="Thumb"> '+
+						'<img src="'+ post.targetThumbnail + '">' +
+						'</div>'+
+                        '<div class="postcontent title" >' + post.targetName + '</div>' +
                         '<div>' + post.targetSubName + '</div>' +
-                        '<div>' + post.targetAuthor + '</div>' +
-                        //'<input value="' + post.targetThumbnail + '" id="targetThumb" type="hidden">' +
-                        '<div>' + post.starCount + '</div>' +
-                        '</div><hr>');
+                        '<div class="postcontent author">' + post.targetAuthor + '</div>' +
+                        '<div >'+ '★  '+ post.starCount + '</div>' +
+                        '</div></div>');
                 });
             }
 		});

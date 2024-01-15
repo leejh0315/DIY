@@ -10,7 +10,9 @@
 		select * from diydb.member
 		where loginId = #{loginId};
 	</select>
-	
+	<select id="selectBymemberId" resultType="project.DIY.domain.Member">
+	SELECT * FROM diydb.member where id=#{id};
+	</select>
 	
 	<update id="updateUUID" parameterType="project.DIY.domain.Member">
 	UPDATE diydb.member
@@ -55,9 +57,10 @@
 	
 	<select id="thisMonthWriteKing" resultType="Post">
 		 select
+		memberId,
  		memberNick,
  		count(memberNick)
-  		as cnt 
+  		as cnt
  		from diydb.post
  		where Month(createon)= #{month}
  		group by memberNick order by cnt desc;

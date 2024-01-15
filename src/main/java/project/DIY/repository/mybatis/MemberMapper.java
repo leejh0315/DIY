@@ -23,4 +23,5 @@ public interface MemberMapper {
 	public List<Member> selectAllUser();
 
 	public void updateUserStatusCode(HashMap<String, String> map);
+	public Member selectBymemberId(int id);
 }
