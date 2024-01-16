@@ -109,6 +109,7 @@ public class MyPageController {
 			String contentTemp = list.get(i).getContent();
 			String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
 			plainText = plainText.replaceAll("&nbsp;", "");
+			plainText = plainText.replaceAll("&gt;", "");
 			list.get(i).setContent(plainText);
 //			System.out.println(plainText);
 		}

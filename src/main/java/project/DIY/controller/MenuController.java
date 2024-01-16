@@ -52,6 +52,19 @@ public class MenuController {
 		  	  else { memberprofileimg.add(memberRepository.selectBymemberId(memberId).getProfileSrc());}
 		    	 
 	      }
+		 
+
+		 
+		 
+		 for(int i=0; i<post.size();i++) {
+				String contentTemp = post.get(i).getContent();
+				String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
+				plainText = plainText.replaceAll("&nbsp;", "");
+				plainText = plainText.replaceAll("&gt;", "");
+				post.get(i).setContent(plainText);
+//				System.out.println(plainText);
+			}
+		 
 		//System.out.println(memberprofileimg.get(0));
 		model.addAttribute("member", member);
 		model.addAttribute("type", post);
