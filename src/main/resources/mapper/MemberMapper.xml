@@ -52,7 +52,8 @@
 		update diydb.member set 
 		nickName = #{nickName},
 		profileSrc = #{profileSrc},		
-		memberIntro = #{memberIntro}
+		memberIntro = #{memberIntro},
+		updateOn = date_format(now(), '%Y%m%d%H%i%s')
 		where id = #{id};
 	</update>
 	
