@@ -6,6 +6,8 @@
     <title>Document</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/menu.css}">
+
 </head>
 
 <body>
@@ -15,27 +17,37 @@
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
-	
-	<div th:text="${typeName}"></div>
-	<hr>
-	<div th:each="post,i : ${type}">
-		<a th:href="@{|/posts/${post.postCode}|}">
-			<div id="postComp">
-				<div th:id="${i.index}"></div>
-				
-				<img th:src="${post.targetThumbnail}">
-				<div th:text="${post.targetName}"></div>
-				<div th:text="${post.targetSubName}"></div>
-				<div th:text="${post.targetAuthor}"></div>
-				<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
-				<div th:text="${post.memberNick}"></div>
-				<div th:text="${post.starCount}"></div>
-				<div th:text="${post.title}"></div>
-			</div>
-		</a>
+	<div class="menu_Wrap">
+		<div class="typename" th:text="${typeName}"></div>
 		<hr>
+		<div th:each="post,i : ${type}">
+			<a th:href="@{|/posts/${post.postCode}|}">
+				<div id="postComp" class="postComp">
+					<div th:id="${i.index}"></div>
+					
+					<img th:src="${post.targetThumbnail}">
+					<div class="ctt_Wrap">
+						<div class="writerinfo_Wrap">
+							<div class="profileimg_div">
+								<img th:src="${profilesrc[i.index]}">
+							</div>
+							<div th:text="${post.memberNick}"></div>
+							<div th:text="${post.createOn}"></div>
+						</div>
+						<div th:text="${post.targetName}"></div>
+						<div th:text="${post.targetAuthor}"></div>
+						<div th:text="${post.targetSubName}"></div>
+						<div th:text="${post.title}"></div>
+						<div th:text="${post.content}" class="postcontent"></div>
+						<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
+					</div>	
+						<div th:text="${post.starCount}"></div>
+					
+				</div>
+			</a>
+			<hr>
+		</div>
 	</div>
-	
 		<script th:src="@{/js/nav.js}"></script>
 </body>
 </html>

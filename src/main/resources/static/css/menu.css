@@ -1,0 +1,40 @@
+.menu_Wrap {
+    position: relative;
+    left: 20%;
+    margin-left: -150px;
+    width: 77%;
+    top: 50%;
+    margin-top: 60px;
+}
+
+.postComp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profileimg_div{
+    width: 1em;
+    height: 1em;
+}
+
+.profileimg_div > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.writerinfo_Wrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.postcontent {
+    width: 70%;
+    height: 20%;
+    overflow:hidden;
+	white-space:nowrap;
+    text-overflow : ellipsis ;
+
+}
