@@ -2,6 +2,7 @@ package project.DIY.controller;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,7 +66,19 @@ public class MyPageController {
 		List<Post> myPost = postRepository.selectUserPostbyId(Integer.parseInt(id));
 		int size = myPost.size();
 
-		
+		List<String> memberprofileimg =new ArrayList<>();
+		 
+		 for(int i = 0; i<myPost.size();i++) {
+	    	  Integer memberId =((Post) myPost.get(i)).getMemberId();
+	    	  
+	    	  
+		   	  if(memberRepository.selectBymemberId(memberId).getProfileSrc()==null) {
+		   		  memberprofileimg.add("/img/defalut_profileimg.jpg");
+		    	  }
+		  	  else { memberprofileimg.add(memberRepository.selectBymemberId(memberId).getProfileSrc());}
+		    	 
+	      }
+		 model.addAttribute("profilesrc",memberprofileimg);
 //		for(int i=0; i<myPost.size();i++) {
 //			String contentTemp = myPost.get(i).getContent();
 //			String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
