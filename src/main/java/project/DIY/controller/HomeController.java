@@ -33,6 +33,7 @@ import project.DIY.form.JoinForm;
 import project.DIY.form.LoginForm;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
+import project.DIY.service.EmailService;
 import project.DIY.service.LoginService;
 import project.DIY.service.RedisUtils;
 import project.DIY.session.SessionVar;
@@ -54,6 +55,8 @@ public class HomeController {
    private String userTempEmail;
    @Autowired
    private PasswordEncoder passwordEncoder;
+   @Autowired
+	private final EmailService emailService;
    
    @GetMapping("/home")
    public String getMain(Model model, HttpServletRequest req) {
@@ -220,6 +223,13 @@ public class HomeController {
     		  return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
     	  }
       }
+      List<Member> allMember = memberRepository.selectAllUser();
+      for(int i = 0 ; i<allMember.size(); i++) {
+    	  if(allMember.get(i).getPasswordFind().equals("Y")) {
+    		  return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
+    	  }
+      }
+    	  
       return "redirect:/" + "home/home";
    }
    
@@ -233,6 +243,38 @@ public class HomeController {
          session.invalidate();
       }
       return "redirect:/" + "home/home";
+   }
+   
+   @GetMapping("/findPw")
+   public String getFindPw(Model model, LoginForm loginForm) {
+	   model.addAttribute("loginForm", loginForm);
+	   return "login/findPw";
+   }
+   
+   @ResponseBody
+   @PostMapping("/findPw")
+   public String postFindPw(@RequestParam(value = "loginId") String loginId){
+	   System.out.println(loginId);
+	   int cnt = memberRepository.idCheck(loginId);
+	   System.out.println(cnt);
+	   if(cnt == 0) {
+		   return "0";
+	   }else {
+		   return "1";
+	   }
+   }
+   @PostMapping("/findPw/sendEmail")
+   @ResponseBody
+   public String postFindPwSendMail(
+		   @RequestParam(value = "loginId") String loginId) throws Exception{
+	   String ePw = emailService.sendSimpleMessagePassword(loginId);
+	   
+	   System.out.println("controller ePw : "+ePw);
+	   Member member = new Member();
+	   member.setPassword(passwordEncoder.encode(ePw));
+	   member.setLoginId(loginId);
+	   memberRepository.updatePasswordByLoginId(member);
+	   return "redirect:/login/login";
    }
 
    public void validateLoginForm(LoginForm loginForm, Errors errors) {

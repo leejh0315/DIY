@@ -23,4 +23,7 @@ public interface PostMapper {
 	public int selecetPosCntBySearch(String search);
 	public List<Post>selecetPostBySearch(PaginationVo paginationVo);
 	public int countByMonth(int memberId, int year, int month);
+	
+
+	public void updateById(String memberNick, int postCode);
 }

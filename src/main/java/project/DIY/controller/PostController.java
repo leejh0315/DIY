@@ -165,7 +165,8 @@ public class PostController {
 	      if(bindingResult.hasErrors()) {
 	    	  System.out.println(postForm);
 	    	  model.addAttribute("postForm", postForm);
-	  			model.addAttribute("ct", ct);
+	    	  model.addAttribute("member", member);
+  				model.addAttribute("ct", ct);
 	         return "post/writePost";
 	      }
 	      else {

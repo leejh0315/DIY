@@ -18,6 +18,7 @@ public class Member {
 	private String profileSrc;
 	private String memberIntro;
 	private Date passwordUpdate;
+	private String passwordFind;
 }
 
 

@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <style>
 	img{
@@ -15,8 +18,11 @@
 </head>
 <body>
 	<h1>updateMember</h1>
+	
+	<i onclick="deleteSrc()" class="fa-solid fa-trash"></i>
+	
 	<div id="newProfile">
-		<img th:src="${member.profileSrc}">
+		<img id="profileSrcImg" th:src="${member.profileSrc}">
 	</div>
 	
 	<form method="post" action="/myPage/update/" enctype="multipart/form-data">
@@ -35,9 +41,13 @@
 	</a>
 
 	<script>
+	$(document).ready(function() {
+		
 		let profileSrc = document.getElementById("profileSrc");
 		let newProfile = document.getElementById("newProfile");	
 		let profilePath = document.getElementById("profilePath");
+		let profileSrcImg = document.getElementById("profileSrcImg");
+		
 		
 		profileSrc.addEventListener("change", (e)=>{
 			e.preventDefault();
@@ -60,8 +70,11 @@
             },
         })
 		});
-		
-
+		function deleteSrc(){
+			profilePath.value = "/img/defalut_profileimg.jpg";
+			profileSrcImg.src = "/img/defalut_profileimg.jpg";
+		}
+});
 	</script>
 			<script th:src="@{/js/nav.js}"></script>
 </body>
