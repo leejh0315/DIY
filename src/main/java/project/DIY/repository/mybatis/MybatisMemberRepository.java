@@ -96,5 +96,10 @@ public class MybatisMemberRepository implements MemberRepository{
 		Member members= memberMapper.selectBymemberId(id);
 		return members;
 	}
+
+	@Override
+	public void updatePasswordByLoginId(Member member) {
+		memberMapper.updatePasswordByLoginId(member);
+	}
 	
 }

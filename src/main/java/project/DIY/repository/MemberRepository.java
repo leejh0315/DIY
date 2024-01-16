@@ -20,5 +20,5 @@ public interface MemberRepository {
 	public List<Member> selectAllUser();
 	public void updateUserStatusCode(HashMap<String, String> map);
 	public Member selectBymemberId(int id);
-	
+	public void updatePasswordByLoginId(Member member);
 }

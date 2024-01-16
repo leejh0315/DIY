@@ -38,7 +38,8 @@
 			null,
 			null,
 			null,
-			null
+			null,
+			"N"
 			);
 		
 	</insert>
@@ -81,10 +82,10 @@
 	<update id="updatePasswordById" parameterType="Member">
 		update diydb.member set 
 		password = #{password},
-		passwordUpdate = date_format(now(), '%Y%m%d%H%i%s')
+		passwordUpdate = date_format(now(), '%Y%m%d%H%i%s'),
+		passwordFind = "N"
 		where id = #{id};
 	</update>
-	
 	
 	<select id="selectAllUser" resultType="Member">
 		 SELECT * FROM diydb.member;
@@ -93,5 +94,12 @@
 	<update id="updateUserStatusCode" parameterType="HashMap">
 		update diydb.member set statusCode = #{statusCode} where id = #{id};
 	</update>
-
+	
+	<update id="updatePasswordByLoginId" parameterType="Member">
+		update diydb.member set 
+		password = #{password},
+		passwordUpdate = date_format(now(), '%Y%m%d%H%i%s'),
+		passwordFind = "Y"
+		where loginId = #{loginId};
+	</update>
 </mapper>

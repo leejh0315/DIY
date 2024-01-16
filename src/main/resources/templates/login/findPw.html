@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+	<th:block th:if="${member == null}">
+		<div th:replace="main/header :: headFrag(${none})"></div>
+	</th:block>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+	
+
+
+  <div class="login_wrap">
+    <h1>비밀번호 찾기</h1>
+    <p>비밀번호를 잊으셨나요?</p>
+  
+		<h4>이메일을 입력해주세요.</h4>
+		<h5> 입력한 이메일로 임시 비밀번호를 보내드립니다.</h5>
+	    <label><input id="loginId" class="loginId" placeholder="이메일"></label><br>
+      
+      <div class="errorMessage" id="errorMessage">
+
+    </div>
+        <button id="loginButton" class="loginButton" onclick="submitEmail()">이메일 전송</button>
+        <div class="saver_finder_wrap">
+
+        </div>
+
+
+
+  </div>
+</body>
+
+<script>
+	let errorMessage = document.getElementById("errorMessage");
+	
+	function submitEmail(){
+		let loginId = document.getElementById("loginId").value;
+		 $.ajax({
+            type : "POST",
+            url : "/home/findPw",
+            data : {
+               "loginId" : loginId 
+            }, success : function(data){
+				console.log(data);
+               if(data == "0"){
+                  errorMessage.innerHTML="<div>해당 이메일이 존재하지 않습니다.</div>";
+               }else {
+				   errorMessage.innerHTML="";
+				   alert("이메일이 전송되었습니다.");
+				   $.ajax({
+			            type : "POST",
+			            url : "/home/findPw/sendEmail",
+			            data : {
+			               "loginId" : loginId 
+			            }			 
+      				})
+				   window.location.href = "/home/dologin";
+			   } 
+            } 
+      })
+	}
+	
+</script>
+		<script th:src="@{/js/nav.js}"></script>
+</html>

@@ -125,4 +125,9 @@
 		and	
 		month(createOn) = #{param3};
 	</select>
+	
+	<update id="updateById">
+		UPDATE diydb.post SET memberNick = '${param1}'
+		WHERE postCode = #{param2};
+	</update>
 </mapper>

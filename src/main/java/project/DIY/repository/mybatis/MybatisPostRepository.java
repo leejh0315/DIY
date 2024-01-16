@@ -90,6 +90,11 @@ public class MybatisPostRepository implements PostRepository{
 		int count = postMapper.countByMonth(memberId, year, month);
 		return count;
 	}
+
+	@Override
+	public void updateById(String memberNick, int postCode) {
+		postMapper.updateById(memberNick, postCode);
+	}
 	
 	
 

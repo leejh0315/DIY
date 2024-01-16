@@ -153,6 +153,13 @@ public class MyPageController {
 		HttpSession session = req.getSession(false);
 		Member sessionMember = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
+		List<Post> posts = postRepository.selectUserPostbyId(sessionMember.getId());
+		String newNickName = member.getNickName();
+		
+		for(int i =0; i<posts.size(); i++) {
+			postRepository.updateById(newNickName, Integer.parseInt(posts.get(i).getPostCode()));
+		}
+		
 		member.setId(sessionMember.getId());
 		String path = Integer.toString(member.getId());
 		memberRepository.updateById(member);

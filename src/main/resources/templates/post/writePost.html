@@ -83,14 +83,12 @@
 			<div class="post_topmid">
 				<p>선택한 작품</p>
 				<div class="selectedWork" id="selectedWork">
-					<th:block th:if="${postForm.targetName != null}">
+					<th:block th:if="${postForm != null and postForm.targetThumbnail != null}">
 						<img th:src="${postForm.targetThumbnail}">
 						<div th:text="${postForm.targetName}"></div>
 						<div th:text="${postForm.targetAuthor}"></div>
 						<div th:text="${postForm.targetSubName}"></div>
 					</th:block>
-					
-					
 				</div>	
 				<input type="hidden" id="targetName" name="targetName" th:value="${postForm.targetName}">
 				<input type="hidden" id="postCtcode" name="postCtcode" th:value="${postForm.postCtcode}">
