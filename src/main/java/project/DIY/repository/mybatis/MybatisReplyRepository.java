@@ -47,6 +47,7 @@ public class MybatisReplyRepository implements ReplyRepository{
 		List<ReReply> reReply = replyMapper.selectReReplyById(postId);
 		return reReply;
 	}
+	@Override
 	public void deleteReplybypostCode(int postId) {
 		replyMapper.deleteReplybypostCode(postId);
 		

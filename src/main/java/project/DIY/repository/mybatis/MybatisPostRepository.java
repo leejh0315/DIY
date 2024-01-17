@@ -34,10 +34,15 @@ public class MybatisPostRepository implements PostRepository{
 		Post post = postMapper.selectByPostCode(postCode);
 		return post;
 	}
-
 	@Override
-	public List<Post> selectByType(String type) {
-		List<Post> post = postMapper.selectByType(type);
+	public int selectByTypeCnt(String type) {
+		int cnt = postMapper.selectByTypeCnt(type);
+		return cnt;
+	}
+	
+	@Override
+	public List<Post> selectByType(PaginationVo paginationVo) {
+		List<Post> post = postMapper.selectByType(paginationVo);
 		return post;
 	}
 
@@ -107,6 +112,8 @@ public class MybatisPostRepository implements PostRepository{
 		postMapper.deletePost(postCode);
 		
 	}
+
+
 	
 	
 

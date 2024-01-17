@@ -218,8 +218,6 @@
 			reportConfirm.style.display = "none";
 		}
 		
-<<<<<<< HEAD
-=======
 		
 		likes.addEventListener("click", (e)=>{
 			e.preventDefault();
@@ -245,7 +243,6 @@
 		});
 
    		
->>>>>>> abdd7ed8b7b5bcabedef2a5cb983533fd11ef8ce
 		var addedDiv = document.createElement("div");
 			
 			for(let i=0; i<reReply.length; i++){
@@ -280,7 +277,6 @@
 						jQuery(".reportCheckModal").fadeOut();
 					});
 					
-<<<<<<< HEAD
 					reportCancle.addEventListener("click", (e)=>{
 						jQuery(".reportCheckModal").fadeOut();
 					});
@@ -291,18 +287,6 @@
 				            data:{
 							 "postCode" : postCode.value
 							} ,
-=======
-				});
-				
-				
-				reportConfirm.addEventListener("click", (e)=>{
-					$.ajax({
-	            type: 'POST',
-	            url: '/insertReportPost',
-	            data:{
-				 "postCode" : postCode.value
-					} ,
->>>>>>> abdd7ed8b7b5bcabedef2a5cb983533fd11ef8ce
 	            
 			            success: function (data) {
 							if(data == 1){

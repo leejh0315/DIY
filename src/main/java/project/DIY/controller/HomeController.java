@@ -52,7 +52,6 @@ public class HomeController {
    @Autowired
    private final RedisUtils redisUtils;
    
-   private String userTempEmail;
    @Autowired
    private PasswordEncoder passwordEncoder;
    @Autowired
@@ -69,23 +68,15 @@ public class HomeController {
       List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
       List<Post> post = postRepository.selectByPostCtCodeHome("book");
       
-      
-      
-      
-      
-     
       List<String> kingProfileimg =new ArrayList<>();
       for(int i = 0; i<3;i++) {
     	  Integer kingid =((Post) king.get(i)).getMemberId();
-    	  
     	  
 	   	  if(memberRepository.selectBymemberId(kingid).getProfileSrc()==null) {
 	    		  kingProfileimg.add("/img/defalut_profileimg.jpg");
 	    	  }
 	  	  else { kingProfileimg.add(memberRepository.selectBymemberId(kingid).getProfileSrc());}
 	    	 
-    	  //System.out.println(memberRepository.selectBymemberId(kingid).getProfileSrc());
-    	  
       }
       
       System.out.println(kingProfileimg);
@@ -126,40 +117,21 @@ public class HomeController {
       return "join/join";
    }
    
-   @PostMapping("/tempEmailSave")
-   @ResponseBody
-   public void tempEmailSave(@RequestParam(value = "email") String email) {
-	   userTempEmail = email;
-   }
    
-   
-   @GetMapping("/join2")
-   public String getJoin2(Model model) {
-	  JoinForm joinForm = new JoinForm();
-      model.addAttribute("joinForm", joinForm);
-      if(userTempEmail == null) {
-    	  return "join/join";
-      }else if(!redisUtils.getData(userTempEmail).isEmpty()) {
-    	  model.addAttribute("joinForm", joinForm);
-    	  return "join/join2";
-      }else {
-    	  return "join/join";
-      }
-      
-   }
-
-   
-   @PostMapping("/join2")
+   @PostMapping("/join")
    public String postJoin(@ModelAttribute JoinForm joinForm, Model model, BindingResult bindingResult){
       validateJoinForm(joinForm, bindingResult);
-      joinForm.setLoginId(userTempEmail);
+      
+      System.out.println(joinForm);
+      
+      
       if(bindingResult.hasErrors()) {
     	  model.addAttribute("joinForm", joinForm);
-         return "join/join2";
+         return "join/join";
       }else if(!redisUtils.getData(joinForm.getLoginId()).isEmpty() &&
     		  (!redisUtils.getData(joinForm.getLoginId()).equals("Y") || redisUtils.getData(joinForm.getLoginId())=="")) {
     	  model.addAttribute("joinForm", joinForm);
-         return "join/join2";
+         return "join/join";
       }
       else {
          Member member = new Member();
@@ -325,18 +297,19 @@ public class HomeController {
    
    @ResponseBody
    @PostMapping("/joongbok")
-   public int idCheck(@RequestParam("email") String email) {
+   public String idCheck(@RequestParam("email") String email) {
 	   if (!StringUtils.hasText(email)) {
-	       return 3;
+	       return "3";
 	    } 
 	    if (!email.matches("^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$")) {
-	    	return 3;
+	    	return "3";
 	    }else {
 	        System.out.println("중복체크 진입");
 	        System.out.println("email:" + email);
 	        int cnt = memberRepository.idCheck(email);
 	        System.out.println("cnt : " + cnt);
-	        return cnt;
+	        String cntStr = Integer.toString(cnt);
+	        return cntStr;
 	    }
    }
    

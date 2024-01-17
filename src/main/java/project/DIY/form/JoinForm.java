@@ -8,4 +8,7 @@ public class JoinForm {
 	private String password;
 	private String passwordCheck;
 	private String nickName;
+	
+	private boolean joongbokBool;
+	private boolean emailConfirmBool;
 }

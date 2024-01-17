@@ -14,7 +14,9 @@ public interface PostMapper {
 	public String getLastPost(int memberId);
 	public List<Post> selectAllpost();
 	public Post selectByPostCode(int postCode);
-	public List<Post> selectByType(String type);
+	
+	public int selectByTypeCnt(String type);
+	public List<Post> selectByType(PaginationVo paginationVo);
 	public List<Post> selectUserPostbyId(int meberId);
 	public List<Post> selectByPostCtCodeHome(String postCtCode);
 	public void updatePostByPostCode(Post post);

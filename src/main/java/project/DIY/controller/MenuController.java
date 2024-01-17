@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
@@ -32,14 +33,25 @@ public class MenuController {
 		
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-
-		List<Post> post = postRepository.selectByType(type);
+		int postcnt = postRepository.selectByTypeCnt(type);
+		
+		PaginationVo pageVo = new PaginationVo(postcnt, page);
+		
+		pageVo.setOffset((page-1) * 5);
+		pageVo.setType(type);
+		
+		List<Post> post = postRepository.selectByType(pageVo);
+		
+		System.out.println(postcnt);
 		
 		if(type.equals("book")) {
+			model.addAttribute("typeEng" , "book");
 			model.addAttribute("typeName", "책");
 		}else if(type.equals("movie")) {
+			model.addAttribute("typeEng" , "movie");
 			model.addAttribute("typeName", "영화");
 		}else {
+			model.addAttribute("typeEng" , "concert");
 			model.addAttribute("typeName", "공연");
 		}
 		
@@ -59,7 +71,8 @@ public class MenuController {
 //				System.out.println(plainText);
 			}
 		 
-		//System.out.println(memberprofileimg.get(0));
+		System.out.println(pageVo);
+		model.addAttribute("pageVo", pageVo);
 		model.addAttribute("member", member);
 		model.addAttribute("type", post);
 		model.addAttribute("profilesrc",memberprofileimg);
