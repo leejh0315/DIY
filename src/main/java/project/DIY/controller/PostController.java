@@ -6,7 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -34,9 +36,9 @@ import project.DIY.domain.Category;
 import project.DIY.domain.Likes;
 import project.DIY.domain.Member;
 import project.DIY.domain.Post;
+import project.DIY.domain.ReReply;
 import project.DIY.domain.Reply;
 import project.DIY.domain.ReportPost;
-import project.DIY.form.JoinForm;
 import project.DIY.form.PostForm;
 import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.MemberRepository;
@@ -206,7 +208,6 @@ public class PostController {
 				ReportPost reportPost = new ReportPost();
 				likes.setMemberId(member.getId());
 				likes.setPostCode(postCode);
-				
 				reportPost.setPostCode(postCode);
 				reportPost.setTitle(postItem.getTitle());
 				reportPost.setContent(postItem.getContent());
@@ -216,21 +217,32 @@ public class PostController {
 				int reportpostcnt = aboutPostRepository.selectReportPost(reportPost);
 				model.addAttribute("likescnt",likescnt);
 				model.addAttribute("reportpostcnt",reportpostcnt);
-				
 			}
 			model.addAttribute("member", member);
 		}
 		
 		postItem = postRepository.selectByPostCode(postCode);
+		Map<Integer, Object> reRep = new HashMap<Integer ,Object>();
 			for(int i =0; i<r.size();i++) {
+				System.out.println(r.get(i).getReplyId());
+				List<ReReply> reReply = replyRepository.selectReReplyById(r.get(i).getReplyId());
+				
+				for(int j = 0 ; j < reReply.size();j++) {
+					List<Member> m = replyRepository.selectNickname(reReply.get(j).getRereplyerId());							
+					reReply.get(j).setNickName(m.get(0).getNickName());
+					reReply.get(j).setUserProfileSrc(m.get(0).getProfileSrc());
+					reRep.put(r.get(i).getReplyId(), reReply);
+				}
+				
 				List<Member> nickAndSrc = replyRepository.selectNickname(r.get(i).getReplyerId());
 				r.get(i).setNickName(nickAndSrc.get(0).getNickName());
 				r.get(i).setUserProfileSrc((nickAndSrc.get(0).getProfileSrc()));
 			};
+		System.out.println("reRep : " + reRep);
 		System.out.println(r);
 
 		
-
+		model.addAttribute("reRep", reRep);
 		model.addAttribute("post",postItem);
 		model.addAttribute("postCode", postCode);
 		model.addAttribute("reply",reply);

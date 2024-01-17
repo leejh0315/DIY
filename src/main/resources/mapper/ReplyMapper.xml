@@ -28,4 +28,20 @@
 		select nickName,profileSrc  from diydb.member where id = #{replyerId};
 	</select>
 	
+	<insert id="insertReReply" parameterType="Reply">
+		INSERT INTO diydb.rereply
+		VALUES (
+			null, 
+			#{postId}, 
+			#{replyContent}, 
+			#{replyerId}, 
+			date_format(now(), '%Y%m%d%H%i%s'),
+			null
+		);
+	</insert>
+	
+	<select id="selectReReplyById" resultType="ReReply">
+		select * from diydb.rereply where replyId = #{param1};
+	</select>
+	
 </mapper>

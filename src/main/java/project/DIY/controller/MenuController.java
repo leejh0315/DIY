@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +26,9 @@ public class MenuController {
 	private final MemberRepository memberRepository;
 	
 	@GetMapping("/menu/{type}")
-	public String getBook(Model model, @PathVariable("type") String type, HttpServletRequest req) {
+	public String getBook(Model model, @PathVariable("type") String type, HttpServletRequest req,
+			@RequestParam(value = "page", defaultValue = "1") int page
+			) {
 		
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
@@ -41,20 +44,11 @@ public class MenuController {
 		}
 		
 		 List<String> memberprofileimg =new ArrayList<>();
-		 
+		System.out.println(post.size()); 
 		 for(int i = 0; i<post.size();i++) {
-	    	  Integer memberId =((Post) post.get(i)).getMemberId();
-	    	  
-	    	  
-		   	  if(memberRepository.selectBymemberId(memberId).getProfileSrc()==null) {
-		   		  memberprofileimg.add("/img/defalut_profileimg.jpg");
-		    	  }
-		  	  else { memberprofileimg.add(memberRepository.selectBymemberId(memberId).getProfileSrc());}
-		    	 
+	    	  Integer memberId =post.get(i).getMemberId();
+			  memberprofileimg.add(memberRepository.selectBymemberId(memberId).getProfileSrc());
 	      }
-		 
-
-		 
 		 
 		 for(int i=0; i<post.size();i++) {
 				String contentTemp = post.get(i).getContent();
