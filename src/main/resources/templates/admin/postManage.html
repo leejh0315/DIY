@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>문득 관리자 페이지</title>
+    <h1>문득 관리자 페이지</h1>
+	
+    <h2>전체 게시글</h2>
+    
+    
+</head>
+<body>
+
+    <div class="deleteCheckModal" id="deleteCheckModal" style="z-index: 1;
+			position: absolute; display:none; width: 100%; height: 100%; background: #333333ca; top: 0; left: 0;">
+				<div class="reportCheck" id="reportCheck" style="width:400px; height:200px;
+				background:#fff; border-radius:10px;
+				position:relative; top:50%; left:50%;
+				margin-top:-100px; margin-left:-200px;
+				text-align:center;
+				box-sizing:border-box; padding:74px 0;
+				line-height:23px; cursor:pointer;">
+					<div id="modalcontent">글을 삭제하시겠습니까?</div>
+					<div id="deleteCancle">취소</div>
+					<div id="deleteConfirm">삭제</div>
+				</div>
+			</div>
+
+
+    <table id="container">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>Post Code</th>
+                <th>Post Ctcode</th>
+                <th>Target Name</th>
+                <th>Target Sub Name</th>
+                <th>Target Author</th>
+                <th>Member ID</th>
+                <th>Member Nick</th>
+                <th>Title</th>
+                <th>Create On</th>
+                <th>Update On</th>
+                <th>Star Count</th>
+                <th>게시글 삭제</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="allPosts, i : ${allPosts}">
+                <td th:text="${i.index+1}"></td>
+                <td class="postCode" th:text="${allPosts.postCode}"></td>
+                <td th:text="${allPosts.PostCtcode}"></td>
+                <td th:text="${allPosts.targetName}"></td>
+                <td th:text="${allPosts.targetSubName}"></td>
+                <td th:text="${allPosts.targetAuthor}"></td>
+                <td th:text="${allPosts.memberId}"></td>
+                <td th:text="${allPosts.memberNick}"></td>
+                <td th:text="${allPosts.title}"></td>
+                <td th:text="${allPosts.createOn}"></td>
+                <td th:text="${allPosts.updateOn}"></td>
+                <td th:text="${allPosts.starCount}"></td>
+                <td>
+                    <button class="btn postDelete">게시글 삭제</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <script>
+        let postDeletebtn = document.querySelectorAll(".postDelete");
+        let postCodes = document.querySelectorAll(".postCode");
+        let deleteCheckModal = document.getElementById("deleteCheckModal");
+        let deleteCancle = document.getElementById("deleteCancle");
+		let deleteConfirm = document.getElementById("deleteConfirm");
+
+        
+        for(let i =0; i<postDeletebtn.length; i++){
+            let postCode = postCodes[i].innerHTML;
+            console.log(postCode);
+
+            postDeletebtn[i].addEventListener("click",(e)=>{
+					console.log("눌림");
+					jQuery(".deleteCheckModal").fadeIn();
+				
+                    deleteCancle.addEventListener("click", (e)=>{
+                        jQuery(".deleteCheckModal").fadeOut();
+                        
+                    });
+				
+				
+                deleteConfirm.addEventListener("click", (e)=>{
+					console.log("눌림");
+					console.log(postCode);
+
+					$.ajax({
+	            	type: 'POST',
+		            url: '/deletePost',
+		            data:{
+                        "postCode" : postCode,
+						} ,
+					dataType: 'html',
+		            success: function (data) {
+						console.log(data);
+						if(data == "1"){
+							console.log("삭제 성공");
+                            modalcontent.innerText = "삭제되었습니다.";
+						    deleteCancle.innerText = "확인";
+						    deleteConfirm.style.display = "none"
+						    
+						}
+				
+            },
+            
+        })
+
+        
+			
+                    
+                    
+    })
+					
+
+});
+        };
+
+
+
+    </script>
+</body>
+</html>

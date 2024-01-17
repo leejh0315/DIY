@@ -70,6 +70,10 @@
 		
 	</select>
 	
+	<select id="selectAllpost" resultType="Post">
+		select * from diydb.post;
+	</select>
+	
 	<!-- postCode에 맞는 post를 수정 -->
 	<update id="updatePostByPostCode" parameterType="Post">
 		 UPDATE diydb.post
@@ -130,4 +134,9 @@
 		UPDATE diydb.post SET memberNick = '${param1}'
 		WHERE postCode = #{param2};
 	</update>
+	
+	<delete id="deletePost" parameterType="Integer">
+		delete from diydb.post where postCode=#{postCode};
+	</delete>
+	
 </mapper>

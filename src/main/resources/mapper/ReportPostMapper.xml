@@ -27,5 +27,7 @@
 	<select id="selectAllReportPost" resultType="ReportPost">
 		SELECT * FROM diydb.reportpost;
 	</select>
-
+	<delete id="deleteReportPost" parameterType="Integer">
+		delete from diydb.reportpost where postCode=#{postCode};
+	</delete>
 </mapper>

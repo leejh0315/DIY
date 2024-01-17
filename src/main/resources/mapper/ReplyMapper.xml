@@ -44,4 +44,8 @@
 		select * from diydb.rereply where replyId = #{param1};
 	</select>
 	
+	<delete id="deleteReplybypostCode" parameterType="Integer">
+		delete from diydb.reply where postId=#{postId};
+	</delete>
+	
 </mapper>

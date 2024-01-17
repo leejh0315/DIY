@@ -95,6 +95,18 @@ public class MybatisPostRepository implements PostRepository{
 	public void updateById(String memberNick, int postCode) {
 		postMapper.updateById(memberNick, postCode);
 	}
+
+	@Override
+	public List<Post> selectAllpost() {
+		List<Post> posts = postMapper.selectAllpost();
+		return posts;
+	}
+
+	@Override
+	public void deletePost(int postCode) {
+		postMapper.deletePost(postCode);
+		
+	}
 	
 	
 

@@ -10,6 +10,7 @@ public interface ReplyRepository {
 	public void insertReply(Reply reply);
 	public List<Reply> getReply(int postId);
 	public List<Member> selectNickname(int replyerId);
+	public void deleteReplybypostCode (int postId);
 	public void insertReReply(Reply reply);
 	public List<ReReply> selectReReplyById(int postId);
 }

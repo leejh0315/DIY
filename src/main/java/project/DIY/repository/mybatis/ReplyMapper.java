@@ -15,4 +15,5 @@ public interface ReplyMapper {
 	public List<Member> selectNickname(int replyerId);
 	public void insertReReply(Reply reply);
 	public List<ReReply> selectReReplyById(int postId); 
+	public void deleteReplybypostCode (int postId);
 }
