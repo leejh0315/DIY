@@ -12,6 +12,7 @@ public interface PostMapper {
 
 	public void insertPost(Post post);
 	public String getLastPost(int memberId);
+	public List<Post> selectAllpost();
 	public Post selectByPostCode(int postCode);
 	public List<Post> selectByType(String type);
 	public List<Post> selectUserPostbyId(int meberId);
@@ -19,6 +20,7 @@ public interface PostMapper {
 	public void updatePostByPostCode(Post post);
 	public List<Post> getPostsByPageByMemberId(PaginationVo paginationVo);
 	public int getPostsCountByMemberId(PaginationVo paginationVo);
+	public void deletePost(int postCode);
 	
 	public int selecetPosCntBySearch(String search);
 	public List<Post>selecetPostBySearch(PaginationVo paginationVo);

@@ -28,4 +28,8 @@
 		select nickName,profileSrc  from diydb.member where id = #{replyerId};
 	</select>
 	
+	<delete id="deleteReplybypostCode" parameterType="Integer">
+		delete from diydb.reply where postId=#{postId};
+	</delete>
+	
 </mapper>

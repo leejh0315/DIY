@@ -3,7 +3,6 @@ package project.DIY.controller;
 import java.util.HashMap;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +15,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
-
+import project.DIY.domain.Post;
 import project.DIY.domain.ReportPost;
 import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.MemberRepository;
+import project.DIY.repository.PostRepository;
+import project.DIY.repository.ReplyRepository;
 import project.DIY.session.SessionVar;
 @Controller
 @RequiredArgsConstructor
@@ -28,10 +29,13 @@ public class AdminController {
 	private final AboutPostRepository aboutPostRepository;
 	@Autowired
 	private final MemberRepository memberRepository;
+	@Autowired
+	private final PostRepository postReposiroty;
+	@Autowired
+	private final ReplyRepository replyReposiroty;
 	
-
-	@GetMapping("/admin")
-	public String getAdminPage(Model model, HttpServletRequest req) {
+	@GetMapping("/admin/reportPostManage")
+	public String getreportPostManagePage(Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 
@@ -43,12 +47,28 @@ public class AdminController {
 		
 		
 		
-		return "admin/admin";
+		return "admin/reportPostManage";
 	}	
 	
+	@GetMapping("/admin/PostManage")
+	public String getPostManagePage(Model model, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+//		member.getLoginId().equals("admin");
+		List<Post> allPosts = postReposiroty.selectAllpost();
 
-	@GetMapping("/admin2")
-	public String getAdmin2Page(Model model, HttpServletRequest req) {
+		model.addAttribute("member", member);
+		model.addAttribute("allPosts", allPosts);
+		System.out.println(allPosts.get(0).getPostCtcode());
+		
+		
+
+		
+		return "admin/postManage";
+	}
+
+	@GetMapping("/admin/userManage")
+	public String getuserManagePage(Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 
@@ -60,9 +80,20 @@ public class AdminController {
 		model.addAttribute("allUsers",allUsers);
 		
 		
-		return "admin/admin2";
+		return "admin/userManage";
 	}	
 	
+	
+	
+	@PostMapping("/deletePost")
+	@ResponseBody
+	public String deletePost(@RequestParam(value = "postCode") int postCode) {
+		postReposiroty.deletePost(postCode);
+		aboutPostRepository.deletePostLikes(postCode);
+		aboutPostRepository.deleteReportPost(postCode);
+		return "1";
+		
+	}
 	
 	@PostMapping("/updateUserStatusCode")
 	@ResponseBody

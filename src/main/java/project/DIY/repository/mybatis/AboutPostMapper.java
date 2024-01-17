@@ -12,11 +12,12 @@ public interface AboutPostMapper {
 	public void insertLikes(Likes likes);
 	public int selectLikes(Likes likes);
 	public void deleteLikes(Likes likes);
+	public void deletePostLikes(int postCode);
 	
 	public void insertReportPost(ReportPost reportpost);
 	public int selectReportPost(ReportPost reportpost);
 	public List<ReportPost> selectAllReportPost();
-	
+	public void deleteReportPost(int postCode);
 }	
 	
 

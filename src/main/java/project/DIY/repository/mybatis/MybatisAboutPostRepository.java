@@ -58,6 +58,19 @@ public class MybatisAboutPostRepository implements AboutPostRepository {
 		List<ReportPost> allReportPost = aboutPostMapper.selectAllReportPost();
 		return allReportPost;
 	}
+
+
+	@Override
+	public void deleteReportPost(int postCode) {
+		aboutPostMapper.deleteReportPost(postCode);
+	}
+
+
+	@Override
+	public void deletePostLikes(int postCode) {
+		aboutPostMapper.deletePostLikes(postCode);
+		
+	}
 	
 	
 	

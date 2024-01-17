@@ -17,5 +17,9 @@
 	<delete id="deleteLikes" parameterType="Likes">
 		delete from diydb.likepost where memberid=#{memberId} and postCode=#{postCode};
 	</delete>
+	<delete id="deletePostLikes" parameterType="Integer">
+		delete from diydb.likepost where postCode=#{postCode};
+	</delete>
+	
 	
 </mapper>

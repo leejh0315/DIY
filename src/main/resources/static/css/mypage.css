@@ -19,7 +19,10 @@
 canvas{
     margin: auto;
 }
-
+.right_Wrap{
+    display: flex;
+    flex-direction: column;
+}
 .user_wrap{
     width: 240px;
     height: 250px;
@@ -47,6 +50,7 @@ canvas{
 .mid_Wrap{
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 .post_cmp {
     width: 50%;

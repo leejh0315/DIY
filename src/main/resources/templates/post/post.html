@@ -150,11 +150,14 @@
 			likesicon.className='fas fa-heart';
 		};
 		
+
 		if(reportcnt==1){
 			modalcontent.innerText = "이미 신고한 글입니다.";
 			reportCancle.innerText = "확인";
 			reportConfirm.style.display = "none";
 		}
+		
+		
 		likes.addEventListener("click", (e)=>{
 			e.preventDefault();
 			console.log("눌림");
@@ -172,7 +175,7 @@
 					}else{
 						likesicon.className='far fa-heart';
 					};
-					
+				
             },
         })
 			
@@ -211,10 +214,7 @@
 					
 				});
 				
-				reportCancle.addEventListener("click", (e)=>{
-					jQuery(".reportCheckModal").fadeOut();
-					
-				});
+				
 				reportConfirm.addEventListener("click", (e)=>{
 					$.ajax({
 	            type: 'POST',

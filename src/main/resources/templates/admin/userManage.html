@@ -12,31 +12,41 @@
     <h1>문득 관리자 페이지</h1>
 	
     <h2>유저관리</h2>
-	<div id="container">
-		<div th:each="allUsers, i : ${allUsers}" >
-            <div><td th:text="${i.index+1}"></td></div>
-			<div class="userId"><td th:text="${allUsers.id}" ></td></div>
-			<div class="statusCode"><td th:text="${allUsers.statusCode}" ></td></div>
-			<div><td th:text="${allUsers.loginId}"></td></div>
-			<div><td th:text="${allUsers.password}"></td></div>
-			<div><td th:text="${allUsers.nickName}"></td></div>
-            <div><td th:text="${allUsers.profileSrc}"></td></div>
-            <div><td th:text="${allUsers.memberIntro}"></td></div>
-			<div><td th:text="${allUsers.createOn}"></td></div>
-			<div><td th:text="${allUsers.passwordUpdate}"></td></div>
-			
-			
-			
-             <button th:if="${allUsers.statusCode}=='N'" class="btn UserDeactive">유저 활성화</button>
-           
-            
-             <button th:if="${allUsers.statusCode}=='Y'" class="btn UserActivate">유저 비활성화</button>
-            
-            
-            
-            
-		</div>
-	</div>
+	<table id="container">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>User ID</th>
+            <th>Status Code</th>
+            <th>Login ID</th>
+            <th>Password</th>
+            <th>Nick Name</th>
+            <th>Profile Src</th>
+            <th>Member Intro</th>
+            <th>Create On</th>
+            <th>Password Update</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="allUsers, i : ${allUsers}">
+            <td th:text="${i.index+1}"></td>
+            <td class="userId" th:text="${allUsers.id}"></td>
+            <td class="statusCode" th:text="${allUsers.statusCode}"></td>
+            <td th:text="${allUsers.loginId}"></td>
+            <td th:text="${allUsers.password}"></td>
+            <td th:text="${allUsers.nickName}"></td>
+            <td th:text="${allUsers.profileSrc}"></td>
+            <td th:text="${allUsers.memberIntro}"></td>
+            <td th:text="${allUsers.createOn}"></td>
+            <td th:text="${allUsers.passwordUpdate}"></td>
+            <td>
+                <button th:if="${allUsers.statusCode}=='N'" class="btn UserDeactive">유저 활성화</button>
+                <button th:if="${allUsers.statusCode}=='Y'" class="btn UserActivate">유저 비활성화</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
     <script>
         let UserStatusbtn = document.querySelectorAll(".btn");

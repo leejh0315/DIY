@@ -34,6 +34,12 @@ public class MybatisReplyRepository implements ReplyRepository{
 		List<Member> nickAndSrc = replyMapper.selectNickname(replyerId);
 		return nickAndSrc;
 	}
+
+	@Override
+	public void deleteReplybypostCode(int postId) {
+		replyMapper.deleteReplybypostCode(postId);
+		
+	}
 	
 	
 	
