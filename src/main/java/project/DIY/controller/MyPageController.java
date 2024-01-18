@@ -38,7 +38,7 @@ import project.DIY.session.SessionVar;
 
 @Controller
 @RequiredArgsConstructor
-public class MyPageController {
+public class MyPageController {	//myPage 관련
 
 	@Autowired
 	private final PostRepository postRepository;
@@ -49,7 +49,7 @@ public class MyPageController {
 	@Autowired
 	private final PasswordEncoder passwordEncoder;
 	
-	
+	//마이페이지 접근
 	@GetMapping("/myPage/{id}")
 	public String getMyPage(@PathVariable("id") String id,HttpServletRequest req, Model model,
 			@RequestParam(value = "page", defaultValue = "1") int page,
@@ -79,13 +79,7 @@ public class MyPageController {
 		    	 
 	      }
 		 model.addAttribute("profilesrc",memberprofileimg);
-//		for(int i=0; i<myPost.size();i++) {
-//			String contentTemp = myPost.get(i).getContent();
-//			String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
-//			myPost.get(i).setContent(plainText);
-////			System.out.println(plainText);
-//		};
-		//-------------------------------------------------------------------------------------------
+
 		LocalDate currentDate = LocalDate.now();
 		int thisMonth = currentDate.getMonthValue();
 		int thisyear = currentDate.getYear();
@@ -124,21 +118,15 @@ public class MyPageController {
 			plainText = plainText.replaceAll("&nbsp;", "");
 			plainText = plainText.replaceAll("&gt;", "");
 			list.get(i).setContent(plainText);
-//			System.out.println(plainText);
 		}
 		
 		int endPage = (cnt/5 <= 0)? 1 :(int)(Math.ceil(cnt/5.0));  
 		paginationVo.setEndPage(endPage);
 
-		
-//	    model.addAttribute("boardList", list);
 		model.addAttribute("size",size);
 		model.addAttribute("type", type);
 	    model.addAttribute("page", page);
 	    model.addAttribute("pageVo", paginationVo);
-		
-		//-------------------------------------------------------------------------------------------
-		
 	    model.addAttribute("posts", myPost);
 		model.addAttribute("post",list);
 		model.addAttribute("member", member);
@@ -146,6 +134,7 @@ public class MyPageController {
 		return "myPage/myPage";
 	}
 	
+	//회원 정보 수정 페이지
 	@GetMapping("/myPage/update/{id}")
 	public String getMyPageUpdate(@PathVariable("id") String id, HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession(false);
@@ -154,14 +143,11 @@ public class MyPageController {
 		if(!id.equals(Integer.toString(member.getId()))) {
 			return "redirect:/home/home";
 		}
-		
 		model.addAttribute("member", member);
-		
-		
-		
 		return "myPage/updateMember";
 	}
 	
+	//회원 정보 수정 DB update
 	@PostMapping("/myPage/update/")
 	public String postMyPageUpdate(HttpServletRequest req, @ModelAttribute Member member) {
 		HttpSession session = req.getSession(false);
@@ -184,7 +170,7 @@ public class MyPageController {
 		return "redirect:/myPage/" + path;
 	}
 	
-	
+	//프로필 이미지 변경시 img/profile에 저장
 	@RequestMapping(value="/myPage/profileImage", produces="application/json; charset=utf8")
 	@ResponseBody
 	public String postProfileImage(@RequestParam("file") MultipartFile multipartFile,
@@ -192,20 +178,15 @@ public class MyPageController {
 		System.out.println("profileImage Post 요청 접근 완료");
     	// JSON 객체 생성
         JsonObject jsonObject = new JsonObject();
-
         // 이미지 파일이 저장될 경로 설정
         String fileRoot  = "C:\\DIY\\src\\main\\resources\\static\\image\\profile\\"; 
-
         // 업로드된 파일의 원본 파일명과 확장자 추출
         String originalFileName = multipartFile.getOriginalFilename();
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-
         // 새로운 파일명 생성 (고유한 식별자 + 확장자)
         String savedFileName = UUID.randomUUID() + extension;
-
         // 저장될 파일의 경로와 파일명을 나타내는 File 객체 생성
         File targetFile = new File(fileRoot + savedFileName);
-
         try {
             // 업로드된 파일의 InputStream 얻기
             java.io.InputStream fileStream = multipartFile.getInputStream();
@@ -222,13 +203,13 @@ public class MyPageController {
             jsonObject.addProperty("responseCode", "error");
             e.printStackTrace();
         }
-
         // JSON 객체를 문자열로 변환하여 반환
         String a = jsonObject.toString();
 		
 		return a;
 	}
 	
+	//비밀번호 변경 페이지
 	@GetMapping("/myPage/passwordUpdate/{id}")
 	public String getPasswordUpdate(@PathVariable("id") String id, HttpServletRequest req, Model model, PasswordUpdateForm passwordUpdateForm) {
 		HttpSession session = req.getSession(false);
@@ -238,6 +219,7 @@ public class MyPageController {
 		return "myPage/updatePassword";
 	}
 	
+	//
 	@GetMapping("/password/reAlert/{id}")
 	public String passwordUpdateReAlertUser(@PathVariable("id") String id) {
 		memberRepository.reAlertUpdatePassword(Integer.parseInt(id));
@@ -275,6 +257,7 @@ public class MyPageController {
 	      }
 	}
 	
+	//비밀번호 직접 수정
 	@GetMapping("/directlyUpdatepassword/{id}")
 	public String getDirectlyUpdatepassword(@ModelAttribute PasswordUpdateForm passwordUpdateForm, Model model,
 			@PathVariable("id") String id,
@@ -285,11 +268,6 @@ public class MyPageController {
 		model.addAttribute("passwordUpdateForm", passwordUpdateForm);		
 		return "myPage/directlyUpdatepassword";
 	}
-	
-//	@PostMapping("directlyUpdatepassword/{id}")
-//	public String postDirectlyUpdatepassword(@ModelAttribute PasswordUpdateForm passwordUpdateForm) {
-//		System.out.println("요청 옴");
-//		return "redirect:/home/dologin";
-//	}
+
 }
 

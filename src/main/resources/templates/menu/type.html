@@ -7,7 +7,11 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/menu.css}">
-
+<style>
+	#pagination{
+		text-align: center;
+	}
+</style>
 </head>
 
 <body>
@@ -54,6 +58,34 @@
 			<hr>
 		</div>
 	</div>
+	
+	<div id="pagination">
+	<!-- 맨 처음 페이지로 이동하는 버튼 -->
+	<!--
+    <span th:if="${pageVo.startPage > 1}">
+        <a th:href="@{'/menu/book?page=' '?page=1&type=' + ${type}}" th:text="'처음&emsp;'"></a>
+    </span>
+-->
+	<!-- 이전 블록으로 이동하는 버튼 -->
+    <span th:if="${pageVo.isPrev == true}">
+    	<a th:href="@{'/menu/' + ${typeEng} + '?page=' + ${pageVo.endPage - 1}}" th:text="'이전'"></a>
+    </span>
+
+    <!-- 시퀀스 보여주는 값을 변경. -->
+    <span th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
+        <a class="div2" th:href="@{'/menu/' + ${typeEng}+ '?page='+${pageNum}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
+    </span>
+	
+    <!-- 다음 블록으로 이동하는 버튼 -->
+    <span th:if="${pageVo.isNext == true}">
+	<a th:href="@{'/menu/book?page='+|${pageVo.endPage + 1}|}" th:text="'다음'"></a>
+    </span>
+	
+    <!-- 맨 뒷 페이지로 이동하는 버튼 -->
+   <!-- <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
+		<a th:href="@{'/myPage/${member.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
+    </span> -->
+</div>
 		<script th:src="@{/js/nav.js}"></script>
 </body>
 </html>

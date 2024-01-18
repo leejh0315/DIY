@@ -9,7 +9,16 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/postdetail.css}">
-
+<style>
+	.img{
+		height: 50px;
+		width: 50px;
+	}
+	.rereply{
+		margin-left: 150px;
+	}
+	
+</style>
 </head>
 <body>
 	<th:block th:if="${member == null}">
@@ -68,18 +77,22 @@
 			</div>
 			<hr>
 		<div class="postcontent" th:utext="${post.content}"></div>
-		<div class="likes" id="likes">
-			<input th:value="${likescnt}" type="hidden" id="likescnt">
-			<i class="far fa-heart" style="color: #9A9E7B;" id="likesicon"></i><p >좋아요</p>
-		</div>
 		
-			<th:block th:if="${member != null}">
-				<th:block th:if="${member.id != postWriteMember.id}" >
-						<input th:value="${reportpostcnt}" type="hidden" id="reportedcheck">
-						<button class="reportbtn" id="reportbtn" >신고</button>
-					
-				</th:block>
+		<th:block th:if="${member != null}">
+			<div class="likes" id="likes" onclick="postLikes()">
+				<input th:value="${likescnt}" type="hidden" id="likescnt">
+				<i id="likesicon" class="far fa-heart" style="color: #9A9E7B;"></i>
+				<p>좋아요</p>
+			</div>
+		</th:block>
+		
+		<th:block th:if="${member != null}">
+			<th:block th:if="${member.id != postWriteMember.id}" >
+					<input th:value="${reportpostcnt}" type="hidden" id="reportedcheck">
+					<button class="reportbtn" id="reportbtn" >신고</button>
 			</th:block>
+		</th:block>
+		<input type="hidden" id="reportedcheck">			
 
 			
 
@@ -87,12 +100,29 @@
 		<hr>
 			<!-- 댓글리스트 -->
 			<tr th:each="replylist :${replylist}">
-				<img  th:src="@{replylist.userProfileSrc}" alt=""></img>
+				<img class="img" th:src="${replylist.userProfileSrc}" alt=""></img>
+				
 				<div><td th:text ="${replylist.nickName}"></td></div>
 				<div><td th:text="${replylist.replyContent}"></td></div>
 				<div><td th:text="${replylist.replyCreateDate}"></td></div>
 				
-				<div id="reReply", class="reReply" style="cursor: pointer;">답글</div>
+				<th:block th:if="${reRep[replylist.replyId] != null}">
+    				<div th:each="reRep : ${reRep[replylist.replyId]}">
+						<div th:each="item : ${reRep}" class="rereply">
+							<img class="img" th:src="${item.userProfileSrc}"  alt="">							
+							<div th:text="${item.nickName}"></div>
+							<div th:text="${item.rereply}"></div>
+						</div>
+					</div>
+				</th:block>
+				
+				
+				<th:block th:if="${member != null}">
+					<form th:action="@{/reReplyPost/{postCode}(postCode=${post.postCode})}" method="post" id="reReplyform" name="Reply">
+						<div id="reReply" class="reReply" style="cursor: pointer;">답글</div>
+						<input th:value="${replylist.replyId}" name="postId" type="hidden">
+					</form>
+				</th:block>
 			</tr>
 		<hr>
 			<!-- 댓글 작성 -->
@@ -121,17 +151,45 @@
 			</div>
 			
 	</div>
-	
+<script th:inline="javascript">
+    var member = /*[[${member}]]*/ [];
+    var post = /*[[${post}]]*/ [];
+</script>
 	<script>
-		
-   			
+		function postLikes(){
+			
+			console.log("눌림");
+			
+			$.ajax({
+	            type: 'POST',
+	            url: '/insertLike',
+	            data:{
+				 "postCode" : postCode.value
+					} ,
+				dataType: 'html',
+	            success: function (data) {
+					if(data== "1"){
+						$('#likesicon').removeClass('far fa-heart');
+						$('#likesicon').addClass('fas fa-heart');
+						
+					}else if(data == "0"){
+						$('#likesicon').removeClass('fas fa-heart');
+						$('#likesicon').addClass('far fa-heart');
+					}
+					
+            	}
+			})
+		}
+		$(document).ready(function() {
+   		
+   		console.log(member);
+   		console.log(post);
    		let targetInformation = document.getElementById("targetInformation");
 
-		let reportbtn=document.getElementById("reportbtn");
+		
 		let reportCheckModal = document.getElementById("reportCheckModal");
 		let modalcontent = document.getElementById("modalcontent");
-		let reportCancle = document.getElementById("reportCancle");
-		let reportConfirm = document.getElementById("reportConfirm");
+		
 		let likes = document.getElementById("likes");
 		let postCode = document.getElementById("postCode");
 		let postCodeDiv = document.getElementById("postCodeDiv");
@@ -144,10 +202,13 @@
 		
 		let cnt =likescnt.value;
 		let reportcnt = reportedcheck.value;
+		
 		if(cnt==0){
-			likesicon.className='far fa-heart';
+			$('#likesicon').removeClass('fas fa-heart');
+			$('#likesicon').addClass('far fa-heart');
 		} else{
-			likesicon.className='fas fa-heart';
+			$('#likesicon').removeClass('far fa-heart');
+			$('#likesicon').addClass('fas fa-heart');
 		};
 		
 
@@ -195,49 +256,54 @@
 						addedDiv.id = i +'Div';
 						reReply[i].after(addedDiv);
 						addedDiv.innerHTML = "<div id='" + i +"'>\
-						<form action='/reReplypost' method='post' id='reReplyform'>\
-								<input type='text'>\
+								<input type='text' name='replyContent'>\
 								<button type='submit'>작성</button>\
-							 </form></div>";
+							 </div>";
 						 }
 						
 						});
 				
 						
 			}
-			$( document ).ready(function() {
+			
+			if(member.id != post.memberId){
+				let reportbtn = document.getElementById("reportbtn");
+				let reportCancle = document.getElementById("reportCancle");
+				let reportConfirm = document.getElementById("reportConfirm");
 			    reportbtn.addEventListener("click", (e)=>{
 					jQuery(".reportCheckModal").fadeIn();
 				
-				reportCancle.addEventListener("click", (e)=>{
-					jQuery(".reportCheckModal").fadeOut();
+					reportCancle.addEventListener("click", (e)=>{
+						jQuery(".reportCheckModal").fadeOut();
+					});
 					
-				});
-				
-				
-				reportConfirm.addEventListener("click", (e)=>{
-					$.ajax({
-	            type: 'POST',
-	            url: '/insertReportPost',
-	            data:{
-				 "postCode" : postCode.value
-					} ,
+					reportCancle.addEventListener("click", (e)=>{
+						jQuery(".reportCheckModal").fadeOut();
+					});
+					reportConfirm.addEventListener("click", (e)=>{
+						$.ajax({
+					            type: 'POST',
+					            url: '/insertReportPost',
+				            data:{
+							 "postCode" : postCode.value
+							} ,
 	            
-	            success: function (data) {
-					if(data == 1){
-						modalcontent.innerText = "신고되었습니다.";
-						reportCancle.innerText = "확인";
-						reportConfirm.style.display = "none";
-					}
-				
-            },
-        })
+			            success: function (data) {
+							if(data == 1){
+								modalcontent.innerText = "신고되었습니다.";
+								reportCancle.innerText = "확인";
+								reportConfirm.style.display = "none";
+							}
+						
+		            },
+		        })
 					
 				});
-			});
-			});
 			
-			
+			});
+			}
+		});
+		
 		
 	</script>
 	<script th:src="@{/js/nav.js}"></script>    

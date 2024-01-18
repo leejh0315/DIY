@@ -7,11 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
@@ -24,37 +26,38 @@ public class MenuController {
 	private final PostRepository postRepository;
 	private final MemberRepository memberRepository;
 	
+	//타입에 맞는 게시물 출력
 	@GetMapping("/menu/{type}")
-	public String getBook(Model model, @PathVariable("type") String type, HttpServletRequest req) {
-		
+	public String getBook(Model model, @PathVariable("type") String type, HttpServletRequest req,
+			@RequestParam(value = "page", defaultValue = "1") int page
+			) {
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-
-		List<Post> post = postRepository.selectByType(type);
+		int postcnt = postRepository.selectByTypeCnt(type);
+		
+		PaginationVo pageVo = new PaginationVo(postcnt, page);
+		
+		pageVo.setOffset((page-1) * 5);
+		pageVo.setType(type);
+		
+		List<Post> post = postRepository.selectByType(pageVo);
 		
 		if(type.equals("book")) {
+			model.addAttribute("typeEng" , "book");
 			model.addAttribute("typeName", "책");
 		}else if(type.equals("movie")) {
+			model.addAttribute("typeEng" , "movie");
 			model.addAttribute("typeName", "영화");
 		}else {
+			model.addAttribute("typeEng" , "concert");
 			model.addAttribute("typeName", "공연");
 		}
 		
 		 List<String> memberprofileimg =new ArrayList<>();
-		 
 		 for(int i = 0; i<post.size();i++) {
-	    	  Integer memberId =((Post) post.get(i)).getMemberId();
-	    	  
-	    	  
-		   	  if(memberRepository.selectBymemberId(memberId).getProfileSrc()==null) {
-		   		  memberprofileimg.add("/img/defalut_profileimg.jpg");
-		    	  }
-		  	  else { memberprofileimg.add(memberRepository.selectBymemberId(memberId).getProfileSrc());}
-		    	 
+	    	  Integer memberId =post.get(i).getMemberId();
+			  memberprofileimg.add(memberRepository.selectBymemberId(memberId).getProfileSrc());
 	      }
-		 
-
-		 
 		 
 		 for(int i=0; i<post.size();i++) {
 				String contentTemp = post.get(i).getContent();
@@ -62,10 +65,9 @@ public class MenuController {
 				plainText = plainText.replaceAll("&nbsp;", "");
 				plainText = plainText.replaceAll("&gt;", "");
 				post.get(i).setContent(plainText);
-//				System.out.println(plainText);
 			}
 		 
-		//System.out.println(memberprofileimg.get(0));
+		model.addAttribute("pageVo", pageVo);
 		model.addAttribute("member", member);
 		model.addAttribute("type", post);
 		model.addAttribute("profilesrc",memberprofileimg);

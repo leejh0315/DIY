@@ -52,12 +52,12 @@ public class HomeController {
    @Autowired
    private final RedisUtils redisUtils;
    
-   private String userTempEmail;
    @Autowired
    private PasswordEncoder passwordEncoder;
    @Autowired
 	private final EmailService emailService;
    
+   //홈 화면
    @GetMapping("/home")
    public String getMain(Model model, HttpServletRequest req) {
       HttpSession session = req.getSession();
@@ -69,35 +69,27 @@ public class HomeController {
       List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
       List<Post> post = postRepository.selectByPostCtCodeHome("book");
       
-      
-      
-      
-      
-     
       List<String> kingProfileimg =new ArrayList<>();
       for(int i = 0; i<3;i++) {
     	  Integer kingid =((Post) king.get(i)).getMemberId();
     	  
-    	  
 	   	  if(memberRepository.selectBymemberId(kingid).getProfileSrc()==null) {
-	    		  kingProfileimg.add("/img/defalut_profileimg.jpg");
-	    	  }
-	  	  else { kingProfileimg.add(memberRepository.selectBymemberId(kingid).getProfileSrc());}
+    		  kingProfileimg.add("/img/defalut_profileimg.jpg");
+    	  }else { 
+    		  kingProfileimg.add(memberRepository.selectBymemberId(kingid).getProfileSrc());
+    	  }
 	    	 
-    	  //System.out.println(memberRepository.selectBymemberId(kingid).getProfileSrc());
-    	  
       }
-      
-      System.out.println(kingProfileimg);
       
       model.addAttribute("member", member);
       model.addAttribute("king", king);
       model.addAttribute("post", post);
-     model.addAttribute("kingProfileimg",kingProfileimg );
+      model.addAttribute("kingProfileimg",kingProfileimg );
 
       return "main/main";
    }
    
+   //홈 화면 토글에 맞는 게시물 반환
    @PostMapping("/{type}")
    @ResponseBody
    public List<Post> mainTypeResp(@PathVariable("type") String type, Model model) {
@@ -105,63 +97,37 @@ public class HomeController {
       if(type.equals("movie"))    {
     	  List<Post> post = postRepository.selectByPostCtCodeHome(type);
     	  return post;
-	  }
-      else if(type.equals("book")){
+	  }else if(type.equals("book")){
     	  List<Post> post = postRepository.selectByPostCtCodeHome(type);
     	  return post;
-	  }
-      else{
+	  }else{
     	  List<Post> post = postRepository.selectByPostCtCodeHome(type);
     	  return post;
 	  }
    }
    
-   
+   //회원가입 페이지
    @GetMapping("/join")
    public String getJoin(Model model) {
-
       JoinForm joinForm = new JoinForm();
       model.addAttribute("joinForm", joinForm);
-      
       return "join/join";
    }
    
-   @PostMapping("/tempEmailSave")
-   @ResponseBody
-   public void tempEmailSave(@RequestParam(value = "email") String email) {
-	   userTempEmail = email;
-   }
-   
-   
-   @GetMapping("/join2")
-   public String getJoin2(Model model) {
-	  JoinForm joinForm = new JoinForm();
-      model.addAttribute("joinForm", joinForm);
-      if(userTempEmail == null) {
-    	  return "join/join";
-      }else if(!redisUtils.getData(userTempEmail).isEmpty()) {
-    	  model.addAttribute("joinForm", joinForm);
-    	  return "join/join2";
-      }else {
-    	  return "join/join";
-      }
-      
-   }
-
-   
-   @PostMapping("/join2")
+   //회원가입 유효성 검사 이후 DB 저장
+   @PostMapping("/join")
    public String postJoin(@ModelAttribute JoinForm joinForm, Model model, BindingResult bindingResult){
       validateJoinForm(joinForm, bindingResult);
-      joinForm.setLoginId(userTempEmail);
+      
       if(bindingResult.hasErrors()) {
     	  model.addAttribute("joinForm", joinForm);
-         return "join/join2";
+         return "join/join";
       }else if(!redisUtils.getData(joinForm.getLoginId()).isEmpty() &&
-    		  (!redisUtils.getData(joinForm.getLoginId()).equals("Y") || redisUtils.getData(joinForm.getLoginId())=="")) {
+    		  (!redisUtils.getData(joinForm.getLoginId()).equals("Y") || 
+			   redisUtils.getData(joinForm.getLoginId())=="")) {
     	  model.addAttribute("joinForm", joinForm);
-         return "join/join2";
-      }
-      else {
+         return "join/join";
+      }else {
          Member member = new Member();
          member.setLoginId(joinForm.getLoginId());
          member.setPassword(passwordEncoder.encode(joinForm.getPassword()));
@@ -169,9 +135,9 @@ public class HomeController {
          memberRepository.insertMember(member);
          return "redirect:/" + "home/home";   
       }
-      
    }
    
+   //로그인 페이지
    @GetMapping("/dologin")
    public String login(Model model, HttpServletRequest req) {
       LoginForm loginForm = new LoginForm();
@@ -179,17 +145,14 @@ public class HomeController {
       Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
       model.addAttribute("member", member);
       model.addAttribute("loginForm", loginForm);
-   
       return "login/login";
    }
    
+   //로그인 실행, 비밀번호 6개월 이상이거나, 임시비밀번호 유저 비밀번호 페이지로 유도
    @PostMapping("/login")
    public String doLogin(@ModelAttribute LoginForm loginForm,
-         BindingResult bindingResult, HttpServletResponse resp
-         , HttpServletRequest req, Model model
-         , @RequestParam(name="redirectURL", defaultValue = "/") String redirectURL ) {
+         BindingResult bindingResult, HttpServletResponse resp , HttpServletRequest req, Model model) {
 
-      System.out.println(loginForm);
       validateLoginForm(loginForm, bindingResult);
       Member memberVO = loginService.login(loginForm.getLoginId(), loginForm.getPassWord());
       
@@ -209,7 +172,6 @@ public class HomeController {
          bindingResult.reject("loginForm", "활동정지된 회원입니다. 관리자에게 문의해주세요.");
          return "login/login";
       }
-      System.out.println("로그인성공");
       
       HttpSession session = req.getSession(true);
       session.setAttribute(SessionVar.LOGIN_MEMBER, memberVO);
@@ -229,10 +191,10 @@ public class HomeController {
     		  return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
     	  }
       }
-    	  
       return "redirect:/" + "home/home";
    }
    
+   //로그아웃 실행
    @PostMapping("/logout")
    public String logout(HttpServletResponse resp, HttpServletRequest req) {
       HttpSession session = req.getSession(false);
@@ -245,12 +207,14 @@ public class HomeController {
       return "redirect:/" + "home/home";
    }
    
+   //비밀번호 찾기 페이지
    @GetMapping("/findPw")
    public String getFindPw(Model model, LoginForm loginForm) {
 	   model.addAttribute("loginForm", loginForm);
 	   return "login/findPw";
    }
    
+   //입력한 Email 존재하는지 여부
    @ResponseBody
    @PostMapping("/findPw")
    public String postFindPw(@RequestParam(value = "loginId") String loginId){
@@ -263,6 +227,8 @@ public class HomeController {
 		   return "1";
 	   }
    }
+   
+   //Email 전송 및 비밀번호 난수값 저장
    @PostMapping("/findPw/sendEmail")
    @ResponseBody
    public String postFindPwSendMail(
@@ -277,6 +243,7 @@ public class HomeController {
 	   return "redirect:/login/login";
    }
 
+   //로그인 유효성 검사
    public void validateLoginForm(LoginForm loginForm, Errors errors) {
       if(!StringUtils.hasText(loginForm.getLoginId())) {
          errors.rejectValue("loginId", null, "아이디 필수 입력입니다.");
@@ -285,6 +252,8 @@ public class HomeController {
          errors.rejectValue("passWord", null, "비밀번호 필수 입력입니다.");
       }
    }
+   
+   //이메일 형식
    public void validateEmail(String email, Errors errors) {
 	    if (!StringUtils.hasText(email)) {
        errors.rejectValue("loginId", null, "아이디 필수 입력입니다.");
@@ -292,13 +261,9 @@ public class HomeController {
        errors.rejectValue("loginId", null, "올바른 이메일 형식이 아닙니다.");
 	    }
    }
+   
+   //회원가입 유효성검사
    public void validateJoinForm(JoinForm joinForm, Errors errors) {
-//	    if (!StringUtils.hasText(joinForm.getLoginId())) {
-//	        errors.rejectValue("loginId", null, "아이디 필수 입력입니다.");
-//	    } else if (!joinForm.getLoginId().matches("^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$")) {
-//	        errors.rejectValue("loginId", null, "올바른 이메일 형식이 아닙니다.");
-//	    }
-
 	    if (!StringUtils.hasText(joinForm.getPassword())) {
 	        errors.rejectValue("password", null, "비밀번호 필수 입력입니다.");
 	    } else if (joinForm.getPassword().length() < 8) {
@@ -322,63 +287,22 @@ public class HomeController {
 	    }
 	}
 
-   
+   //회원가입시, email 중복 여부 체크
    @ResponseBody
    @PostMapping("/joongbok")
-   public int idCheck(@RequestParam("email") String email) {
+   public String idCheck(@RequestParam("email") String email) {
 	   if (!StringUtils.hasText(email)) {
-	       return 3;
+	       return "3";
 	    } 
 	    if (!email.matches("^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$")) {
-	    	return 3;
+	    	return "3";
 	    }else {
 	        System.out.println("중복체크 진입");
 	        System.out.println("email:" + email);
 	        int cnt = memberRepository.idCheck(email);
 	        System.out.println("cnt : " + cnt);
-	        return cnt;
+	        String cntStr = Integer.toString(cnt);
+	        return cntStr;
 	    }
    }
-   
-   
-   public String getSalt() {
-      SecureRandom r = new SecureRandom();
-      byte[] salt = new byte[20];
-      r.nextBytes(salt);
-      
-      StringBuffer sb = new StringBuffer();
-      for(byte b : salt) {
-         sb.append((String.format("%02x", b)));
-      }
-      
-      return sb.toString();
    }
-   
-   public String getEncrypt(String pwd, String salt) {
-      String result = "";
-      try {
-         //1. SHA256 알고리즘 객체 생성
-         MessageDigest md = MessageDigest.getInstance("SHA-256");
-         
-         //2. pwd와 salt 합친 문자열에 SHA 256 적용
-         
-         md.update((pwd+salt).getBytes());
-         byte[] pwdsalt = md.digest();
-         
-         //3. byte To String (10진수의 문자열로 변경)
-         StringBuffer sb = new StringBuffer();
-         for (byte b : pwdsalt) {
-            sb.append(String.format("%02x", b));
-         }
-         
-         result=sb.toString();
-         
-         
-      } catch (NoSuchAlgorithmException e) {
-         e.printStackTrace();
-      }
-
-      return result;
-      
-   }
-}

@@ -41,10 +41,13 @@
 		select * from diydb.post where postCode = #{postCode};
 	</select>
 	
+	<select id="selectByTypeCnt" resultType="Integer">
+		select count(*) from diydb.post where postCtCode = #{type}
+	</select>
 	<!-- 카테고리에 맞는 post list를 반환 -->
 	<select id="selectByType" resultType="Post">
 		select * from diydb.post where postCtCode = #{type}
-		order by postcode DESC limit 0,5;
+		order by postcode DESC limit 5 offset #{offset};
 	</select>
 	
 
