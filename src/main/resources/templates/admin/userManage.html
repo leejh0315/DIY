@@ -71,9 +71,10 @@
                         "statusCode" : statusCode,
 					    "id" : UserId
 						} ,
-	            
+                    dataType: 'html',
 		            success: function (data) {
-						if(data == 1){
+                        console.log(data);
+						if(data == "1"){
 							console.log("업데이트 성공");
 							location.reload();
 						}

@@ -21,7 +21,8 @@
 	</update>
 
 	<select id="idCheck" resultType="Integer">
-		select count(*) from diydb.member 
+		select count(*) 
+		from diydb.member 
 		where loginId = #{loginId};
 	</select>
 
@@ -45,7 +46,8 @@
 	</insert>
 	
 	<select id="selectByCode" resultType="Member">
-		select * from diydb.member where id = #{code};
+		select * from diydb.member 
+		where id = #{code};
 	</select>
 	
 	<update id="updateById" parameterType="project.DIY.domain.Member">
@@ -69,12 +71,12 @@
 	</select>
 	
 	<select id="passwordUpdateSixMonth" resultType="Member">
-		 select * from diydb.member where 
-		 date(passwordUpdate) <![CDATA[ < ]]> date(subdate(now(), interval 6 day));
+		 select * from diydb.member 
+		 where date(passwordUpdate) <![CDATA[ < ]]> date(subdate(now(), interval 6 day));
 	</select>
 	
 	<update id="reAlertUpdatePassword">
-		 UPDATE diydb.member
+		UPDATE diydb.member
 		SET passwordUpdate = DATE_ADD(passwordUpdate, INTERVAL 7 DAY)
 		WHERE id = #{id};
 	</update>
