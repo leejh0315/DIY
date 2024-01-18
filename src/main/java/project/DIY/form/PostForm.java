@@ -3,7 +3,7 @@ package project.DIY.form;
 import lombok.Data;
 
 @Data
-public class PostForm {
+public class PostForm {		//게시글 등록시, 유효성 검사를 위한 form
 	private String postCtcode;
 	private String targetName;
 	

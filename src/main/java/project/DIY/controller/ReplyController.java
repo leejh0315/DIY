@@ -19,15 +19,14 @@ import project.DIY.session.SessionVar;
 public class ReplyController {
 	private final ReplyRepository replyRepository;
 	
+	//신고가 되면, 신고 테이블에 등록
 	@PostMapping("/replypost")
 	public String postReply(@ModelAttribute Reply reply, Model model, HttpServletRequest req, RedirectAttributes rAttr) {
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
-		
 		reply.setReplyerId(member.getId());
-		System.out.println(reply);
 		replyRepository.insertReply(reply);
 		rAttr.addAttribute("root", reply.getPostId());
 

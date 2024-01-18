@@ -20,24 +20,21 @@ import project.DIY.session.SessionVar;
 public class LoginFilter implements Filter {
 	
 	private static final String[] whiteList = 
-	{"/home/**", "/email/**", "/admin", "/admin/**", "/posts/**", "/menu/**", "/css/**", "/img/**","/image/**","/js/**", "/favicon/*", 
+	{"/home/**","/chat/**", "/chatRoom","/chatRoom/**","/ws/**", "/email/**", "/admin", "/admin/**", "/posts/**", "/menu/**", "/css/**", "/img/**","/image/**","/js/**", "/favicon/*", 
 		"/temp/**", "/profile/**"};
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		// TODO Auto-generated method stub
 		
 		HttpServletRequest req = (HttpServletRequest)request;
 		String uri = req.getRequestURI();
 		HttpServletResponse resp = (HttpServletResponse)response;
 		
-		
 		if(isLoginCheckPath(uri)) {
 			HttpSession session = req.getSession(true);
 			Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 			
-
 			log.info("Session: {}", session);
 			log.info("Member: {}", member);
 			
@@ -50,7 +47,6 @@ public class LoginFilter implements Filter {
 			}
 
 		}
-		
 		chain.doFilter(request, response);
 	}
 

@@ -26,7 +26,7 @@ public class EmailController {
 		return "confirm";
 	}
 	
-	
+	//이메일 전송 및 난수 반환
 	@ResponseBody
 	@PostMapping("/emailConfirm")
 	public String emailConfirm(@RequestParam(value = "email") String email) throws Exception {
@@ -35,22 +35,18 @@ public class EmailController {
 		return confirm;
 	}
 	
+	//이메일로 전송된 난수 Redis에서 체크
 	@ResponseBody
 	@PostMapping("/numberCheck")
 	public String numberCheck(@RequestParam(value = "number") String number) {
 		
 		if(number.equals(redisUtils.getData(userEmail))) {
 			redisUtils.setDataExpire(userEmail, "Y", 60*10L);
-			System.out.println("번호 같음");
 			return "1";
 		}else if(redisUtils.getData(userEmail) == "" || redisUtils.getData(userEmail) == null) {
-			System.out.println("레디스 비었음");
 			return "2";
-		}
-		else {
-			System.out.println("번호 다름");
+		}else {
 			return "0";
 		}
-		
 	}
 } 	

@@ -59,7 +59,7 @@ public class PostController {
 	@Autowired
 	private final AboutPostRepository aboutPostRepository;
 	
-	
+	//게시글 작성 페이지
 	@GetMapping("/writePost")
 	public String getPost(Model model, HttpServletRequest req, PostForm postForm) {
 		HttpSession session = req.getSession();
@@ -78,14 +78,6 @@ public class PostController {
 		return "post/writePost";
 	}
 
-
-//	@RequestMapping(value = "/tempThumb", produces = "application/json; charset=utf8")
-//	@ResponseBody
-//	public String tempThumb(@RequestParam("temp") MultipartFile multipartFile, HttpServletRequest request) {
-//		return "a";
-//	}
-		
-
     // 서머노트 이미지 업로드 temp 저장
     @RequestMapping(value = "/writePost/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
     @ResponseBody
@@ -94,25 +86,20 @@ public class PostController {
         
     	// JSON 객체 생성
         JsonObject jsonObject = new JsonObject();
-
         // 이미지 파일이 저장될 경로 설정
         //String fileRoot  = "C:\\image\\temp\\"; 
         String fileRoot  = "C:\\DIY\\src\\main\\resources\\static\\image\\post\\";
-
         // 업로드된 파일의 원본 파일명과 확장자 추출
         String originalFileName = multipartFile.getOriginalFilename();
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-
         // 새로운 파일명 생성 (고유한 식별자 + 확장자)
         String savedFileName = UUID.randomUUID() + extension;
-
         // 저장될 파일의 경로와 파일명을 나타내는 File 객체 생성
         File targetFile = new File(fileRoot + savedFileName);
 
         try {
             // 업로드된 파일의 InputStream 얻기
             java.io.InputStream fileStream = multipartFile.getInputStream();
-
             // 업로드된 파일을 지정된 경로에 저장
             FileUtils.copyInputStreamToFile(fileStream, targetFile);
 
@@ -126,13 +113,13 @@ public class PostController {
             jsonObject.addProperty("responseCode", "error");
             e.printStackTrace();
         }
-
         // JSON 객체를 문자열로 변환하여 반환
         String a = jsonObject.toString();
     	
         return a;
     }
     
+    //서머노트 이미지 삭제
 	@RequestMapping(value = "/deleteSummernoteImageFile", produces = "application/json; charset=utf8")
 	@ResponseBody
 	public void deleteSummernoteImageFile(@RequestParam("file") String fileName) {
@@ -151,10 +138,12 @@ public class PostController {
 	        errors.rejectValue("content", null, "게시글 내용을 입력해주세요.");
 	    }
    }
-	    
+	   
+    //게시글 작성, 유효성 검사 이후 DB 입력
 	@PostMapping("/writePost")                                                        
-    public String setArticle(@ModelAttribute Post post,
-    		@ModelAttribute PostForm postForm, Model model, HttpServletRequest req, BindingResult bindingResult) {                
+    public String setArticle(@ModelAttribute Post post, @ModelAttribute PostForm postForm, 
+    		Model model, HttpServletRequest req, BindingResult bindingResult) {
+		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		List<Category> ct = new ArrayList<>();
@@ -162,33 +151,32 @@ public class PostController {
 		ct.add(new Category("movie", "영화"));
 		ct.add(new Category("concert", "공연"));
 		
-      validateJoinForm(postForm, bindingResult);
+		validateJoinForm(postForm, bindingResult);
 		
-	      if(bindingResult.hasErrors()) {
-	    	  System.out.println(postForm);
-	    	  model.addAttribute("postForm", postForm);
-	    	  model.addAttribute("member", member);
-  				model.addAttribute("ct", ct);
-	         return "post/writePost";
-	      }
-	      else {
-	    	  post.setMemberId(member.getId());
-	  		post.setMemberNick(member.getNickName());
-	  		System.out.println(post.getContent().length());
-	  		post.setTargetName(post.getTargetName().trim());
-	  		
-	      	
-	      	postRepository.insertPost(post);
-	      	String postCode = postRepository.getLastPost(member.getId());
+	    if(bindingResult.hasErrors()) {
+    	  System.out.println(postForm);
+    	  model.addAttribute("postForm", postForm);
+    	  model.addAttribute("member", member);
+    	  model.addAttribute("ct", ct);
+    	  return "post/writePost";
+	    }
+	    else{
+    	post.setMemberId(member.getId());
+  		post.setMemberNick(member.getNickName());
+  		System.out.println(post.getContent().length());
+  		post.setTargetName(post.getTargetName().trim());
+      	
+      	postRepository.insertPost(post);
+      	String postCode = postRepository.getLastPost(member.getId());
 
-	      	return "redirect:/posts/" + postCode;
-	      }
+      	return "redirect:/posts/" + postCode;
+       }
     }
 	
+	//게시글 상세보기
 	@GetMapping("/posts/{postCode}")
-	public String getPostByPostId(@ModelAttribute Reply reply,
-			Model model, @PathVariable("postCode") int postCode
-			, HttpServletRequest req) {
+	public String getPostByPostId(@ModelAttribute Reply reply, Model model,
+			@PathVariable("postCode") int postCode, HttpServletRequest req) {
 
 		HttpSession session = req.getSession(false);
 		
@@ -199,7 +187,6 @@ public class PostController {
 		
 		if(session == null) {
 			Member member = new Member();
-			
 			model.addAttribute("member", member);
 		}else {
 			Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
@@ -218,6 +205,7 @@ public class PostController {
 				model.addAttribute("likescnt",likescnt);
 				model.addAttribute("reportpostcnt",reportpostcnt);
 			}
+			
 			model.addAttribute("member", member);
 		}
 		
@@ -238,9 +226,6 @@ public class PostController {
 				r.get(i).setNickName(nickAndSrc.get(0).getNickName());
 				r.get(i).setUserProfileSrc((nickAndSrc.get(0).getProfileSrc()));
 			};
-		System.out.println("reRep : " + reRep);
-		System.out.println(r);
-
 		
 		model.addAttribute("reRep", reRep);
 		model.addAttribute("post",postItem);
@@ -252,6 +237,7 @@ public class PostController {
 		return "post/post";
 	}
 	
+	//게시글 업데이트 페이지
 	@GetMapping("/update/{postCode}")
 	public String getUpdatePostByPostId(Model model, @PathVariable("postCode") int postCode, HttpServletRequest req) {
 		HttpSession session = req.getSession(false);
@@ -267,12 +253,14 @@ public class PostController {
 		return "post/updatePost";
 	}
 	
+	//게시글 업데이트 DB update
 	@PostMapping("/update/{postCode}")
 	public String postUpdatePostByPostId(@ModelAttribute Post post, @PathVariable("postCode") int postCode, HttpServletRequest req) {
 		postRepository.updatePostByPostCode(post);
 		return "redirect:/posts/{postCode}";
 	}
 	
+	//파일 지우는 메소드
 	private void deleteFile(String filePath, String fileName) {
 		Path path = Paths.get(filePath, fileName);
 		System.out.println("Path : "+ path);

@@ -26,11 +26,11 @@ public class MenuController {
 	private final PostRepository postRepository;
 	private final MemberRepository memberRepository;
 	
+	//타입에 맞는 게시물 출력
 	@GetMapping("/menu/{type}")
 	public String getBook(Model model, @PathVariable("type") String type, HttpServletRequest req,
 			@RequestParam(value = "page", defaultValue = "1") int page
 			) {
-		
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		int postcnt = postRepository.selectByTypeCnt(type);
@@ -41,8 +41,6 @@ public class MenuController {
 		pageVo.setType(type);
 		
 		List<Post> post = postRepository.selectByType(pageVo);
-		
-		System.out.println(postcnt);
 		
 		if(type.equals("book")) {
 			model.addAttribute("typeEng" , "book");
@@ -56,7 +54,6 @@ public class MenuController {
 		}
 		
 		 List<String> memberprofileimg =new ArrayList<>();
-		System.out.println(post.size()); 
 		 for(int i = 0; i<post.size();i++) {
 	    	  Integer memberId =post.get(i).getMemberId();
 			  memberprofileimg.add(memberRepository.selectBymemberId(memberId).getProfileSrc());
@@ -68,10 +65,8 @@ public class MenuController {
 				plainText = plainText.replaceAll("&nbsp;", "");
 				plainText = plainText.replaceAll("&gt;", "");
 				post.get(i).setContent(plainText);
-//				System.out.println(plainText);
 			}
 		 
-		System.out.println(pageVo);
 		model.addAttribute("pageVo", pageVo);
 		model.addAttribute("member", member);
 		model.addAttribute("type", post);
