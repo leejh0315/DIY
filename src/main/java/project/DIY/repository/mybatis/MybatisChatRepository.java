@@ -2,6 +2,7 @@ package project.DIY.repository.mybatis;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ import project.DIY.repository.ChatRepository;
 @Primary
 public class MybatisChatRepository implements ChatRepository{
 	
+	@Autowired
 	private final ChatMapper chatMapper;
 	
 	@Override

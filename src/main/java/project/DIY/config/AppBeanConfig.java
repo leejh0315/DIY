@@ -37,7 +37,6 @@ public class AppBeanConfig {
    private final AboutPostMapper aboutPostMapper;
    @Autowired
    private final ChatMapper chatMapper;
-   
    @Bean
    public MemberRepository memberRepository() {
       return new MybatisMemberRepository(memberMapper);
@@ -60,7 +59,6 @@ public class AppBeanConfig {
    public ChatRepository chatRepository() {
 	   return new MybatisChatRepository(chatMapper);
    }
-   
    @Bean
    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
        return restTemplateBuilder.build();

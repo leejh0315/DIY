@@ -21,7 +21,7 @@ import project.DIY.repository.ChatRepository;
 @RequiredArgsConstructor
 @Service
 public class ChatService {
-
+	
 	@Autowired
 	private final ChatRepository chatRepository;
 	
@@ -32,27 +32,50 @@ public class ChatService {
     private void init() {
         chatRooms = new LinkedHashMap<>();
     }
-    
-    public List<ChatRoom> findMyRoom(int memberId){
-    	List<ChatRoom> myRooms = chatRepository.selectMyRoom(memberId);
-    	return myRooms;
-    }
 
     public List<ChatRoom> findAllRoom() {
         return new ArrayList<>(chatRooms.values());
     }
-
-    public ChatRoom findRoomById(String roomId) {
-        return chatRooms.get(roomId);
+    
+    public List<ChatRoom> findMyRoom(int id){
+    	return chatRepository.selectMyRoom(id);
     }
 
+    public ChatRoom findRoomById(String roomId) {
+    	System.out.println(chatRooms.get(roomId));
+        return chatRooms.get(roomId);
+    }
+    public ChatRoom findByRoomId(String roomId) {
+    	ChatRoom room = chatRepository.findRoomByChatroomId(roomId);
+    	return room; 
+    }
+    
+
     public ChatRoom createRoom(String name) {
+    	System.out.println("chatService name : " + name);
         String randomId = UUID.randomUUID().toString();
         ChatRoom chatRoom = ChatRoom.builder()
                 .roomId(randomId)
                 .name(name)
+                .chatReceiverId(0)
+                .chatSenderId(0)
                 .build();
         chatRooms.put(randomId, chatRoom);
+        System.out.println(chatRooms);
         return chatRoom;
     }
+    public ChatRoom createRoomDB(String randomId, String name, int chatReceiverId, int chatSenderId) {
+    	System.out.println("createRoomDB 접근");
+        ChatRoom chatRoom = ChatRoom.builder()
+                .roomId(randomId)
+                .name(name)
+                .chatReceiverId(chatReceiverId)
+                .chatSenderId(chatSenderId)
+                .build();
+        chatRepository.insertChatRoom(chatRoom);
+        ChatRoom newRoom = chatRepository.findRoomByChatroomId(randomId);
+        chatRooms.put(randomId, newRoom);
+        return newRoom;
+    }
+    
 }
