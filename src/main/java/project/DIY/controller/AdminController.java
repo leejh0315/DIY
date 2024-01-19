@@ -91,13 +91,14 @@ public class AdminController {
 		postReposiroty.deletePost(postCode);
 		aboutPostRepository.deletePostLikes(postCode);
 		aboutPostRepository.deleteReportPost(postCode);
+		replyReposiroty.deleteReplybypostCode(postCode);
 		return "1";
 		
 	}
 	
 	@PostMapping("/updateUserStatusCode")
 	@ResponseBody
-	public Integer updateUserStatusCode(@RequestParam(value = "statusCode") String statusCode,@RequestParam(value = "id") String id) {
+	public String updateUserStatusCode(@RequestParam(value = "statusCode") String statusCode,@RequestParam(value = "id") String id) {
 		System.out.println(statusCode);
 		System.out.println(id);
 		HashMap<String,String> map = new HashMap<String,String>();
@@ -116,7 +117,7 @@ public class AdminController {
 			System.out.println("잘못됏다 여기서");
 		}
 		
-		return 1;
+		return "1";
 		
 		
 	}

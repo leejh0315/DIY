@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
-
 import project.DIY.repository.MemberRepository;
 
 @Repository

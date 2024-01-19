@@ -111,22 +111,21 @@
                             modalcontent.innerText = "삭제되었습니다.";
 						    deleteCancle.innerText = "확인";
 						    deleteConfirm.style.display = "none"
-						    
+						    deleteCancle.addEventListener("click",(e)=>{location.reload();});
+
+                            }
 						}
 				
-            },
-            
-        })
+                    });
+                }
+        );
 
-        
+    
 			
                     
-                    
-    })
-					
-
-});
-        };
+    });               
+    };
+        
 
 
 

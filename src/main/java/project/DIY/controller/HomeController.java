@@ -110,6 +110,7 @@ public class HomeController {
    @GetMapping("/join")
    public String getJoin(Model model) {
       JoinForm joinForm = new JoinForm();
+      System.out.println(passwordEncoder.encode("1"));
       model.addAttribute("joinForm", joinForm);
       return "join/join";
    }

@@ -2,6 +2,7 @@ package project.DIY.repository.mybatis;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ import project.DIY.repository.ReplyRepository;
 @Primary
 public class MybatisReplyRepository implements ReplyRepository{
 	
-	
+	@Autowired
 	private final ReplyMapper replyMapper;
 	
 	@Override
