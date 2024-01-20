@@ -16,6 +16,7 @@ public class ChatRoom {
     private int chatReceiverId;
     private int ChatSenderId;
     private Set<WebSocketSession> sessions = new HashSet<>();
+    
     @Builder
     public ChatRoom(String roomId, String name, int chatReceiverId, int chatSenderId) {
         this.roomId = roomId;

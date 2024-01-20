@@ -5,13 +5,13 @@
 <mapper	namespace="project.DIY.repository.mybatis.ChatMapper">
 
 	<select id="selectMyRoom" resultType="ChatRoom">
-		select * from temp.chatroom 
+		select * from diydb.chatroom 
 		where chatReceiverId = #{param1} or 
 			  chatSenderId = #{param1};	
 	</select>
 	
 	<insert id="insertChatRoom" parameterType="ChatRoom">
-		insert into temp.chatroom
+		insert into diydb.chatroom
 		values(
 		null,
 		#{roomId},
@@ -22,8 +22,20 @@
 	</insert>
 	
 	<select id="findRoomByChatroomId" resultType="ChatRoom">
-		select * from temp.Chatroom where roomId = #{param1};
+		select * from diydb.chatroom where roomId = #{param1};
 	</select>
 	
+	<select id="selectMessageByroomId" resultType="ChatMessage">
+		select * from diydb.chatmessage where roomId = #{param1};
+	</select>
 	
+	<insert id="insertMessageByroomId" parameterType="ChatMessage">
+		insert into diydb.chatmessage
+		values(
+			#{roomId}, 
+			#{sender}, 
+			#{message}, 
+			date_format(now(), '%Y%m%d%H%i%s')
+		);
+	</insert>
 </mapper>

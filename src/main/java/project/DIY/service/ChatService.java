@@ -27,12 +27,13 @@ public class ChatService {
 	
     private final ObjectMapper objectMapper;
     private Map<String, ChatRoom> chatRooms;
-
+    
+/*
     @PostConstruct
     private void init() {
         chatRooms = new LinkedHashMap<>();
     }
-
+*/
     public List<ChatRoom> findAllRoom() {
         return new ArrayList<>(chatRooms.values());
     }
@@ -40,17 +41,18 @@ public class ChatService {
     public List<ChatRoom> findMyRoom(int id){
     	return chatRepository.selectMyRoom(id);
     }
-
+/*
     public ChatRoom findRoomById(String roomId) {
-    	System.out.println(chatRooms.get(roomId));
+    	System.out.println("chatService : " +chatRooms.get(roomId));
         return chatRooms.get(roomId);
     }
+    */
     public ChatRoom findByRoomId(String roomId) {
     	ChatRoom room = chatRepository.findRoomByChatroomId(roomId);
     	return room; 
     }
     
-
+/*
     public ChatRoom createRoom(String name) {
     	System.out.println("chatService name : " + name);
         String randomId = UUID.randomUUID().toString();
@@ -64,6 +66,7 @@ public class ChatService {
         System.out.println(chatRooms);
         return chatRoom;
     }
+    */
     public ChatRoom createRoomDB(String randomId, String name, int chatReceiverId, int chatSenderId) {
     	System.out.println("createRoomDB 접근");
         ChatRoom chatRoom = ChatRoom.builder()
@@ -74,7 +77,6 @@ public class ChatService {
                 .build();
         chatRepository.insertChatRoom(chatRoom);
         ChatRoom newRoom = chatRepository.findRoomByChatroomId(randomId);
-        chatRooms.put(randomId, newRoom);
         return newRoom;
     }
     
