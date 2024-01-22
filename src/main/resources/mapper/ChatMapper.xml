@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="project.DIY.repository.mybatis.ChatMapper">
+
+	<select id="selectMyRoom" resultType="ChatRoom">
+		select * from diydb.chatroom 
+		where chatReceiverId = #{param1} or 
+			  chatSenderId = #{param1};	
+	</select>
+	
+	<insert id="insertChatRoom" parameterType="ChatRoom">
+		insert into diydb.chatroom
+		values(
+		null,
+		#{roomId},
+		#{name},
+		#{chatReceiverId},
+		#{chatSenderId}
+		);
+	</insert>
+	
+	<select id="findRoomByChatroomId" resultType="ChatRoom">
+		select * from diydb.chatroom where roomId = #{param1};
+	</select>
+	
+	<select id="selectMessageByroomId" resultType="ChatMessage">
+		select * from diydb.chatmessage where roomId = #{param1};
+	</select>
+	
+	<insert id="insertMessageByroomId" parameterType="ChatMessage">
+		insert into diydb.chatmessage
+		values(
+			#{roomId}, 
+			#{sender}, 
+			#{message}, 
+			date_format(now(), '%Y%m%d%H%i%s')
+		);
+	</insert>
+</mapper>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="/chat/createRoom" method="post">
+    <input type="text" name="name" placeholder="채팅방 이름">
+    
+    <button type="submit" >방 만들기</button>
+</form>
+
+<table>
+    <div th:each="room, i : ${roomList}" >
+			<div th:id="${i.index}" class="room" onclick="selected(this)">
+            <p th:text="${room.name}"></p>
+            </div>
+    </div>
+</table>
+
+<script th:inline="javascript">
+	var room = /*[[${roomList}]]*/ [];
+	console.log(room);
+	
+
+	
+	
+	function selected(e){
+		console.log(e.id);
+		window.location.href = '/chat/chatRoom/'+room[e.id].roomId;
+	} 
+	
+	
+	
+</script>
+</body>
+</html>
