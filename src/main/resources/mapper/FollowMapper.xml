@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="project.DIY.repository.mybatis.FollowMapper">
+	
+	<insert id="insertFollow" parameterType="Integer">
+		INSERT INTO diydb.follow (`follower`, `followee`) 
+		VALUES (#{follower}, #{followee});
+	</insert>
+
+	<select id="selectFollowee" parameterType="Integer">
+		select * from diydb.follow where follower = #{memberId};
+	</select>
+	
+	<select id="selectFollower" parameterType="Integer">
+		select * from diydb.follow where followee = #{memberId};
+	</select>
+
+	<select id="followCheck" resultType="Integer">
+		select count(*) from diydb.follow where follower =#{memberId} and followee =#{followee};
+	</select>
+	
+	<delete id="unfollow" parameterType="Integer">
+		delete from diydb.follow where follower=#{memberId} and followee =#{followee};
+	</delete>
+</mapper>

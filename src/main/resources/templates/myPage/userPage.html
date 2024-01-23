@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/myPage.css}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+</head>
+<body>
+    <th:block th:if="${member == null}">
+		<div th:replace="main/header :: headFrag(${none})"></div>
+	</th:block>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+    <div class="mypage_Wrap">
+    <h1>UserPage</h1>
+    
+    <div class="top_wrap">
+        <div class="recordchart">
+            <p>나의 기록 통계</p>
+            <canvas id="pie-chart" width="200" height="200"></canvas>
+        </div>
+        <div class="recordchart">
+            <p>월별 기록 통계</p>
+            <canvas id="bar-chart" width="200" height="200"></canvas>
+        </div>
+        <div class="user_wrap">
+			
+			<input type="hidden" th:value="${user.id}" id="userId">
+			<input type="hidden" th:value="${type}" id="thisType">
+		
+			
+            <div class="userimg">
+                <img th:src="${user.profileSrc}" alt="">
+            </div>
+            <div class="userid" th:text="*{user.nickName}"></div>
+            <div class="userintro" th:text="*{user.memberIntro}"></div>
+            <div class="followinfo">
+                팔로잉<div class="follower">1</div>
+                팔로워<div class="following">4</div>
+            </div>
+            
+            <button onclick="location.href='/writePost'">
+                
+            </button>
+        </div>
+    </div>
+
+	<div class="mid_Wrap">
+
+		<div class="left_Wrap">
+			<div class="post_cmp">
+				<div th:each="post,i : ${post}">
+					<a th:href="@{|/posts/${post.postCode}|}">
+						<div id="postComp">
+							<div th:id="${i.index}"></div>
+							<div class="ctt_Wrap">
+								<div class="writerinfo_Wrap">
+									<div class="profileimg_div">
+										<img th:src="${profilesrc[i.index]}">
+									</div>
+									<div th:text="${post.memberNick}"></div>
+									<div th:text="${post.createOn}"></div>
+									<div class="ratebox" >
+										★<p th:text="${post.starCount}" style="padding-left: 5px;"></p>
+									</div>
+								</div>
+								<div class="row_Wrap">
+									<div class="thumb_Wrap">
+										<img th:src="${post.targetThumbnail}">
+									</div>
+									<div class="col_Wrap">
+									<div class="target_Wrap">
+										<div th:text="${post.targetName}"></div>
+										<div th:text="${post.targetAuthor}"></div>
+										<div th:text="${post.targetSubName}"></div>
+									</div>
+									<div class="postcnt_Wrap">
+										<div th:text="${post.title}"></div>
+										<div th:text="${post.content}" class="postcontent"></div>
+										<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
+									</div>
+								</div>
+							</div>
+						</div>
+					</a>
+					<hr>
+				</div>
+			</div>
+		</div>
+		
+
+		<div class="right_Wrap">
+			<form>
+				<div class="chooseType">
+					<p>종류</p>
+					<label onclick="checked(this, 0)"><input type="checkbox" name="chooseType" value="all" class="checkType all">전체</label>
+					<label onclick="checked(this, 1)"><input type="checkbox" name="chooseType" value="book" class="checkType book">책</label>
+					<label onclick="checked(this, 2)"><input type="checkbox" name="chooseType" value="movie" class="checkType movie">영화</label>
+					<label onclick="checked(this, 3)"><input type="checkbox" name="chooseType" value="concert" class="checkType concert">공연</label>
+				</div>
+				</form>
+			
+			<div id='calendar-container' class="calendar-container">    
+				<div id='calendar'></div>  
+			</div>
+		</div>
+
+	</div>
+
+    
+	
+	
+	
+	
+	
+<div id="pagination">
+	<!-- 맨 처음 페이지로 이동하는 버튼 -->
+    <span th:if="${pageVo.startPage > 1}">
+        <a th:href="@{'/userPage/' + member.id + '?page=1&type=' + ${type}}" th:text="'처음&emsp;'"></a>
+    </span>
+
+	<!-- 이전 블록으로 이동하는 버튼 -->
+    <span th:if="${pageVo.isPrev == true}">
+    	<a th:href="@{'/userPage/' + member.id + '?page=' + (pageVo.startPage - 1) + '&type=' + ${type}}" th:text="'이전'"></a>
+    </span>
+
+    <!-- 시퀀스 보여주는 값을 변경. -->
+    <span th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
+        <a class="div2" th:href="@{'/userPage/'+ ${member.id} +'?page='+${pageNum}+'&type='+${type}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
+    </span>
+	
+    <!-- 다음 블록으로 이동하는 버튼 -->
+    <span th:if="${pageVo.isNext == true}">
+	<a th:href="@{'/userPage/${member.id}?page='+|${pageVo.endPage + 1}|+'&type='+${type}}" th:text="'다음'"></a>
+    </span>
+	
+    <!-- 맨 뒷 페이지로 이동하는 버튼 -->
+   <!-- <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
+		<a th:href="@{'/userPage/${member.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
+    </span> -->
+</div>
+</div>
+<script th:inline="javascript">
+    var myData = /*[[${posts}]]*/ [];
+    var cntArr = /*[[${cntArr}]]*/ [];
+</script>
+	<script>
+	console.log(myData);
+	console.log(cntArr);
+	let arrDate = [];
+	let arrSrc = [];
+
+	for(let i=0;i<myData.length;i++){
+		let createOnSrc = myData[i].createOn.substring(0,10);
+		arrDate.push(myData[i].createOnSrc);
+		arrSrc.push(myData[i].targetSrc);
+	}
+
+	(function(){    
+		$(function(){      // calendar element 취득      
+		var calendarEl = $('#calendar')[0];      // full-calendar 생성하기      
+		var calendar = new FullCalendar.Calendar(calendarEl, {        
+			height: '1000px',// calendar 높이 설정
+			         
+			expandRows: false, // 화면에 맞게 높이 재설정        
+			slotMinTime: '08:00', // Day 캘린더에서 시작 시간        
+			slotMaxTime: '20:00', // Day 캘린더에서 종료 시간        
+			initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)        
+			dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)        
+			locale: 'ko', // 한국어 설정        
+				eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트          
+					//console.log(obj);        
+				},        
+				eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트          
+					//console.log(obj);        
+				},        
+				eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트          
+					//console.log(obj);        
+				},
+			
+			events: getDynamicEvents(),
+			 eventDidMount: function (arg) {
+    			addImage(arg);
+				}
+			});      // 캘린더 랜더링      
+					calendar.render();    
+				});  
+			})();
+			
+	function getDynamicEvents() {
+        let dynamicEvents = [];
+
+        for (let i = 0; i < myData.length; i++) {
+            // createOn을 yyyy-mm-dd 형식으로 변환
+            let createOnSrc = myData[i].createOn.substring(0, 10);
+            
+            // 동적으로 이벤트 추가
+            if(!dynamicEvents.some(event => event.start === createOnSrc)){
+	            dynamicEvents.push(
+					{
+	                start: createOnSrc,
+	                imageUrl: myData[i].targetThumbnail,
+            		}
+	            );
+				
+			}
+         	//console.log(dynamicEvents);   
+        }
+		
+        return dynamicEvents;
+    }
+    
+    
+ function addImage(eventInfo) {
+    // Create a new element to hold the image
+    var img = document.createElement('img');
+    img.src = eventInfo.event.extendedProps.imageUrl;
+    img.style.width = '100%';  // Adjust the width as needed
+    img.style.height = '100%';  // Adjust the height as needed
+
+    // Create a new div element to hold the image element
+    var container = document.createElement('div');
+    container.appendChild(img);
+
+    // Set the content of the calendar event to be the container
+    eventInfo.el.innerHTML = '';
+    eventInfo.el.appendChild(container);
+}
+    
+    
+	let cal = document.getElementById("calendar");
+ 	cal.style.width = '30%';			
+
+	
+	let types = document.querySelectorAll(".checkType");
+	
+	let memberId = document.getElementById("userId");
+	let memberIdVal = memberId.value;
+	
+	let thisType = document.getElementById("thisType");
+	let thisTypeVal = thisType.value;
+	
+	for(let i = 0; i<types.length; i++){
+		if(types[i].value == thisTypeVal){
+			types[i].checked = true;
+		}
+	}
+	
+	
+	function checked(e, number){
+		let value;
+		for(let i = 0; i<types.length; i++){
+			if(i != number){
+				types[i].checked = false;				
+			}
+			console.log('types', [i], ' : ',types[i].checked);
+		};
+		if(types[0].checked == false && types[1].checked == false && types[2].checked == false && types[3].checked == false){
+			types[0].checked = true;
+		}
+		for(let i = 0; i<types.length; i++){
+			if(types[i].checked == true){
+				value = types[i].value;
+				window.location.href = '/userPage/'+memberIdVal+'?page=1&type='+value;
+			}
+		}
+		
+			
+	};
+		
+	let bookCount = 0;
+	let concertCount = 0;
+	let movieCount = 0;
+
+	for(let i =0;i<myData.length;i++){	
+		if(myData[i].postCtcode == "book"){
+			bookCount = bookCount+1;
+		}else if(myData[i].postCtcode == "concert"){
+			concertCount = concertCount+1;
+		}else if(myData[i].postCtcode == "movie"){
+			movieCount = movieCount+1;
+		}
+	}	
+	console.log(bookCount);
+	console.log(concertCount);
+	console.log(movieCount);
+		
+	new Chart(document.getElementById("pie-chart"), {
+    type: 'pie',
+    data: {
+      labels: ["책", "영화", "공연"],
+      datasets: [{
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
+        data: [bookCount, movieCount, concertCount]
+      }]
+    },
+    options: {
+        responsive: false,
+        legend : {position : "bottom",
+        align :'end',
+        labels: {
+              boxWidth: 20
+          }
+        
+        },
+       
+    }
+});
+let month2 = cntArr[0];
+let month1 = cntArr[1];
+let thisMonth = cntArr[2];
+let month2Cnt = cntArr[3];
+let month1Cnt = cntArr[4];
+let thisMonthCnt = cntArr[5];
+
+new Chart(document.getElementById("bar-chart"), {
+    type: 'bar',
+    data: {
+      labels: [ month2+"월",  month1+"월", thisMonth+"월",],
+      datasets: [
+        {
+          
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f",],
+          data: [month2Cnt,month1Cnt,thisMonthCnt,]
+        }
+      ]
+    },
+    options: {
+        responsive: false,
+      legend: { display: false },
+      scales: {
+        yAxes: [{display: true,
+                ticks: {
+                    suggestedMin: 0,
+                },}
+            
+        ]
+    },
+}
+});
+			
+	
+	</script>
+			<script th:src="@{/js/nav.js}"></script>
+</body>
+</html>
