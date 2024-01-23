@@ -25,17 +25,17 @@ public class FollowController {
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		int userid = member.getId();
-		
-		int cnt = followRepository.followCheck(userid, followee);
+		int memberId = member.getId();
+		System.out.println(memberId);
+		int cnt = followRepository.followCheck(memberId, followee);
 		
 		if (cnt == 0) {
 			//팔로잉중 아니면 팔로우
-			followRepository.insertFollow(userid, followee);
+			followRepository.insertFollow(memberId, followee);
 			return "1";
 		} else {
 			//이미 팔로잉중이면 언팔로우
-			followRepository.unfollow(userid, followee);
+			followRepository.unfollow(memberId, followee);
 			return "0";
 		}
 		

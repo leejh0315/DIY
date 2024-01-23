@@ -48,12 +48,12 @@
             <div class="userid" th:text="*{user.nickName}"></div>
             <div class="userintro" th:text="*{user.memberIntro}"></div>
             <div class="followinfo">
+                <input type="hidden" th:value="${followingcheck}" id="followingcheck">
                 팔로잉<div class="follower">1</div>
                 팔로워<div class="following">4</div>
             </div>
             
-            <button onclick="location.href='/writePost'">
-                
+            <button id="followbtn">
             </button>
         </div>
     </div>
@@ -158,6 +158,41 @@
     var cntArr = /*[[${cntArr}]]*/ [];
 </script>
 	<script>
+
+    let followbtn = document.getElementById("followbtn");
+    let followingcheck = document.getElementById("followingcheck");
+    console.log(followingcheck);
+    if(followingcheck.value == 0){
+        followbtn.innerText="팔로우"
+    } else {
+        followbtn.innerText="언팔로우"
+    }
+
+
+    followbtn.addEventListener("click",(e)=>{
+        $.ajax({
+	            type: 'POST',
+	            url: '/insertFollow',
+	            data:{
+				 "followee" : userId.value
+					} ,
+				dataType: 'html',
+	            success: function (data) {
+					if(data== "1"){
+						console.log("팔로잉 완료");
+                        location.reload();
+                        followbtn.innerText = "언팔로우"
+						
+					}else if(data == "0"){
+                        console.log("언팔로우함");
+                        location.reload();
+                        followbtn.innerText = "팔로우"
+					}
+					
+            	}
+			})
+    });
+
 	console.log(myData);
 	console.log(cntArr);
 	let arrDate = [];

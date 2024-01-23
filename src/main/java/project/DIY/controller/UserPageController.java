@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
 import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
+import project.DIY.repository.FollowRepository;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
 import project.DIY.service.PasswordUpdateService;
@@ -31,6 +32,8 @@ public class UserPageController { //userPage관련
 	private final PostRepository postRepository;
 	@Autowired
 	private final MemberRepository memberRepository;
+	@Autowired
+	private final FollowRepository followRepository;
 	
 	@GetMapping("/userPage/{id}")
 	public String getUserPage(@PathVariable("id") String id,HttpServletRequest req, Model model,
@@ -38,9 +41,13 @@ public class UserPageController { //userPage관련
 			@RequestParam(value = "type", defaultValue = "all") String type
 			)throws Exception {
 		
+		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		int memberId = member.getId();
 		Member user = memberRepository.selectBymemberId(Integer.parseInt(id));
+		int followingcheck = followRepository.followCheck(memberId, Integer.parseInt(id));
+		model.addAttribute("followingcheck",followingcheck);
 //		System.out.println(user);
 		
 		List<Post> userPost = postRepository.selectUserPostbyId(Integer.parseInt(id));
