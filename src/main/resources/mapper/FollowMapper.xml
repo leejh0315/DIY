@@ -16,7 +16,15 @@
 	<select id="selectFollower" parameterType="Integer">
 		select * from diydb.follow where followee = #{memberId};
 	</select>
-
+	
+	<select id="cntFollowee" parameterType="Integer">
+		select count(*) from diydb.follow where follower = #{memberId};
+	</select>
+	
+	<select id="cntFollower" parameterType="Integer">
+		select count(*) from diydb.follow where followee = #{memberId};
+	</select>
+	
 	<select id="followCheck" parameterType="Integer">
     select count(*) from diydb.follow where follower = #{arg0} and followee = #{arg1};
 	</select>

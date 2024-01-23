@@ -10,6 +10,7 @@ public interface FollowRepository {
 	public List<Follow> selectFollower(int memberId);
 	public int followCheck(int memberId, int followee);
 	public void unfollow(int memberId, int followee);
-	
+	public int cntFollowee (int memberId);
+	public int cntFollower (int memberId);
 
 }

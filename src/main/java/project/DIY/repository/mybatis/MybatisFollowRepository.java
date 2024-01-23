@@ -47,6 +47,16 @@ public class MybatisFollowRepository implements FollowRepository {
 		followMapper.unfollow(memberId, followee);
 		
 	}
+	@Override
+	public int cntFollowee(int memberId) {
+		int cnt = followMapper.cntFollowee(memberId);
+		return cnt;
+	}
+	@Override
+	public int cntFollower(int memberId) {
+		int cnt = followMapper.cntFollower(memberId);
+		return cnt;
+	}
 
 	
 	

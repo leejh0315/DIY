@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -50,6 +52,12 @@ public class UserPageController { //userPage관련
 		model.addAttribute("followingcheck",followingcheck);
 //		System.out.println(user);
 		
+		
+//		팔로워/팔로우 수
+		int following = followRepository.cntFollowee(Integer.parseInt(id));
+		int follower = followRepository.cntFollower(Integer.parseInt(id));
+		model.addAttribute("following",following);
+		model.addAttribute("follower",follower);
 		List<Post> userPost = postRepository.selectUserPostbyId(Integer.parseInt(id));
 		int size = userPost.size();
 
@@ -123,5 +131,27 @@ public class UserPageController { //userPage관련
 		return "myPage/userPage";
 	}
 	
-	
+	@PostMapping("/insertFollow") //팔로잉 기능
+	@ResponseBody
+	public String insertFollow(@RequestParam(value = "followee") int followee ,  HttpServletRequest req) {
+		
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		int memberId = member.getId();
+		System.out.println(memberId);
+		int cnt = followRepository.followCheck(memberId, followee);
+		
+		if (cnt == 0) {
+			//팔로잉중 아니면 팔로우
+			followRepository.insertFollow(memberId, followee);
+			return "1";
+		} else {
+			//이미 팔로잉중이면 언팔로우
+			followRepository.unfollow(memberId, followee);
+			return "0";
+		}
+		
+		
+		
+	}
 }

@@ -73,8 +73,13 @@
             <div class="userid" th:text="*{member.nickName}"></div>
             <div class="userintro" th:text="*{member.memberIntro}"></div>
             <div class="followinfo">
-                팔로잉<div class="follower">1</div>
-                팔로워<div class="following">4</div>
+				<a th:href="@{|/followee/${member.id}|}">
+				팔로잉<div class="following" id="following" th:text="${following}"></div>
+				</a>
+				
+				<a th:href="@{|/follower/${member.id}|}">
+                팔로워<div class="follower" id="follower" th:text="${follower}"></div>
+				</a>
             </div>
             
             <button onclick="location.href='/writePost'">
