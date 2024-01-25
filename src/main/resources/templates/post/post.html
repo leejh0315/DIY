@@ -92,7 +92,7 @@
 					<button class="reportbtn" id="reportbtn" >신고</button>
 			</th:block>
 		</th:block>
-		<input type="hidden" id="reportedcheck">			
+				
 
 			
 
@@ -211,7 +211,7 @@
 			$('#likesicon').addClass('fas fa-heart');
 		};
 		
-
+		
 		if(reportcnt==1){
 			modalcontent.innerText = "이미 신고한 글입니다.";
 			reportCancle.innerText = "확인";
@@ -287,9 +287,10 @@
 				            data:{
 							 "postCode" : postCode.value
 							} ,
+							dataType: 'html',
 	            
 			            success: function (data) {
-							if(data == 1){
+							if(data == "1"){
 								modalcontent.innerText = "신고되었습니다.";
 								reportCancle.innerText = "확인";
 								reportConfirm.style.display = "none";

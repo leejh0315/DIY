@@ -42,7 +42,18 @@ public class AdminController {
 		model.addAttribute("member", member);
 		
 		List<ReportPost> allReportPost = aboutPostRepository.selectAllReportPost();
-
+		for(int i=0; i<allReportPost.size();i++) {
+			String contentTemp = allReportPost.get(i).getContent();
+			String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
+			plainText = plainText.replaceAll("&nbsp;", "");
+			plainText = plainText.replaceAll("&gt;", "");
+			//글자수 25자만 가져오기
+			int maxLength = 25;
+	        if (plainText.length() > maxLength) {
+	            plainText = plainText.substring(0, maxLength)+ "...";
+	        }
+			allReportPost.get(i).setContent(plainText);
+		}
 		model.addAttribute("allReportPost",allReportPost);
 		
 		
@@ -56,13 +67,14 @@ public class AdminController {
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 //		member.getLoginId().equals("admin");
 		List<Post> allPosts = postReposiroty.selectAllpost();
+		
+		
 
 		model.addAttribute("member", member);
 		model.addAttribute("allPosts", allPosts);
-		System.out.println(allPosts.get(0).getPostCtcode());
+		System.out.println(allPosts);
 		
 		
-
 		
 		return "admin/postManage";
 	}
@@ -114,7 +126,7 @@ public class AdminController {
 			System.out.println(map);
 			memberRepository.updateUserStatusCode(map);
 		}else {
-			System.out.println("잘못됏다 여기서");
+			
 		}
 		
 		return "1";
