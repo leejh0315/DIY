@@ -56,16 +56,25 @@ public class FollowController {
 //		System.out.println(followeeList);
 
 		List<Member> followerList = new ArrayList<>();
-		
+		List<Integer> followCheckList = new ArrayList<>();
 		for(int i=0; i<follower.size(); i++) {
 			int temp = follower.get(i).getFollower();
 			followerList.add(memberRepository.selectBymemberId(temp));
+			
+			if(temp == memberId) {
+				followCheckList.add(2);
+			} else {
+				int followCheck = followRepository.followCheck(memberId, temp);
+				followCheckList.add(followCheck);
+			};
 		};
 		System.out.println(followerList);
+		System.out.println(followCheckList);
 		model.addAttribute("followerList",followerList);
+		model.addAttribute("followCheckList",followCheckList);
 		model.addAttribute("member", member);
 		model.addAttribute("user", user);	
-		
+//		model.addAttribute("followCheck",followCheck);
 		return "follow/follower";
 	}
 	@GetMapping("/followee/{id}")
@@ -91,13 +100,20 @@ public class FollowController {
 		System.out.println(followee);
 
 		List<Member> followeeList = new ArrayList<>();
-		
+		List<Integer> followCheckList = new ArrayList<>();
 		for(int i=0; i<followee.size(); i++) {
 			int temp = followee.get(i).getFollowee();
 			followeeList.add(memberRepository.selectBymemberId(temp));
+			if(temp == memberId) {
+				followCheckList.add(2);
+			} else {
+				int followCheck = followRepository.followCheck(memberId, temp);
+				followCheckList.add(followCheck);
+			};
 		};
 		System.out.println(followeeList);
 		model.addAttribute("followeeList",followeeList);
+		model.addAttribute("followCheckList",followCheckList);
 		
 		
 		model.addAttribute("member", member);
