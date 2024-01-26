@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/follow.css}">
+    <title>팔로워</title>
+</head>
+<body>
+    <th:block th:if="${member == null}">
+		<div th:replace="main/header :: headFrag(${none})"></div>
+	</th:block>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+    <h1>팔로워</h1>
+
+    <div th:each="follower, i : ${followerList}" class="followList">
+        <input type="hidden" th:value="${follower.id}" class="userid">
+        <div class="profileimg_div">
+            <img th:src="${follower.profileSrc}">
+        </div>
+        <div th:text="${follower.nickName}"></div>
+        <div th:text="${follower.memberIntro}"></div>
+
+        <!-- 각 follower에 대응하는 followCheck 값을 가져옴 -->
+        <div th:with="status=${followCheckList[i.index]}">
+            <!-- 조건에 따라 버튼을 생성 -->
+            <button th:if="${status eq 1}" type="button" class="followbtn">팔로우</button>
+            <button th:if="${status eq 0}" type="button" class="followbtn">팔로잉</button>
+            <!-- 2인 경우 본인, 버튼 숨김처리 -->
+            <button th:if="${status eq 2}" type="button" class="followbtn" style="display: none;">본인</button>
+        </div>
+    </div>
+
+    <script>
+    
+        let followbtn = document.querySelectorAll(".followbtn");
+        let userid = document.querySelectorAll(".userid");
+    
+        for(let i =0; i<followbtn.length; i++){
+            followbtn[i].addEventListener("click",(e)=>{
+            
+   
+            $.ajax({
+                    type: 'POST',
+                    url: '/insertFollow',
+                    data:{
+                     "followee" : userid[i].value
+                        } ,
+                    dataType: 'html',
+                    success: function (data) {
+                        if(data== "1"){
+                            console.log("팔로잉 완료");
+                            location.reload();
+                            // followbtn.innerText = "팔로잉"
+                            
+                        }else if(data == "0"){
+                            console.log("언팔로우함");
+                            location.reload();
+                            // followbtn.innerText = "팔로우"
+                        }
+                        
+                    }
+                })
+        });
+        }
+    
+        </script>
+
+    <script th:src="@{/js/nav.js}"></script>
+</body>
+</html>

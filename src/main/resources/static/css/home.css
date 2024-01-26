@@ -9,13 +9,21 @@
 }
 
 .home_Wrap{
-    position: relative;
+    /* position: absolute;
     left: 30%;
     margin-left: -150px;
     top: 50%;
+    margin-top: 60px; */
+    position: relative;
+    left: 29%;
+    margin-left: -150px;
+    width: 70%;
+    top: 50%;
     margin-top: 60px;
 }
-
+.mostPosted_Wrap{
+    width: 80%;
+}
 .mostPosted_Top{
     display: flex;
     justify-content: space-between;
@@ -63,7 +71,7 @@
 
 .banner{
     
-    width:50% ;
+    width:80% ;
 }
 .banner>img{
     border-radius: 20px;
@@ -84,10 +92,6 @@
     font-size: 16px;
 }
 
-.mostPosted_Wrap{
-    
-    width: 50%;
-}
 
 .king_Wrap {
     width: fit-content;

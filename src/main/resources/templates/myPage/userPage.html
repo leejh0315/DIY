@@ -1,54 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-<link rel="stylesheet" th:href="@{/css/main.css}">
-<link rel="stylesheet" th:href="@{/css/mypage.css}">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/myPage.css}">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
-
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
-
-
-	<style>
-		img{
-			width: 100px;
-			height: 100px;
-		}
-		.chooseType{
-			border: solid 1px black;
-		}
-		.fc-header-toolbar {    
-			padding-top: 1em;    
-			padding-left: 1em;    
-			padding-right: 1em;  
-		}
-
-	</style>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
 </head>
 <body>
-	<th:block th:if="${member == null}">
+    <th:block th:if="${member == null}">
 		<div th:replace="main/header :: headFrag(${none})"></div>
 	</th:block>
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
-
-	<div class="mypage_Wrap">
-	<h1>MyPage</h1>
-	
-	    <div class="top_wrap">
+    <div class="mypage_Wrap">
+    <h1>UserPage</h1>
+    
+    <div class="top_wrap">
         <div class="recordchart">
             <p>나의 기록 통계</p>
             <canvas id="pie-chart" width="200" height="200"></canvas>
@@ -59,38 +38,30 @@
         </div>
         <div class="user_wrap">
 			
-			<input type="hidden" th:value="${member.id}" id="memberId">
+			<input type="hidden" th:value="${user.id}" id="userId">
 			<input type="hidden" th:value="${type}" id="thisType">
 		
 			
-			
-            <a th:href="@{|/myPage/update/${member.id}|}">
-            <i class="fa-solid fa-gear"></i>
-            </a>
             <div class="userimg">
-                <img th:src="${member.profileSrc}" alt="">
+                <img th:src="${user.profileSrc}" alt="">
             </div>
-            <div class="userid" th:text="*{member.nickName}"></div>
-            <div class="userintro" th:text="*{member.memberIntro}"></div>
+            <div class="userid" th:text="*{user.nickName}"></div>
+            <div class="userintro" th:text="*{user.memberIntro}"></div>
             <div class="followinfo">
-				<a th:href="@{|/followee/${member.id}|}">
-				팔로잉<div class="following" id="following" th:text="${following}"></div>
-				</a>
-				
-				<a th:href="@{|/follower/${member.id}|}">
-                팔로워<div class="follower" id="follower" th:text="${follower}"></div>
-				</a>
+                <input type="hidden" th:value="${followingcheck}" id="followingcheck">
+                <a th:href="@{|/followee/${user.id}|}">
+                    팔로잉<div class="following" id="following" th:text="${following}"></div>
+                    </a>
+                    
+                    <a th:href="@{|/follower/${user.id}|}">
+                    팔로워<div class="follower" id="follower" th:text="${follower}"></div>
+                    </a>
             </div>
             
-            <button onclick="location.href='/writePost'">
-                글 작성
+            <button id="followbtn">
             </button>
         </div>
     </div>
-
-
-	<!--<a th:href="@{|/chat/chatList/${member.id}|}">채팅하러 가기</a>-->
-<a th:href="@{|/chat/chatList|}">채팅하러 가기</a>	
 
 	<div class="mid_Wrap">
 
@@ -163,27 +134,27 @@
 <div id="pagination">
 	<!-- 맨 처음 페이지로 이동하는 버튼 -->
     <span th:if="${pageVo.startPage > 1}">
-        <a th:href="@{'/myPage/' + member.id + '?page=1&type=' + ${type}}" th:text="'처음&emsp;'"></a>
+        <a th:href="@{'/userPage/' + user.id + '?page=1&type=' + ${type}}" th:text="'처음&emsp;'"></a>
     </span>
 
 	<!-- 이전 블록으로 이동하는 버튼 -->
     <span th:if="${pageVo.isPrev == true}">
-    	<a th:href="@{'/myPage/' + member.id + '?page=' + (pageVo.startPage - 1) + '&type=' + ${type}}" th:text="'이전'"></a>
+    	<a th:href="@{'/userPage/' + user.id + '?page=' + (pageVo.startPage - 1) + '&type=' + ${type}}" th:text="'이전'"></a>
     </span>
 
     <!-- 시퀀스 보여주는 값을 변경. -->
     <span th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
-        <a class="div2" th:href="@{'/myPage/'+ ${member.id} +'?page='+${pageNum}+'&type='+${type}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
+        <a class="div2" th:href="@{'/userPage/'+ ${user.id} +'?page='+${pageNum}+'&type='+${type}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
     </span>
 	
     <!-- 다음 블록으로 이동하는 버튼 -->
     <span th:if="${pageVo.isNext == true}">
-	<a th:href="@{'/myPage/${member.id}?page='+|${pageVo.endPage + 1}|+'&type='+${type}}" th:text="'다음'"></a>
+	<a th:href="@{'/userPage/${user.id}?page='+|${pageVo.endPage + 1}|+'&type='+${type}}" th:text="'다음'"></a>
     </span>
 	
     <!-- 맨 뒷 페이지로 이동하는 버튼 -->
    <!-- <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
-		<a th:href="@{'/myPage/${member.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
+		<a th:href="@{'/userPage/${user.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
     </span> -->
 </div>
 </div>
@@ -192,25 +163,54 @@
     var cntArr = /*[[${cntArr}]]*/ [];
 </script>
 	<script>
-		
-		
-		
-		
+
+    let followbtn = document.getElementById("followbtn");
+    let followingcheck = document.getElementById("followingcheck");
+    // let following = document.getElementById("following");
+    // let follower = document.getElementById("follower");
+
+    
+
+    if(followingcheck.value == 0){
+        followbtn.innerText="팔로우"
+    } else {
+        followbtn.innerText="언팔로우"
+    }
+
+
+    followbtn.addEventListener("click",(e)=>{
+        $.ajax({
+	            type: 'POST',
+	            url: '/insertFollow',
+	            data:{
+				 "followee" : userId.value
+					} ,
+				dataType: 'html',
+	            success: function (data) {
+					if(data== "1"){
+						console.log("팔로잉 완료");
+                        location.reload();
+                        followbtn.innerText = "언팔로우"
+						
+					}else if(data == "0"){
+                        console.log("언팔로우함");
+                        location.reload();
+                        followbtn.innerText = "팔로우"
+					}
+					
+            	}
+			})
+    });
+
 	console.log(myData);
 	console.log(cntArr);
 	let arrDate = [];
 	let arrSrc = [];
 
-
-
-
 	for(let i=0;i<myData.length;i++){
 		let createOnSrc = myData[i].createOn.substring(0,10);
 		arrDate.push(myData[i].createOnSrc);
 		arrSrc.push(myData[i].targetSrc);
-		
-
-		
 	}
 
 	(function(){    
@@ -291,7 +291,7 @@
 	
 	let types = document.querySelectorAll(".checkType");
 	
-	let memberId = document.getElementById("memberId");
+	let memberId = document.getElementById("userId");
 	let memberIdVal = memberId.value;
 	
 	let thisType = document.getElementById("thisType");
@@ -318,7 +318,7 @@
 		for(let i = 0; i<types.length; i++){
 			if(types[i].checked == true){
 				value = types[i].value;
-				window.location.href = '/myPage/'+memberIdVal+'?page=1&type='+value;
+				window.location.href = '/userPage/'+memberIdVal+'?page=1&type='+value;
 			}
 		}
 		

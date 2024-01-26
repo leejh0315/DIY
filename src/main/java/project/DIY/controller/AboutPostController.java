@@ -73,7 +73,7 @@ public class AboutPostController {
 	
 	@PostMapping("/insertReportPost")
 	@ResponseBody
-	public Integer insertReportPost(@RequestParam(value = "postCode") int postCode, HttpServletRequest req) {
+	public String insertReportPost(@RequestParam(value = "postCode") int postCode, HttpServletRequest req) {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		Post currentPost = postRepository.selectByPostCode(postCode);
@@ -95,11 +95,24 @@ public class AboutPostController {
 		System.out.println(selectReportPostcnt);
 		if (selectReportPostcnt == 0) {
 			aboutPostRepository.insertReportPost(reportPost);
-			return 1;
+			return "1";
 		}else {
-			return 0;
+			return "0";
 		}
 	}
 	
-	
+	@PostMapping("/deleteReportPost")
+	@ResponseBody
+	public String deleteReportPost(@RequestParam(value = "postCode") int postCode, HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		Post currentPost = postRepository.selectByPostCode(postCode);
+		int userid = member.getId();
+		
+		
+		aboutPostRepository.deleteReportPost(postCode);
+		
+		return "1";
+		
+	}
 }

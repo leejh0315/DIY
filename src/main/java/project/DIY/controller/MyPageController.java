@@ -32,6 +32,7 @@ import project.DIY.domain.Member;
 import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
 import project.DIY.form.PasswordUpdateForm;
+import project.DIY.repository.FollowRepository;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
 import project.DIY.service.PasswordUpdateService;
@@ -49,6 +50,8 @@ public class MyPageController {	//myPage 관련
 	private final PasswordUpdateService passwordUpdateService;
 	@Autowired
 	private final PasswordEncoder passwordEncoder;
+	@Autowired
+	private final FollowRepository followRepository;
 	
 	//마이페이지 접근
 	@GetMapping("/myPage/{id}")
@@ -64,6 +67,13 @@ public class MyPageController {	//myPage 관련
 			return "redirect:/home/home";
 		}
 		
+//		팔로잉/팔로워 수	
+		int following = followRepository.cntFollowee(member.getId());
+		int follower = followRepository.cntFollower(member.getId());
+		model.addAttribute("following",following);
+		model.addAttribute("follower",follower);
+		
+
 		List<Post> myPost = postRepository.selectUserPostbyId(Integer.parseInt(id));
 		int size = myPost.size();
 
