@@ -1,5 +1,7 @@
 package project.DIY.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -59,7 +61,10 @@ public class AboutPostController {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		reply.setReplyerId(member.getId());
+		System.out.println("대댓");
 		System.out.println(reply);
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		reply.setReplyCreateDate(currentDateTime);
 		replyRepository.insertReReply(reply);
 		
 		return "redirect:/posts/{postCode}";
@@ -73,9 +78,7 @@ public class AboutPostController {
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		Post currentPost = postRepository.selectByPostCode(postCode);
 		int userid = member.getId();
-		
 	
-		
 		ReportPost reportPost = new ReportPost();
 		
 		reportPost.setPostCode(postCode);
@@ -83,7 +86,8 @@ public class AboutPostController {
 		reportPost.setContent(currentPost.getContent());
 		reportPost.setMemberId(currentPost.getMemberId());
 		reportPost.setReporterId(userid);
-		
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		reportPost.setReportedDate(currentDateTime);
 		System.out.println(reportPost);
 		
 		int selectReportPostcnt = aboutPostRepository.selectReportPost(reportPost);

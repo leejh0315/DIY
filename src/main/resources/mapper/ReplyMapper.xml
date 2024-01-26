@@ -13,7 +13,7 @@
 			#{postId}, 
 			#{replyContent}, 
 			#{replyerId}, 
-			date_format(now(), '%Y%m%d%H%i%s'),
+			#{replyCreateDate},
 			null
 		);
 		
@@ -35,7 +35,7 @@
 			#{postId}, 
 			#{replyContent}, 
 			#{replyerId}, 
-			date_format(now(), '%Y%m%d%H%i%s'),
+			#{replyCreateDate},
 			null
 		);
 	</insert>

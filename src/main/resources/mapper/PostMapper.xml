@@ -9,7 +9,7 @@
 
 	<!-- 게시글 등록 -->
 	<insert id="insertPost" parameterType="Post"> 
-		INSERT INTO diydb.post(postCode, postCtCode, targetName, targetSubName, targetAuthor, targetThumbnail, memberId, memberNick, starCount, title, content, createOn, updateOn, openStatus)
+		INSERT INTO diydb.post(postCode, postCtCode, targetName, targetSubName, targetAuthor, targetThumbnail, targetGenre, memberId, memberNick, starCount, title, content, createOn, updateOn, openStatus)
 		VALUES (
 			null, 
 			#{postCtcode},
@@ -17,12 +17,13 @@
 			#{targetSubName},
 			#{targetAuthor},
             #{targetThumbnail},
+            #{targetGenre},
             #{memberId},
             #{memberNick},
             #{starCount},
             #{title},
             #{content},
-			date_format(now(), '%Y%m%d%H%i%s'),
+			#{createOn},
 			null,
 			"Y"
 			);
@@ -84,7 +85,7 @@
 				starcount = #{starCount},
 				title = #{title},
 				content = #{content},
-				updateOn = date_format(now(), '%Y%m%d%H%i%s')
+				updateOn =#{updateOn}
 				WHERE postcode = #{postCode}; 
 	</update>
 	

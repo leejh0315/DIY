@@ -9,6 +9,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -17,9 +18,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
+import io.github.flashvayne.chatgpt.service.ChatgptService;
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 public class ApiController {
 
+	private final ChatgptService chatgptService;
 	//카카오 책 검색 API
 	@GetMapping("/kakaoBookSearch/{keyword}")
 	public String kakaoBookSearch(@PathVariable("keyword") String keyword){
@@ -186,5 +192,22 @@ public class ApiController {
 	    ObjectMapper objectMapper = new ObjectMapper();
 	    return objectMapper.writeValueAsString(jsonNode);
 	}
+	
+	//챗 GPT
+	/*
+	@GetMapping("/chatGPT")
+	public String chatGPT() {
+		
+		String msg = "나는 지금까지 드라마 장르의 영화 3편,"
+				+ "SF 장르의 영화 5편, "
+				+ "판타지 장르의 영화 2편을 봤어."
+				+ "나의 영화 시청 내역에 맞는 새로운 영화 3편을 추천해줘."
+				+ "한글로 추천해주고, 부연설명 할 필요 없이, 그냥 제목만 알려주면 돼.";
+				
+		String answer = chatgptService.sendMessage(msg);
+		return answer;
+		
+	}
+	*/
 
 }

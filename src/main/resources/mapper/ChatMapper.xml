@@ -35,7 +35,7 @@
 			#{roomId}, 
 			#{sender}, 
 			#{message}, 
-			date_format(now(), '%Y%m%d%H%i%s')
+			#{sendDate}
 		);
 	</insert>
 </mapper>

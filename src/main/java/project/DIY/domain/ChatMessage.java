@@ -1,7 +1,5 @@
 package project.DIY.domain;
 
-import java.sql.Date;
-
 import lombok.Data;
 
 @Data
@@ -14,5 +12,5 @@ public class ChatMessage {
     private String roomId; // 방번호
     private int sender; // 메시지 보낸사람
     private String message; // 메시지
-    private Date sendDate;	//보낸 날짜
+    private String sendDate;	//보낸 날짜
 }

@@ -43,11 +43,14 @@
 	var memberNick = /*[[${memberNick}]]*/ '';
     let socket = new WebSocket("ws://localhost:8080/ws/chat/"+roomId);
     
+    
+
+    
 	console.log('member : ' , member);
 		
     console.log('room : ' , room);
         function enterRoom(socket){
-            var enterMsg={"type" : "TALK","roomId":roomId ,"sender":member.id, "senderNick":memberNick,"message":""}; //sender는  글쓸때 수정하자.\
+            var enterMsg={"type" : "ENTER","roomId":roomId ,"sender":member.id, "senderNick":memberNick,"message":""}; //sender는  글쓸때 수정하자.\
          
             socket.send(JSON.stringify(enterMsg), roomId);
         }
@@ -65,11 +68,30 @@
         }
 
         //메세지 수신했을 때 이벤트.
-        socket.onmessage = function (e) {
+        socket.onmessage = function (e) {    
+			let currentDate = new Date();
+
+		// 날짜 및 시간 정보 가져오기
+			let year = currentDate.getFullYear();
+			let month = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줍니다.
+			let day = currentDate.getDate();
+			let hours = currentDate.getHours();
+			let minutes = currentDate.getMinutes();
+			let seconds = currentDate.getSeconds();
+    
+			let jsonData = JSON.parse(e.data);
             console.log(e.data);
+            let className = 'yourMessage';
+            if(jsonData.sender == member.id){
+				className = 'myMessage';
+			}
             let msgArea = document.querySelector('.msgArea');
             let newMsg = document.createElement('div');
-            newMsg.innerText=e.data;
+            newMsg.innerHTML += jsonData.message;
+            newMsg.innerHTML += "<br>";
+            newMsg.innerHTML += year + '-' + month +'-' + day;
+            newMsg.innerHTML += hours + ':' + minutes + ':' + seconds;
+            newMsg.className = className;
             msgArea.append(newMsg);
         }
 
@@ -79,10 +101,11 @@
             let content=document.querySelector('.content').value;
              var talkMsg={"type" : "TALK","roomId":roomId ,"sender":member.id, "senderNick":memberNick,"message":content};
            socket.send(JSON.stringify(talkMsg));
+           document.querySelector('.content').value = "";
         }
 
         function quit(){
-             var quitMsg={"type" : "TALK","roomId":roomId ,"sender":member.id, "senderNick":memberNick,"message":""};
+             var quitMsg={"type" : "QUIT","roomId":roomId ,"sender":member.id, "senderNick":memberNick,"message":""};
            socket.send(JSON.stringify(quitMsg));
             socket.close();
             location.href="/chat/chatList/11";
