@@ -35,7 +35,7 @@
 			#{nickName}, 
 			"Y",
 			"",
-			date_format(now(), '%Y%m%d%H%i%s'),
+			#{createOn},
 			null,
 			"/img/defalut_profileimg.jpg",
 			null,
@@ -55,7 +55,7 @@
 		nickName = #{nickName},
 		profileSrc = #{profileSrc},		
 		memberIntro = #{memberIntro},
-		updateOn = date_format(now(), '%Y%m%d%H%i%s')
+		updateOn = #{updateOn}
 		where id = #{id};
 	</update>
 	
@@ -72,7 +72,7 @@
 	
 	<select id="passwordUpdateSixMonth" resultType="Member">
 		 select * from diydb.member 
-		 where date(passwordUpdate) <![CDATA[ < ]]> date(subdate(now(), interval 6 day));
+		 where date(passwordUpdate) <![CDATA[ < ]]> date(subdate(now(), interval 6 Month));
 	</select>
 	
 	<update id="reAlertUpdatePassword">
@@ -85,7 +85,7 @@
 	<update id="updatePasswordById" parameterType="Member">
 		update diydb.member set 
 		password = #{password},
-		passwordUpdate = date_format(now(), '%Y%m%d%H%i%s'),
+		passwordUpdate = #{passwordUpdate},
 		passwordFind = "N"
 		where id = #{id};
 	</update>

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -161,8 +163,10 @@ public class PostController {
     	  return "post/writePost";
 	    }
 	    else{
+    	LocalDateTime currentDateTime = LocalDateTime.now();
     	post.setMemberId(member.getId());
   		post.setMemberNick(member.getNickName());
+  		post.setCreateOn(currentDateTime);
   		System.out.println(post.getContent().length());
   		post.setTargetName(post.getTargetName().trim());
       	
@@ -256,6 +260,8 @@ public class PostController {
 	//게시글 업데이트 DB update
 	@PostMapping("/update/{postCode}")
 	public String postUpdatePostByPostId(@ModelAttribute Post post, @PathVariable("postCode") int postCode, HttpServletRequest req) {
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		post.setUpdateOn(currentDateTime);
 		postRepository.updatePostByPostCode(post);
 		return "redirect:/posts/{postCode}";
 	}

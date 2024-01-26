@@ -2,6 +2,7 @@ package project.DIY.controller;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -172,6 +173,8 @@ public class MyPageController {	//myPage 관련
 		
 		member.setId(sessionMember.getId());
 		String path = Integer.toString(member.getId());
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		member.setUpdateOn(currentDateTime);
 		memberRepository.updateById(member);
 		member.setActiveUUID(UUID.randomUUID().toString());
 		memberRepository.updateUUID(member);
@@ -259,7 +262,9 @@ public class MyPageController {	//myPage 관련
 	    	  model.addAttribute("member", member);
 	         return type;
 		 }else {
+	         LocalDateTime currentDateTime = LocalDateTime.now();
 			 member.setPassword(passwordEncoder.encode(passwordUpdateForm.getNewPassword()));
+			 member.setPasswordUpdate(currentDateTime);
 			 memberRepository.updatePasswordById(member);
 			 SecurityContextHolder.clearContext();
 			 session.invalidate();

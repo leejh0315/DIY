@@ -1,5 +1,6 @@
 package project.DIY.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,11 @@ public class MenuController {
 		pageVo.setType(type);
 		
 		List<Post> post = postRepository.selectByType(pageVo);
+		
+		for (int i = 0 ; i < post.size(); i++) {
+			LocalDateTime a = post.get(i).getCreateOn();
+			System.out.println(a);
+		};
 		
 		if(type.equals("book")) {
 			model.addAttribute("typeEng" , "book");

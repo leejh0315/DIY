@@ -1,5 +1,7 @@
 package project.DIY.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +29,8 @@ public class ReplyController {
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
 		reply.setReplyerId(member.getId());
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		reply.setReplyCreateDate(currentDateTime);
 		replyRepository.insertReply(reply);
 		rAttr.addAttribute("root", reply.getPostId());
 

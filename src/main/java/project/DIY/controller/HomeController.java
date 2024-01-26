@@ -1,6 +1,8 @@
 package project.DIY.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -147,10 +149,12 @@ public class HomeController {
     	  model.addAttribute("joinForm", joinForm);
          return "join/join";
       }else {
+         LocalDateTime currentDateTime = LocalDateTime.now();
          Member member = new Member();
          member.setLoginId(joinForm.getLoginId());
          member.setPassword(passwordEncoder.encode(joinForm.getPassword()));
          member.setNickName(joinForm.getNickName());
+         member.setCreateOn(currentDateTime);
          memberRepository.insertMember(member);
          return "redirect:/" + "home/home";   
       }
@@ -199,15 +203,21 @@ public class HomeController {
       memberRepository.updateUUID(memberVO);
       
       List<Member> member = memberRepository.passwordUpdateSixMonth();
+      System.out.println(member);
       for(int i = 0 ; i < member.size(); i++) {
-    	  if(member.get(i).getLoginId().equals(memberVO.getLoginId())) {
-    		  return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
+    	  if(memberVO.getLoginId().equals(member.get(i).getLoginId())) {
+	    	  if(member.get(i).getLoginId().equals(memberVO.getLoginId())) {
+	    		  return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
+	    	  }
     	  }
       }
       List<Member> allMember = memberRepository.selectAllUser();
       for(int i = 0 ; i<allMember.size(); i++) {
-    	  if(allMember.get(i).getPasswordFind().equals("Y")) {
-    		  return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
+    	  if(memberVO.getLoginId().equals(allMember.get(i).getLoginId())) {
+    		  if(allMember.get(i).getPasswordFind().equals("Y")) {
+        		  System.out.println("pw찾음");
+        		  return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
+        	  }
     	  }
       }
       return "redirect:/" + "home/home";

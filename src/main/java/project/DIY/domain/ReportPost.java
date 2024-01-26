@@ -1,6 +1,6 @@
 package project.DIY.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ public class ReportPost {
 	private String content; 	//대상 게시글 내용
 	private int memberId; 		//대상 게시글 작성자 id
 	private int reporterId; 	//신고자 id
-	private Date reportedDate;	//신고 접수 날짜
+	private LocalDateTime reportedDate;	//신고 접수 날짜
 
 }
 

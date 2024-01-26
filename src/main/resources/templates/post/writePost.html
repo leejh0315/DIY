@@ -96,6 +96,8 @@
 				<input type="hidden" id="targetSubName" name="targetSubName" th:value="${postForm.targetSubName}">
 				<input type="hidden" id="targetAuthor" name="targetAuthor" th:value="${postForm.targetAuthor}">
 				<input type="hidden" id="targetThumbnail" name="targetThumbnail" th:value="${postForm.targetThumbnail}">
+				
+				<input type="hidden" id="targetGenre" name="targetGenre" th:value="${postForm.targetGenre}">
 			</div>
 			<div class="error"  th:errors="*{targetName}"></div>
 		
@@ -273,7 +275,7 @@
 		let targetSubName = document.getElementById("targetSubName");
 		let targetAuthor = document.getElementById("targetAuthor");
 		let targetThumbnail = document.getElementById("targetThumbnail");
-		
+		let targetGenre = document.getElementById("targetGenre");
 		
 		searchModalOnButton.addEventListener("click", (e)=>{
 		if(searchModalTogle){
@@ -436,6 +438,11 @@
 						searchMovieList[i].directors = searchMovieList[i].directors.director[0].directorNm 
 						searchMovieList[i].title = tempTitle;
 						
+						let genre = searchMovieList[i].genre;
+						if(genre.indexOf(',') != -1){
+							genre= genre.substring(0, genre.indexOf(','));
+						}
+						
 						if(searchMovieList[i].posters == ""){
 							tempImageUrl = tempImageUrl.substr(0, a);
 							searchMovieList[i].posters = tempImageUrl;
@@ -482,6 +489,7 @@ function selected(e){
 	targetName.value = resultC_name[tempNumber];
 	targetAuthor.value = resultC_type[tempNumber];
 	targetThumbnail.value = resultC_thumb[tempNumber];
+	targetGenre.value = resultC_type[tempNumber];
 	postCtcode.value = "concert";
 	selectedWork.innerHTML += 
 	"<img src='" + resultC_thumb[tempNumber] + "'>\
@@ -523,6 +531,7 @@ function selectMovie(e){
 	targetAuthor.value = searchMovieList[tempNumber].directors;
 	targetSubName.value = searchMovieList[tempNumber].prodYear +"." + searchMovieList[tempNumber].nation;
 	targetThumbnail.value = searchMovieList[tempNumber].posters;
+	targetGenre.value = searchMovieList[tempNumber].genre;
 	postCtcode.value = "movie";
 	selectedWork.innerHTML += 
 	"<img src='" + searchMovieList[tempNumber].posters + "'>\
