@@ -23,9 +23,12 @@
 }
 .mostPosted_Wrap{
     width: 80%;
+    margin-bottom: 4%;
 }
 .top5posts_Wrap{
     width: 80%;
+    margin-bottom: 3%;
+    
 }
 
 
@@ -51,6 +54,7 @@
     height: 0; /* 초기값을 0으로 설정 */
     padding-bottom: 150%; /* 원하는 높이의 백분율을 지정 */
     position: relative;
+    margin-bottom: 10px;
 }
 
 .Thumb>img {
@@ -72,6 +76,12 @@
 }
 .title {
     font-weight: 700;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
 }
 
 .subtitle , .author{
@@ -83,11 +93,10 @@
 }
 .top5posts{
     width: 18%;
-    
 }
 
 .banner{
-    
+    margin-bottom: 3%;
     width:80% ;
 }
 .banner>img{
@@ -96,32 +105,35 @@
     object-fit: cover;
     overflow: hidden;
 }
+
 .top5posts_user{
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1em;
+    gap: .5em;
 
 }
 .top5posts_title{
-    font-weight: 600;
-    font-size: 15px;
+    font-weight: 500;
+    font-size: 16px;
     width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    margin-bottom: 5px;
 
 }
 .top5posts_content {
-
+    color: #777777;
     width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    margin-bottom: 5px;
 }
 
 .home_Wrap  p {

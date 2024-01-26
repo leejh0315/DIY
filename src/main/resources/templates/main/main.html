@@ -38,7 +38,7 @@
 	
 	<div id="container" class="container">
 		<div th:each="post,i:${post}" id="mostPosted" class="mostPosted">
-				<div id="postComp">
+				<div id="postComp" class="postComp">
 					<div th:id="${i.index}"></div>
 					<div  class="Thumb">
 						<img th:src="${post.targetThumbnail}">
@@ -58,7 +58,7 @@
 		<p>인기 게시글</p>
 		<div class="container">
 			<div th:each="post,i:${top5posts}" id="top5posts" class="top5posts">
-				<div id="postComp">
+				<div id="postComp"class="postComp">
 					<div th:id="${i.index}"></div>
 					<div  class="Thumb">
 						<img th:src="${post.targetThumbnail}">
