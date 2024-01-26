@@ -24,6 +24,11 @@
 .mostPosted_Wrap{
     width: 80%;
 }
+.top5posts_Wrap{
+    width: 80%;
+}
+
+
 .mostPosted_Top{
     display: flex;
     justify-content: space-between;
@@ -43,18 +48,26 @@
 
 .Thumb {
     width: 100%;
-
+    height: 0; /* 초기값을 0으로 설정 */
+    padding-bottom: 150%; /* 원하는 높이의 백분율을 지정 */
+    position: relative;
 }
+
 .Thumb>img {
-    width: 100%; height: 100%;
+    width: 100%; 
+    height: 100%;
     object-fit: cover;
-
+    position: absolute; /* 위치를 조정하기 위해 */
+    top: 0;
+    left: 0;
 }
+
 .container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     font-size: 14px;
+    
 
 }
 .title {
@@ -68,6 +81,10 @@
 .mostPosted {
     width: 18%;
 }
+.top5posts{
+    width: 18%;
+    
+}
 
 .banner{
     
@@ -79,12 +96,32 @@
     object-fit: cover;
     overflow: hidden;
 }
+.top5posts_user{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
 
-.postcontent {
-    height: 20px;
-    overflow:hidden;
-	white-space:nowrap;
-    text-overflow : ellipsis ;
+}
+.top5posts_title{
+    font-weight: 600;
+    font-size: 15px;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+
+}
+.top5posts_content {
+
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .home_Wrap  p {
@@ -117,6 +154,17 @@
     margin:0 0 20px 0 ;
     gap: 2em;
 }
+.profileimgdiv{
+    width: 2em;
+    height: 2em;
+}
+.profileimgdiv > img{
+    width: 100%;
+    height:100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .rank.scd>.kingimgdiv, .rank.thd>.kingimgdiv {
     width: 5em;
     height: 5em;

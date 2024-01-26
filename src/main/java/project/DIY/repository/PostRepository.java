@@ -17,6 +17,8 @@ public interface PostRepository {
    public void updatePostByPostCode(Post post);
    public void deletePost(int postCode);
    
+   public List<Post> selectTop5PopularPosts();
+   
    public List<Post> getPostsByPageByMemberId(PaginationVo paginationVo);
    public int getPostsCountByMemberId(PaginationVo paginationVo);
    

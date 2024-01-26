@@ -53,6 +53,29 @@
 	</div>
 </div>
 	<div id="post-container"></div>
+
+	<div class="top5posts_Wrap">
+		<p>인기 게시글</p>
+		<div class="container">
+			<div th:each="post,i:${top5posts}" id="top5posts" class="top5posts">
+				<div id="postComp">
+					<div th:id="${i.index}"></div>
+					<div  class="Thumb">
+						<img th:src="${post.targetThumbnail}">
+					</div>
+					<div class="top5posts_title" th:text="${post.title}"></div>				
+					<div class="top5posts_content" th:text="${post.content}"></div>
+					<div class="top5posts_user">
+						<div th:with="profile=${top5_profileImg[i.index]}" class="profileimgdiv">
+							<img th:src="${profile}">
+						</div>
+						<div class="postcontent nickname" th:text="${post.memberNick}"></div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
 			
 	
 	<div class="king_Wrap">
