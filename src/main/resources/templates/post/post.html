@@ -180,6 +180,7 @@
             	}
 			})
 		}
+
 		$(document).ready(function() {
    		
    		console.log(member);
@@ -219,28 +220,7 @@
 		}
 		
 		
-		likes.addEventListener("click", (e)=>{
-			e.preventDefault();
-			console.log("눌림");
-			
-			$.ajax({
-	            type: 'POST',
-	            url: '/insertLike',
-	            data:{
-				 "postCode" : postCode.value
-					} ,
-	            
-	            success: function (data) {
-					if(data ==1){
-						likesicon.className='fas fa-heart';
-					}else{
-						likesicon.className='far fa-heart';
-					};
-				
-            },
-        })
-			
-		});
+		
 
    		
 		var addedDiv = document.createElement("div");
