@@ -9,7 +9,6 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -18,14 +17,45 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-import io.github.flashvayne.chatgpt.service.ChatgptService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 public class ApiController {
 
-	private final ChatgptService chatgptService;
+	/*
+	@GetMapping("/kakaoBookSearch/{keyword}")
+	public String libSearchBook(@PathVariable("keyword") String keyword) throws Exception {
+		 String query = keyword;
+		    ByteBuffer buffer = StandardCharsets.UTF_8.encode(query);
+		    String encode = StandardCharsets.UTF_8.decode(buffer).toString();
+		
+		    URI uri = UriComponentsBuilder
+		            .fromUriString("https://www.nl.go.kr")
+		            .path("/NL/search/openApi/search.do")
+		            .queryParam("key", "ba45351551dc861000021a41bbfd973dbcefded6b71282f6196148970f59a666")
+		            .queryParam("kwd", encode)
+		            .queryParam("pageNum", 1)
+		            .queryParam("pageSize", 30)
+		            .encode(StandardCharsets.UTF_8)
+		            .build()
+		            .toUri();
+		
+		    RestTemplate restTemplate = new RestTemplate();
+		    RequestEntity<Void> req = RequestEntity
+		    		.get(uri)
+		    		.build();
+		
+		       ResponseEntity<String> result = restTemplate.exchange(req, String.class);
+		        
+		        String xmlString = result.getBody().toString();
+		        String jsonString = convertXmlToJson(xmlString);
+			
+			        
+		        return jsonString;
+	}
+	*/
+	
 	//카카오 책 검색 API
 	@GetMapping("/kakaoBookSearch/{keyword}")
 	public String kakaoBookSearch(@PathVariable("keyword") String keyword){

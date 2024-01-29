@@ -21,12 +21,13 @@
 
     <div th:each="follower, i : ${followerList}" class="followList">
         <input type="hidden" th:value="${follower.id}" class="userid">
-        <div class="profileimg_div">
-            <img th:src="${follower.profileSrc}">
-        </div>
-        <div th:text="${follower.nickName}"></div>
-        <div th:text="${follower.memberIntro}"></div>
-
+        <a th:href="@{|/myPage/${follower.id}|}">
+	        <div class="profileimg_div">
+	            <img th:src="${follower.profileSrc}">
+	        </div>
+	        <div th:text="${follower.nickName}"></div>
+	        <div th:text="${follower.memberIntro}"></div>
+		</a>
         <!-- 각 follower에 대응하는 followCheck 값을 가져옴 -->
         <div th:with="status=${followCheckList[i.index]}">
             <!-- 조건에 따라 버튼을 생성 -->

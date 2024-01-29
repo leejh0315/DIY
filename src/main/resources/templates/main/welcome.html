@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+
+<script src="https://tistory4.daumcdn.net/tistory/3134841/skin/images/confetti_v2.js"></script>
+<style>
+	canvas{z-index:10;pointer-events: none;position: fixed;top: 0;transform: scale(1.1);}
+	.canvasBtn{display: none;}
+</style>
+
+</head>
+<body>
+	<h1>문득의</h1>
+	<h2>회원이 되신 것을 축하드립니다</h2>
+	<br>
+	<div>문화 생활 기록을 즐겨봐요</div>
+	<button onclick="goLogin()">로그인 하러 가기</button>
+	
+	
+	
+
+
+
+    <button class="canvasBtn" id="startButton">Drop Confetti</button>
+	<canvas id="canvas"></canvas>
+	<script>
+			function goLogin(){
+				window.location.href = "/home/dologin";
+			} 
+		$(document).ready(function() {
+
+			$("#startButton").trigger("click");
+			
+
+
+		});
+	</script>
+</body>
+</html>

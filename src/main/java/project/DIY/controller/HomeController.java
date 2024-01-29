@@ -138,9 +138,14 @@ public class HomeController {
          member.setNickName(joinForm.getNickName());
          member.setCreateOn(currentDateTime);
          memberRepository.insertMember(member);
-         return "redirect:/" + "home/home";   
+         return "redirect:/" + "home/welcome";   
       }
    }
+   @GetMapping("/welcome")
+   public String welcome(){
+	   return "main/welcome";
+   }
+   
    
    //로그인 페이지
    @GetMapping("/dologin")

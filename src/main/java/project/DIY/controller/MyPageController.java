@@ -55,7 +55,7 @@ public class MyPageController {	//myPage 관련
 	
 	//마이페이지 접근
 	@GetMapping("/myPage/{id}")
-	public String getMyPage(@PathVariable("id") String id,HttpServletRequest req, Model model,
+	public String getMyPage(@PathVariable("id") int id,HttpServletRequest req, Model model,
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "type", defaultValue = "all") String type
 			)throws Exception {
@@ -63,18 +63,23 @@ public class MyPageController {	//myPage 관련
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
+		
+		Member memberVo = memberRepository.selectBymemberId(id);
+		
+		/*
 		if(!id.equals(Integer.toString(member.getId()))) {
 			return "redirect:/home/home";
 		}
+		*/
 		
 //		팔로잉/팔로워 수	
-		int following = followRepository.cntFollowee(member.getId());
-		int follower = followRepository.cntFollower(member.getId());
+		int following = followRepository.cntFollowee(id);
+		int follower = followRepository.cntFollower(id);
 		model.addAttribute("following",following);
 		model.addAttribute("follower",follower);
 		
 
-		List<Post> myPost = postRepository.selectUserPostbyId(Integer.parseInt(id));
+		List<Post> myPost = postRepository.selectUserPostbyId(id);
 		int size = myPost.size();
 
 		List<String> memberprofileimg =new ArrayList<>();
@@ -108,14 +113,14 @@ public class MyPageController {	//myPage 관련
 							last2Month, lastMonth, thisMonth};
 		int[] cntArr = new int[6];
 		for(int i=0;i<3;i++) {
-			cntArr[i+3] = postRepository.countByMonth(Integer.parseInt(id), dateArr[i], dateArr[i+3]);
+			cntArr[i+3] = postRepository.countByMonth(id, dateArr[i], dateArr[i+3]);
 			cntArr[i] = dateArr[i+3];
 		}
 		
 		model.addAttribute("cntArr", cntArr);
 		
 		PaginationVo paginationVo = new PaginationVo(myPost.size(), page);
-		paginationVo.setMemberId(member.getId());
+		paginationVo.setMemberId(memberVo.getId());
 		paginationVo.setType(type);
 		int cnt = postRepository.getPostsCountByMemberId(paginationVo);
 
@@ -140,8 +145,8 @@ public class MyPageController {	//myPage 관련
 	    model.addAttribute("pageVo", paginationVo);
 	    model.addAttribute("posts", myPost);
 		model.addAttribute("post",list);
-		model.addAttribute("member", member);
-		
+		model.addAttribute("memberVo", memberVo);
+		model.addAttribute("member",member);
 		return "myPage/myPage";
 	}
 	
