@@ -23,7 +23,7 @@ public interface PostMapper {
    public List<Post> getPostsByPageByMemberId(PaginationVo paginationVo);
    public int getPostsCountByMemberId(PaginationVo paginationVo);
    public void deletePost(int postCode);
-   
+   public List<Post> selectTop5PopularPosts();
    public int selecetPosCntBySearch(String search);
    public List<Post>selecetPostBySearch(PaginationVo paginationVo);
    public int countByMonth(int memberId, int year, int month);

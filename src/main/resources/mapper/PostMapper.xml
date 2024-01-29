@@ -142,5 +142,28 @@
 	<delete id="deletePost" parameterType="Integer">
 		delete from diydb.post where postCode=#{postCode};
 	</delete>
+	<!-- 인기게시글 상위 5개의 post를 반환 -->
+	<select id="selectTop5PopularPosts" resultType="Post">
+		SELECT
+		    p.postCode,
+		    p.targetThumbnail,
+		    p.title,
+		    p.content,
+		    p.memberNick,
+		    p.memberId
+		FROM
+		    diydb.post p
+		JOIN (
+		    SELECT
+		        postcode
+		    FROM
+		        diydb.likepost
+		    GROUP BY
+		        postcode
+		    ORDER BY
+		        COUNT(*) DESC
+		    LIMIT 5
+		) t ON p.postCode = t.postcode;
+	</select>
 	
 </mapper>

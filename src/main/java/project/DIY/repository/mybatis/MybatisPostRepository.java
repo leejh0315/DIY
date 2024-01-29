@@ -115,6 +115,12 @@ public class MybatisPostRepository implements PostRepository{
       
    }
 
+	@Override
+	public List<Post> selectTop5PopularPosts() {
+		List<Post> post = postMapper.selectTop5PopularPosts();
+	    return post;
+	}
+
 
    
    
