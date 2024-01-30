@@ -41,8 +41,14 @@
 	</insert>
 	
 	<select id="selectMessageByOrder" parameterType="ChatMessage">
-		SELECT * FROM diydb.chatmessage group by 
-		roomId order by sendDate desc; 
+		SELECT id, roomId, sender, message, sendDate
+			FROM diydb.chatmessage
+			WHERE (roomId, sendDate) IN (
+			    SELECT roomId, MAX(sendDate)
+			    FROM diydb.chatmessage
+			    GROUP BY roomId
+			)order by id desc
+			;
 	</select>
 	
 	

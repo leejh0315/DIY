@@ -49,10 +49,45 @@ public class ChatController {
         List<ChatRoom> roomList = chatService.findMyRoom(id);
         Map<Integer, Member> roomMap = new HashMap<Integer, Member>();
         
-        List<ChatMessage> chatOrder = new ArrayList<ChatMessage>();
- 
+        List<ChatMessage> chatOrder = chatRepository.selectMessageByOrder();
         
+        System.out.println(roomList);
         
+        List<ChatRoom> tempList = new ArrayList<ChatRoom>();
+        for(int i = 0 ; i < chatOrder.size(); i++) {
+        	String tempId = chatOrder.get(i).getRoomId();
+        	ChatRoom tempRoom = chatRepository.findRoomByChatroomId(tempId);
+        	System.out.println(tempId);
+        	for(int j = 0 ; j<roomList.size(); j++) {
+        		if(tempId.equals(roomList.get(j).getRoomId())) {
+        			tempList.add(tempRoom);
+        		}
+        	}
+        }
+        
+        for(int i = 0; i<tempList.size(); i++) {
+        	if(member.getId() == tempList.get(i).getChatReceiverId()) {
+        		for(int j = 0 ; j < tempList.size(); j++) {
+        			int you =tempList.get(j).getChatSenderId();
+        			if(you != member.getId()) {
+        				Member uMember = memberRepository.selectBymemberId(you);
+        				roomMap.put(you, uMember);
+        				tempList.get(i).setChatReceiverId(you);
+        			}
+        		}
+        	}
+        	else if(member.getId() == tempList.get(i).getChatSenderId()) {
+        		for(int j = 0 ; j < tempList.size(); j++) {
+        			int you =tempList.get(j).getChatReceiverId();
+        			if(you != member.getId()) {
+        				Member uMember = memberRepository.selectBymemberId(you);
+        				roomMap.put(you, uMember);
+        			}
+        		}
+        	}
+        }
+        System.out.println(roomMap);
+        /*
         for(int i = 0; i<roomList.size(); i++) {
         	if(member.getId() == roomList.get(i).getChatReceiverId()) {
         		for(int j = 0 ; j < roomList.size(); j++) {
@@ -74,10 +109,10 @@ public class ChatController {
         		}
         	}
         }
-        
-        System.out.println(roomList);
+        */
         model.addAttribute("roomMap", roomMap);
-        model.addAttribute("roomList",roomList);
+        model.addAttribute("roomList", roomList);
+        model.addAttribute("tempList", tempList);
         model.addAttribute("id", member.getId());
         model.addAttribute("member", member);
         return "chat/chatList";

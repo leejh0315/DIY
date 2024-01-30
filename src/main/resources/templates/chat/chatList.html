@@ -16,7 +16,7 @@
     
 
 <table>
-    <div th:each="room, i : ${roomList}" >
+    <div th:each="room, i : ${tempList}" >
 			<div th:id="${i.index}" class="room" onclick="selected(this)">
 				<div th:with="member=${roomMap.get(room.chatReceiverId)}">
 					<img th:src="${member.profileSrc}">
@@ -27,7 +27,7 @@
 </table>
 
 <script th:inline="javascript">
-	var room = /*[[${roomList}]]*/ [];
+	var room = /*[[${tempList}]]*/ [];
 	var roomMap =  /*[[${roomMap}]]*/ [];
 	console.log(room);
 	console.log(roomMap);

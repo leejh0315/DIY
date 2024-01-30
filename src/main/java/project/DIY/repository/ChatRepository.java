@@ -12,5 +12,5 @@ public interface ChatRepository {
 	public ChatRoom findRoomByChatroomId(String randomId);
 	public List<ChatMessage> selectMessageByroomId(String randomId);
 	public void insertMessageByroomId(ChatMessage chatMessage);
-	public ChatMessage selectMessageByOrder(String randomId);
+	public List<ChatMessage> selectMessageByOrder();
 }
