@@ -50,8 +50,8 @@
         <!-- 각 follower에 대응하는 followCheck 값을 가져옴 -->
         <div th:with="status=${followCheckList[i.index]}">
             <!-- 조건에 따라 버튼을 생성 -->
-            <button th:if="${status eq 1}" type="button" class="followbtn">팔로우</button>
-            <button th:if="${status eq 0}" type="button" class="followbtn">팔로잉</button>
+            <button th:if="${status eq 1}" type="button" class="followbtn">팔로잉</button>
+            <button th:if="${status eq 0}" type="button" class="followbtn">팔로우</button>
 			
             
             <!-- 2인 경우 본인, 버튼 숨김처리 -->

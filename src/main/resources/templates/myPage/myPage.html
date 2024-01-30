@@ -34,6 +34,14 @@
 			padding-left: 1em;    
 			padding-right: 1em;  
 		}
+		.posttype{
+			border: solid 1px #9A9E7B;
+			width: 45px;
+			cursor: pointer;
+			border-radius: 15px;
+			text-align: center;
+			padding: 4px 5px;
+		}
 
 	</style>
 </head>
@@ -142,6 +150,14 @@
 					<label onclick="checked(this, 3)"><input type="checkbox" name="chooseType" value="concert" class="checkType concert">공연</label>
 				</div>
 				</form>
+
+			<form>
+				<div class="chooseposts">
+					<div class="posttype 1" id="type_1" onclick="selected(this, 0)">내가 쓴 글</div>
+					<div class="posttype 2" id="type_2" onclick="selected(this, 1)">나의 피드</div>
+					<div class="posttype 3" id="type_3" onclick="selected(this, 2)">좋아요 한 글</div>
+				</div>
+			</form>
 			
 			<div id='calendar-container' class="calendar-container">    
 				<div id='calendar'></div>  
@@ -286,12 +302,22 @@
 
 	
 	let types = document.querySelectorAll(".checkType");
-	
+	let poststypes = document.querySelectorAll(".posttype");
 	let memberId = document.getElementById("memberId");
 	let memberIdVal = memberId.value;
 	
 	let thisType = document.getElementById("thisType");
 	let thisTypeVal = thisType.value;
+	
+	$("#type_1").css("background-color", "#9A9E7B");
+	$("#type_1").css("color", "white");
+
+	function selected(e, type){
+		$(poststypes).css("background-color", "white");
+		$(poststypes).css("color", "black");		
+		$(e).css("background-color", "#9A9E7B");
+		$(e).css("color", "white");
+	}
 	
 	for(let i = 0; i<types.length; i++){
 		if(types[i].value == thisTypeVal){
@@ -299,7 +325,7 @@
 		}
 	}
 	
-	
+
 	function checked(e, number){
 		let value;
 		for(let i = 0; i<types.length; i++){

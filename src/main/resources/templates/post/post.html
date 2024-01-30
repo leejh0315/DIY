@@ -17,6 +17,9 @@
 	.rereply{
 		margin-left: 150px;
 	}
+	.edit-delete-buttons {
+      display: none;
+    }
 	
 </style>
 </head>
@@ -42,6 +45,8 @@
 					<div id="reportConfirm">신고</div>
 				</div>
 			</div>
+
+
 	<!-- posts -->
 	<div class="posts_wrap">
 	<div class="posttitle" th:text="${post.title}"></div>
@@ -52,15 +57,22 @@
 		</div>
 		<p th:text="${postWriteMember.nickName}" class="nickName"></p>    
 		<p th:text="${post.createOn}" class="createOn"></p>
-		<i class="fas fa-ellipsis-h fa-sm"></i>
+		<th:block th:if="${member.id == postWriteMember.id}">
+			<i class="fas fa-ellipsis-h fa-sm" onclick="toggleEditDeleteButtons(this)"></i>
+			<div class="edit-delete-buttons">
+				<a th:href="@{|/update/${post.postCode}|}">수정하기</a>
+				<div id="deleteBtn">삭제하기</div>
+		
+			  </div>
+		</th:block>
 	</div>
 				
 		
-	<th:block th:if="${member != null}">
+	<!-- <th:block th:if="${member != null}">
 		<th:block th:if="${member.id == postWriteMember.id}">
-			<a th:href="@{|/update/${post.postCode}|}">수정하기</a>
+			
 		</th:block>
-	</th:block>
+	</th:block> -->
 		<hr>
 			<div class="infotitle">작품정보</div>
 			<div id="targetInformation" class="targetInformation">
@@ -91,6 +103,7 @@
 					<input th:value="${reportpostcnt}" type="hidden" id="reportedcheck">
 					<button class="reportbtn" id="reportbtn" >신고</button>
 			</th:block>
+					<input type="hidden" id="reportedcheck">
 		</th:block>
 				
 
@@ -156,6 +169,16 @@
     var post = /*[[${post}]]*/ [];
 </script>
 	<script>
+
+
+		
+		function toggleEditDeleteButtons(icon) {
+      // 클릭된 아이콘 바로 다음의 .edit-delete-buttons를 찾아서 토글
+      const editDeleteButtons = icon.nextElementSibling;
+      editDeleteButtons.style.display = (editDeleteButtons.style.display === 'none' || editDeleteButtons.style.display === '') ? 'block' : 'none';
+    }
+	
+
 		function postLikes(){
 			
 			console.log("눌림");
@@ -204,6 +227,40 @@
 		let cnt =likescnt.value;
 		let reportcnt = reportedcheck.value;
 		
+
+		let deleteBtn = document.getElementById("deleteBtn");
+		deleteBtn.addEventListener("click",(e)=>{
+			console.log("눌림");
+				var previousPage = document.referrer;
+				console.log(typeof(post.postCode))	;
+				$.ajax({
+						type: 'POST',
+						url: '/postdelete',
+						data:{
+						"previousPage" : previousPage,
+						"postCode" : post.postCode
+							} ,
+						// dataType: 'html',
+						success: function (data) {
+							if(data == "myPage"){
+								window.location.href = "/myPage/"+ member.id;
+							}else if(data == "book"){
+								
+								window.location.href = "/menu/book";
+							}
+
+							else if(data == "movie"){
+
+								window.location.href = "/menu/movie";
+							}else{
+
+								window.location.href = "/menu/concert";
+							}
+							
+						}
+					})
+			})	
+
 		if(cnt==0){
 			$('#likesicon').removeClass('fas fa-heart');
 			$('#likesicon').addClass('far fa-heart');
