@@ -11,6 +11,8 @@ public class PaginationVo {
      */
 	int		memberId;
 	String type;
+//	내글.팔로잉글,좋아요한글
+	String pgourp;
     int     rowCount  = 5;     // 한 페이지 당 보여줄 게시물 개수
     int     pageCount = 3;     // 한 블럭에 몇 개의 페이지 개수
     int     totalCount;        // 총 게시물 개수

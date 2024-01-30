@@ -167,4 +167,49 @@
 		) t ON p.postCode = t.postcode;
 	</select>
 	
+	<select id="likedPost" resultType="Post">
+		select * from diydb.post where postcode in
+		(select postcode from diydb.likepost where memberId = #{param1})
+		<if test="param2 != 'all'">
+	    	   AND postCtCode = #{param2}
+	   </if>
+		;
+	 </select>
+	 
+	 <select id="myFeedPost" resultType="Post">
+		 select * from diydb.post where memberId in
+		(select followee from diydb.follow where follower = #{param1})
+		<if test="param2 != 'all'">
+	    	   AND postCtCode = #{param2}
+	   </if>;
+	 </select>
+	 
+	 
+	 <select id="myFeedPosts" resultType="Post">
+		 SELECT * 
+		    FROM diydb.post
+		    where memberId in (select followee from diydb.follow where follower = #{memberId})
+	    	   <if test="type != 'all'">
+	    	   AND postCtCode = #{type}
+	    	   </if>
+		    ORDER BY postCode DESC 
+		    LIMIT 5
+		    OFFSET #{offset};
+	  </select>
+	  
+	  <select id="likedPosts" resultType="Post">
+		  SELECT * 
+		    FROM diydb.post
+		    where postCode in (select postcode from diydb.likepost where memberId = #{memberId})
+	    	   <if test="type != 'all'">
+	    	   AND postCtCode = #{type}
+	    	   </if>
+		    ORDER BY postCode DESC 
+		    LIMIT 5
+            OFFSET #{offset};
+		  
+		  
+	  </select>
+	 
+	
 </mapper>

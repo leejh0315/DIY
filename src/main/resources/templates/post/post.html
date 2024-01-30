@@ -57,13 +57,16 @@
 		</div>
 		<p th:text="${postWriteMember.nickName}" class="nickName"></p>    
 		<p th:text="${post.createOn}" class="createOn"></p>
-		<th:block th:if="${member.id == postWriteMember.id}">
-			<i class="fas fa-ellipsis-h fa-sm" onclick="toggleEditDeleteButtons(this)"></i>
-			<div class="edit-delete-buttons">
-				<a th:href="@{|/update/${post.postCode}|}">수정하기</a>
-				<div id="deleteBtn">삭제하기</div>
-		
-			  </div>
+
+		<th:block th:if="${member != null}">
+			<th:block th:if="${member.id == postWriteMember.id}">
+				<i class="fas fa-ellipsis-h fa-sm" onclick="toggleEditDeleteButtons(this)"></i>
+				<div class="edit-delete-buttons">
+					<a th:href="@{|/update/${post.postCode}|}">수정하기</a>
+					<div id="deleteBtn">삭제하기</div>
+			
+				</div>
+			</th:block>
 		</th:block>
 	</div>
 				
@@ -227,40 +230,41 @@
 		let cnt =likescnt.value;
 		let reportcnt = reportedcheck.value;
 		
+		let deleteBtn = (member.id == post.memberId)? document.getElementById("deleteBtn") : "";
+		// let deleteBtn = document.getElementById("deleteBtn");
+		if(deleteBtn != ""){
+			deleteBtn.addEventListener("click",(e)=>{
+				console.log("눌림");
+					var previousPage = document.referrer;
+					console.log(typeof(post.postCode))	;
+					$.ajax({
+							type: 'POST',
+							url: '/postdelete',
+							data:{
+							"previousPage" : previousPage,
+							"postCode" : post.postCode
+								} ,
+							// dataType: 'html',
+							success: function (data) {
+								if(data == "myPage"){
+									window.location.href = "/myPage/"+ member.id;
+								}else if(data == "book"){
+									
+									window.location.href = "/menu/book";
+								}
 
-		let deleteBtn = document.getElementById("deleteBtn");
-		deleteBtn.addEventListener("click",(e)=>{
-			console.log("눌림");
-				var previousPage = document.referrer;
-				console.log(typeof(post.postCode))	;
-				$.ajax({
-						type: 'POST',
-						url: '/postdelete',
-						data:{
-						"previousPage" : previousPage,
-						"postCode" : post.postCode
-							} ,
-						// dataType: 'html',
-						success: function (data) {
-							if(data == "myPage"){
-								window.location.href = "/myPage/"+ member.id;
-							}else if(data == "book"){
+								else if(data == "movie"){
+
+									window.location.href = "/menu/movie";
+								}else{
+
+									window.location.href = "/menu/concert";
+								}
 								
-								window.location.href = "/menu/book";
 							}
-
-							else if(data == "movie"){
-
-								window.location.href = "/menu/movie";
-							}else{
-
-								window.location.href = "/menu/concert";
-							}
-							
-						}
-					})
-			})	
-
+						})
+				})	
+		}
 		if(cnt==0){
 			$('#likesicon').removeClass('fas fa-heart');
 			$('#likesicon').addClass('far fa-heart');

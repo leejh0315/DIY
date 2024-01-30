@@ -121,6 +121,27 @@ public class MybatisPostRepository implements PostRepository{
 	    return post;
 	}
 
+	@Override
+	public List<Post> likedPost(int memberId, String type) {
+
+		return postMapper.likedPost(memberId, type);
+	}
+
+	@Override
+	public List<Post> myFeedPost(int memberId, String type) {
+		return postMapper.myFeedPost(memberId, type);
+	}
+
+	@Override
+	public List<Post> likedPosts(PaginationVo paginationVo) {
+		return postMapper.likedPosts(paginationVo);
+	}
+
+	@Override
+	public List<Post> myFeedPosts(PaginationVo paginationVo) {
+		return postMapper.myFeedPosts(paginationVo);
+	}
+
 
    
    

@@ -21,6 +21,8 @@
 		delete from diydb.likepost where postCode=#{postCode};
 	</delete>
 	
-	
+	<select id="selectLikedPostsById" parameterType="Integer">
+		SELECT postCode FROM diydb.likepost where memberId = #{memberId};
+	</select>
 	
 </mapper>

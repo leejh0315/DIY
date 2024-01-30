@@ -71,6 +71,13 @@ public class MybatisAboutPostRepository implements AboutPostRepository {
 		aboutPostMapper.deletePostLikes(postCode);
 		
 	}
+
+
+	@Override
+	public List<Integer> selectLikedPostsById(int memberId) {
+		List<Integer> postCodeList = aboutPostMapper.selectLikedPostsById(memberId);
+		return postCodeList;
+	}
 	
 	
 	
