@@ -20,7 +20,7 @@ import project.DIY.session.SessionVar;
 public class LoginFilter implements Filter {
 	
 	private static final String[] whiteList = 
-	{"/home/**","/chat/**", "/chatRoom","/chatRoom/**","/ws/**", "/email/**", "/admin", "/admin/**", "/posts/**", "/menu/**", "/css/**", "/img/**","/image/**","/js/**", "/favicon/*", 
+	{"/home/**","/ws/**", "/email/**", "/admin", "/admin/**", "/posts/**", "/menu/**", "/css/**", "/img/**","/image/**","/js/**", "/favicon/*", 
 		"/temp/**", "/profile/**"};
 
 	@Override

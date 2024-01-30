@@ -16,4 +16,5 @@ public interface ChatMapper {
 
 	public List<ChatMessage> selectMessageByroomId(String randomId);
 	public void insertMessageByroomId(ChatMessage chatMessage);
+	public ChatMessage selectMessageByOrder(String randomId);
 }

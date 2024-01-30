@@ -1,47 +1,49 @@
 package project.DIY.controller;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import project.DIY.domain.ChatRoom;
 import project.DIY.domain.Follow;
 import project.DIY.domain.Member;
-import project.DIY.domain.PaginationVo;
-import project.DIY.domain.Post;
+import project.DIY.repository.ChatRepository;
 import project.DIY.repository.FollowRepository;
 import project.DIY.repository.MemberRepository;
-import project.DIY.repository.PostRepository;
-import project.DIY.service.PasswordUpdateService;
 import project.DIY.session.SessionVar;
 
 @Controller
 @RequiredArgsConstructor
 public class FollowController {	
+	
+	
 	@Autowired
 	private final MemberRepository memberRepository;
 	@Autowired
 	private final FollowRepository followRepository;
+	@Autowired
+	private final ChatRepository chatRepository;
+	
 	
 	@GetMapping("/follower/{id}")
-	public String followerPage(@PathVariable("id") String id,HttpServletRequest req, Model model) {
+	public String followerPage(@PathVariable("id") int id,HttpServletRequest req, Model model) {
 
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		Member user = memberRepository.selectBymemberId(Integer.parseInt(id));
+		Member user = memberRepository.selectBymemberId(id);
 		int memberId = member.getId();
-		int userId = Integer.parseInt(id);
+		int userId = id;
 
 //		팔로잉/팔로워 수	
 //		int following = followRepository.cntFollowee(member.getId());
@@ -68,25 +70,56 @@ public class FollowController {
 				followCheckList.add(followCheck);
 			};
 		};
+		
+		List<ChatRoom> cr = chatRepository.selectMyRoom(id);
+		System.out.println("cr: " + cr);
+		
+		Map<Integer, String> chatMap = new HashMap<Integer, String>();
+		
+		for(int i =0; i<cr.size(); i++) {
+			
+			if(cr.get(i).getChatReceiverId() == id) {
+				for(int j =0;j <follower.size(); j++) {
+					if(cr.get(i).getChatSenderId() == follower.get(j).getFollower()) {
+						chatMap.put(follower.get(j).getFollower(), cr.get(i).getRoomId());
+					}
+				}
+			}else if(cr.get(i).getChatSenderId() == id) {
+				for(int j =0;j <follower.size(); j++) {
+					if(cr.get(i).getChatReceiverId() == follower.get(j).getFollower()) {
+						chatMap.put(follower.get(j).getFollower(), cr.get(i).getRoomId());
+					}
+				}
+			}
+			
+		}
+		
 		System.out.println(followerList);
 		System.out.println(followCheckList);
 		model.addAttribute("followerList",followerList);
 		model.addAttribute("followCheckList",followCheckList);
 		model.addAttribute("member", member);
-		model.addAttribute("user", user);	
+		model.addAttribute("user", user);
+		model.addAttribute("chatMap", chatMap);
 //		model.addAttribute("followCheck",followCheck);
 		return "follow/follower";
 	}
 	@GetMapping("/followee/{id}")
-	public String followeePage(@PathVariable("id") String id,HttpServletRequest req, Model model) {
+	public String followeePage(@PathVariable("id") int id,HttpServletRequest req, Model model) {
 
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		Member user = memberRepository.selectBymemberId(Integer.parseInt(id));
+		Member user = memberRepository.selectBymemberId(id);
 		int memberId = member.getId();
-		int userId = Integer.parseInt(id);
+		int userId = id;
 
+		
+		
+		
+		
+		
+		
 //		팔로잉/팔로워 수	
 //		int following = followRepository.cntFollowee(member.getId());
 //		int follower = followRepository.cntFollower(member.getId());
@@ -99,8 +132,10 @@ public class FollowController {
 
 		System.out.println(followee);
 
+		
 		List<Member> followeeList = new ArrayList<>();
 		List<Integer> followCheckList = new ArrayList<>();
+		
 		for(int i=0; i<followee.size(); i++) {
 			int temp = followee.get(i).getFollowee();
 			followeeList.add(memberRepository.selectBymemberId(temp));
@@ -112,12 +147,40 @@ public class FollowController {
 			};
 		};
 		System.out.println(followeeList);
+		
+		List<ChatRoom> cr = chatRepository.selectMyRoom(id);
+		System.out.println("cr: " + cr);
+		
+		Map<Integer, String> chatMap = new HashMap<Integer, String>();
+		
+		for(int i =0; i<cr.size(); i++) {
+			
+			if(cr.get(i).getChatReceiverId() == id) {
+				for(int j =0;j <followee.size(); j++) {
+					if(cr.get(i).getChatSenderId() == followee.get(j).getFollowee()) {
+						chatMap.put(followee.get(j).getFollowee(), cr.get(i).getRoomId());
+					}
+				}
+			}else if(cr.get(i).getChatSenderId() == id) {
+				for(int j =0;j <followee.size(); j++) {
+					if(cr.get(i).getChatReceiverId() == followee.get(j).getFollowee()) {
+						chatMap.put(followee.get(j).getFollowee(), cr.get(i).getRoomId());
+					}
+				}
+			}
+			
+		}
+		System.out.println(chatMap);
+		
+		
 		model.addAttribute("followeeList",followeeList);
 		model.addAttribute("followCheckList",followCheckList);
 		
 		
 		model.addAttribute("member", member);
 		model.addAttribute("user", user);	
+		
+		model.addAttribute("chatMap", chatMap);
 		
 		return "follow/followee";
 	}

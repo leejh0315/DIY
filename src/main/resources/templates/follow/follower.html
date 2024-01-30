@@ -28,6 +28,23 @@
 	        <div th:text="${follower.nickName}"></div>
 	        <div th:text="${follower.memberIntro}"></div>
 		</a>
+		
+		
+        <div th:with="chatValue=${chatMap[follower.id]}">
+			 <th:block th:if="${chatValue == null}">
+				 <a th:href="@{|/chat/createRoom/${follower.id}|}">
+					채팅					 
+				 </a>	
+			 </th:block>
+			 <th:block th:if="${chatValue != null}">
+				<a th:href="@{|/chat/chatRoom/${chatValue}|}">
+					채팅					 
+				 </a>	 
+			 </th:block>
+				 
+    	</div>
+		
+		
         <!-- 각 follower에 대응하는 followCheck 값을 가져옴 -->
         <div th:with="status=${followCheckList[i.index]}">
             <!-- 조건에 따라 버튼을 생성 -->
