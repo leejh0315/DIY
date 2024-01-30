@@ -30,6 +30,21 @@
 	
 	        <div th:text="${followeeList.nickName}"></div>
 	        <div th:text="${followeeList.memberIntro}"></div>
+	        
+	        <div th:with="chatValue=${chatMap[followeeList.id]}">
+				 <th:block th:if="${chatValue == null}">
+					 <a th:href="@{|/chat/createRoom/${followeeList.id}|}">
+						채팅					 
+					 </a>	
+				 </th:block>
+				 <th:block th:if="${chatValue != null}">
+					<a th:href="@{|/chat/chatRoom/${chatValue}|}">
+						채팅					 
+					 </a>	 
+				 </th:block>
+				 
+        	</div>
+        	
        </a>
        
         <!-- 각 follower에 대응하는 followCheck 값을 가져옴 -->

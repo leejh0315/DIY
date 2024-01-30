@@ -258,6 +258,7 @@ public class PostController {
 		}
 		
 		postItem = postRepository.selectByPostCode(postCode);
+		
 		Map<Integer, Object> reRep = new HashMap<Integer ,Object>();
 			for(int i =0; i<r.size();i++) {
 				System.out.println(r.get(i).getReplyId());

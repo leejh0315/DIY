@@ -10,11 +10,11 @@
 	</insert>
 
 	<select id="selectFollowee" parameterType="Integer">
-		select * from diydb.follow where follower = #{memberId};
+		select * from diydb.follow where follower = #{memberId} order by id desc;
 	</select>
 	
 	<select id="selectFollower" parameterType="Integer">
-		select * from diydb.follow where followee = #{memberId};
+		select * from diydb.follow where followee = #{memberId} order by id desc;
 	</select>
 	
 	<select id="cntFollowee" parameterType="Integer">

@@ -32,10 +32,24 @@
 	<insert id="insertMessageByroomId" parameterType="ChatMessage">
 		insert into diydb.chatmessage
 		values(
+			null,
 			#{roomId}, 
 			#{sender}, 
 			#{message}, 
 			#{sendDate}
 		);
 	</insert>
+	
+	<select id="selectMessageByOrder" parameterType="ChatMessage">
+		SELECT id, roomId, sender, message, sendDate
+			FROM diydb.chatmessage
+			WHERE (roomId, sendDate) IN (
+			    SELECT roomId, MAX(sendDate)
+			    FROM diydb.chatmessage
+			    GROUP BY roomId
+			)order by id desc
+			;
+	</select>
+	
+	
 </mapper>

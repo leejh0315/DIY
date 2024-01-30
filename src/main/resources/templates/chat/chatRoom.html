@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -12,8 +12,10 @@
 	}
 	
 </style>
+<link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
+	<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 <input type="text" placeholder="보낼 메세지를 입력하세요." class="content">
 <button type="button" value="전송" class="sendBtn" onclick="sendMsg()">전송</button>
 <button type="button" value="방나가기" class="quit" onclick="quit()">방 나가기 </button>
@@ -38,7 +40,7 @@
 <script th:inline="javascript">
 	var room = /*[[${room}]]*/ [];
     var roomId = /*[[${room.roomId}]]*/ 0;
-    
+    var id = /*[[${id}]]*/ 0;
     var member = /*[[${member}]]*/ [];
 	var memberNick = /*[[${memberNick}]]*/ '';
     let socket = new WebSocket("ws://localhost:8080/ws/chat/"+roomId);
@@ -99,7 +101,7 @@
         //메세지 보내기 버튼 눌렀을 떄..
         function sendMsg() {
             let content=document.querySelector('.content').value;
-             var talkMsg={"type" : "TALK","roomId":roomId ,"sender":member.id, "senderNick":memberNick,"message":content};
+             var talkMsg={"type" : "TALK","roomId":roomId ,"sender":member.id,  "senderNick":memberNick,"message":content};
            socket.send(JSON.stringify(talkMsg));
            document.querySelector('.content').value = "";
         }
@@ -108,7 +110,7 @@
              var quitMsg={"type" : "QUIT","roomId":roomId ,"sender":member.id, "senderNick":memberNick,"message":""};
            socket.send(JSON.stringify(quitMsg));
             socket.close();
-            location.href="/chat/chatList/11";
+            location.href="/chat/chatList/" + id;
         }
 
 </script>
