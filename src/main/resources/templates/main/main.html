@@ -58,6 +58,7 @@
 		<p>인기 게시글</p>
 		<div class="container">
 			<div th:each="post,i:${top5posts}" id="top5posts" class="top5posts">
+				<a th:href="@{|/posts/${post.postCode}|}">
 				<div id="postComp"class="postComp">
 					<div th:id="${i.index}"></div>
 					<div  class="Thumb">
@@ -65,6 +66,7 @@
 					</div>
 					<div class="top5posts_title" th:text="${post.title}"></div>				
 					<div class="top5posts_content" th:text="${post.content}"></div>
+				
 					<div class="top5posts_user">
 						<div th:with="profile=${top5_profileImg[i.index]}" class="profileimgdiv">
 							<img th:src="${profile}">
@@ -72,7 +74,7 @@
 						<div class="postcontent nickname" th:text="${post.memberNick}"></div>
 					</div>
 				</div>
-				
+			</a>
 			</div>
 		</div>
 	</div>

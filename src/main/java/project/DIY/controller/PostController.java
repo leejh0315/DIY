@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -176,6 +175,49 @@ public class PostController {
       	return "redirect:/posts/" + postCode;
        }
     }
+	//게시글 삭제
+	@PostMapping("/postdelete")
+	@ResponseBody
+	public String deletePostByPostId(@RequestParam(value = "previousPage") String previousPage
+			, @RequestParam(value = "postCode") String postCode,
+			
+			
+			 HttpServletRequest req) {
+		System.out.println("접근");
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		/*
+		
+		postRepository.deletePost(postCode);
+		
+		aboutPostRepository.deletePostLikes(postCode);
+		aboutPostRepository.deleteReportPost(postCode);
+		replyRepository.deleteReplybypostCode(postCode);
+		*/
+		System.out.println(previousPage);
+		
+	
+		if(previousPage.contains("myPage")) {
+			System.out.println("myPage");
+			return "myPage";
+		}else {
+			if(previousPage.contains("book")) {
+				System.out.println("book");
+				return "book";
+			}else if(previousPage.contains("movie")) {
+				System.out.println("movie");
+				return "movie";
+			}
+			else {
+				System.out.println("concert");
+				return "concert";
+			}
+		}
+		
+//		previousPage=previousPage.substring(a.length());
+//		System.out.println(previousPage);
+		
+	}
 	
 	//게시글 상세보기
 	@GetMapping("/posts/{postCode}")
