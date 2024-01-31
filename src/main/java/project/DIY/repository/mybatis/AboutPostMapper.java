@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import project.DIY.domain.Likes;
+import project.DIY.domain.Notice;
 import project.DIY.domain.ReportPost;
 
 @Mapper
@@ -17,6 +18,8 @@ public interface AboutPostMapper {
 	public int selectReportPost(ReportPost reportpost); // 게시글 신고 확인
 	public List<ReportPost> selectAllReportPost(); //신고게시글 전체
 	public void deleteReportPost(int postCode); //신고게시글 삭제
+	public void insertNotice(Notice notice);
+	public List<Notice> selectNoticeById(int memberId);
 }	
 	
 

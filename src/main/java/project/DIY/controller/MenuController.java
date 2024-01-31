@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.domain.Notice;
 import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
+import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
 import project.DIY.session.SessionVar;
@@ -24,9 +27,12 @@ import project.DIY.session.SessionVar;
 @RequiredArgsConstructor
 public class MenuController {
 	
+	@Autowired
 	private final PostRepository postRepository;
+	@Autowired
 	private final MemberRepository memberRepository;
-	
+	@Autowired
+	private final AboutPostRepository aboutPostRepository;
 	//타입에 맞는 게시물 출력
 	@GetMapping("/menu/{type}")
 	public String getBook(Model model, @PathVariable("type") String type, HttpServletRequest req,
@@ -34,6 +40,7 @@ public class MenuController {
 			) {
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		aboutNotice(member, model);
 		int postcnt = postRepository.selectByTypeCnt(type);
 		
 		PaginationVo pageVo = new PaginationVo(postcnt, page);
@@ -79,5 +86,17 @@ public class MenuController {
 		model.addAttribute("profilesrc",memberprofileimg);
 		return "menu/type";
 	}
+	
+	   public void aboutNotice(Member member, Model model) {
+		      if(member != null) {
+		    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
+		          int noticeCnt = 0;
+		          for(int i = 0 ; i < noticeList.size(); i++) {
+		        	  if(noticeList.get(i).getView()==0) noticeCnt++;
+		          }
+		          model.addAttribute("noticeCnt", noticeCnt);  
+		      }
+		   
+	   	}
 
 }

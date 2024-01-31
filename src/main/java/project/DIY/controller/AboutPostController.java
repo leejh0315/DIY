@@ -1,9 +1,14 @@
 package project.DIY.controller;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +20,12 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Likes;
 import project.DIY.domain.Member;
+import project.DIY.domain.Notice;
 import project.DIY.domain.Post;
 import project.DIY.domain.Reply;
 import project.DIY.domain.ReportPost;
 import project.DIY.repository.AboutPostRepository;
+import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
 import project.DIY.repository.ReplyRepository;
 import project.DIY.session.SessionVar;
@@ -31,13 +38,46 @@ public class AboutPostController {
 	private final PostRepository postRepository;
 	@Autowired
 	private final ReplyRepository replyRepository;
+	@Autowired
+	private final MemberRepository memberRepository;
+	
+	@GetMapping("/notice/{id}")
+	public String getNotice(Model model, HttpServletRequest req, @PathVariable("id") int id) {
+		HttpSession session = req.getSession();
+	    Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+	    
+	    List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
+	    /*
+	    List<Member> doMember = new ArrayList<Member>();
+	    
+	    for(int i =0;i<noticeList.size();i++) {
+	    	Member tempMember = memberRepository.selectBymemberId(noticeList.get(i).getDoMemberId());
+	    	doMember.get(i).setNickName(tempMember.getNickName());
+	    	doMember.get(i).setProfileSrc(tempMember.getProfileSrc());
+	    }
+	    */
+	    Map<Integer, Member> doMember = new HashMap<Integer,Member>();
+	    for(int i =0;i<noticeList.size();i++) {
+	    	Member tempMember = memberRepository.selectBymemberId(noticeList.get(i).getDoMemberId());
+	    	doMember.put(tempMember.getId(), tempMember);
+	    }
+	    
+	    
+	    model.addAttribute("member", member);
+		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("doMember", doMember);
+		return "myPage/notice";
+	}
+	
 	
 	@PostMapping("/insertLike")
 	@ResponseBody
 	public String insertLike(@RequestParam(value = "postCode") int postCode , HttpServletRequest req) {
-		Likes likes = new Likes();
+		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		Post post = postRepository.selectByPostCode(postCode);
+		Likes likes = new Likes();
 		int userid = member.getId();
 		likes.setMemberId(userid);
 		likes.setPostCode(postCode);
@@ -47,6 +87,17 @@ public class AboutPostController {
 		
 		if (cnt ==0) {
 			aboutPostRepository.insertLikes(likes);
+			
+			Notice notice = new Notice();
+			
+			notice.setType("post");
+			notice.setTargetId(postCode);
+			notice.setDoMemberId(member.getId());
+			notice.setTargetMemberId(post.getMemberId());
+			
+			aboutPostRepository.insertNotice(notice);
+			
+			
 			return "1";
 		}else {
 			//likes 가 삭제되어야 한다.
@@ -113,6 +164,7 @@ public class AboutPostController {
 		aboutPostRepository.deleteReportPost(postCode);
 		
 		return "1";
-		
 	}
+	
+	
 }

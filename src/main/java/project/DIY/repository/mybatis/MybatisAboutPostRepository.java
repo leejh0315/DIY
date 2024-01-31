@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Likes;
+import project.DIY.domain.Notice;
 import project.DIY.domain.ReportPost;
 import project.DIY.repository.AboutPostRepository;
 
@@ -70,6 +71,20 @@ public class MybatisAboutPostRepository implements AboutPostRepository {
 	public void deletePostLikes(int postCode) {
 		aboutPostMapper.deletePostLikes(postCode);
 		
+	}
+
+
+	@Override
+	public void insertNotice(Notice notice) {
+		aboutPostMapper.insertNotice(notice);
+		
+	}
+
+
+	@Override
+	public List<Notice> selectNoticeById(int memberId) {
+		List<Notice> noticeList = aboutPostMapper.selectNoticeById(memberId);
+		return noticeList;
 	}
 	
 	

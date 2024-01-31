@@ -19,6 +19,7 @@ import project.DIY.session.SessionVar;
 @Slf4j
 public class LoginFilter implements Filter {
 	
+	
 	private static final String[] whiteList = 
 	{"/home/**","/ws/**", "/email/**", "/admin", "/admin/**", "/posts/**", "/menu/**", "/css/**", "/img/**","/image/**","/js/**", "/favicon/*", 
 		"/temp/**", "/profile/**"};
@@ -37,6 +38,7 @@ public class LoginFilter implements Filter {
 			
 			log.info("Session: {}", session);
 			log.info("Member: {}", member);
+			
 			
 			if(member == null ||session == null 
 					//||!member.getLoginId().equals("admin")

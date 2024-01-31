@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +17,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.domain.Notice;
 import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
+import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.FollowRepository;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
-import project.DIY.service.PasswordUpdateService;
 import project.DIY.session.SessionVar;
 
 @Controller
@@ -36,6 +36,8 @@ public class UserPageController { //userPage관련
 	private final MemberRepository memberRepository;
 	@Autowired
 	private final FollowRepository followRepository;
+	@Autowired
+	private final AboutPostRepository aboutPostRepository;
 	
 	@GetMapping("/userPage/{id}")
 	public String getUserPage(@PathVariable("id") String id,HttpServletRequest req, Model model,
@@ -46,6 +48,7 @@ public class UserPageController { //userPage관련
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		aboutNotice(member, model);
 		int memberId = member.getId();
 		Member user = memberRepository.selectBymemberId(Integer.parseInt(id));
 		int followingcheck = followRepository.followCheck(memberId, Integer.parseInt(id));
@@ -150,8 +153,17 @@ public class UserPageController { //userPage관련
 			followRepository.unfollow(memberId, followee);
 			return "0";
 		}
-		
-		
-		
 	}
+	
+	   public void aboutNotice(Member member, Model model) {
+		      if(member != null) {
+		    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
+		          int noticeCnt = 0;
+		          for(int i = 0 ; i < noticeList.size(); i++) {
+		        	  if(noticeList.get(i).getView()==0) noticeCnt++;
+		          }
+		          model.addAttribute("noticeCnt", noticeCnt);  
+		      }
+		   
+	   	}
 }

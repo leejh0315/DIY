@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<style>
+	.profileimg{
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+    }
+    .profileimg >img{
+		overflow: hidden;
+        border-radius: 70px;
+        width: 100%;
+        height: 100%;
+    }
+
+	
+</style>
+</head>
+<body>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+	<h1>NOTICE</h1>
+	<div th:each="noticeList:${noticeList}" id="mostPosted" class="mostPosted">
+		<div th:with="doMember=${doMember[noticeList.doMemberId]}">
+		<div class="profileimg">
+			<img th:src="${doMember.profileSrc}">
+		</div>
+		<div th:text="${doMember.nickName}"></div>
+		<p>님이 </p>
+		<div th:text="${noticeList.type}"></div>
+	</div>	
+		
+		
+
+	
+<script>
+	
+    
+</script>
+<script th:src="@{/js/nav.js}"></script>
+</body>
+</html>

@@ -10,8 +10,10 @@
 	}
 </style>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 </head>
 <body>
+	
 <div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
     
 
@@ -21,6 +23,8 @@
 				<div th:with="member=${roomMap.get(room.chatReceiverId)}">
 					<img th:src="${member.profileSrc}">
 					<div th:text="${member.nickName}"></div>
+					<div th:text="${chatOrder[i.index].message}"></div>
+					<div th:text="${chatOrder[i.index].sendDate}"></div>
 				</div>
             </div>
     </div>

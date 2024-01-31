@@ -36,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Category;
 import project.DIY.domain.Likes;
 import project.DIY.domain.Member;
+import project.DIY.domain.Notice;
 import project.DIY.domain.Post;
 import project.DIY.domain.ReReply;
 import project.DIY.domain.Reply;
@@ -65,7 +66,7 @@ public class PostController {
 	public String getPost(Model model, HttpServletRequest req, PostForm postForm) {
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-
+		aboutNotice(member, model);
 		model.addAttribute("member", member);
 		
 		List<Category> ct = new ArrayList<>();
@@ -248,6 +249,7 @@ public class PostController {
 				reportPost.setReporterId(member.getId());
 				int likescnt = aboutPostRepository.selectLikes(likes);
 				int reportpostcnt = aboutPostRepository.selectReportPost(reportPost);
+				aboutNotice(member, model);
 				model.addAttribute("likescnt",likescnt);
 				model.addAttribute("reportpostcnt",reportpostcnt);
 			}
@@ -290,7 +292,7 @@ public class PostController {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		Post post = postRepository.selectByPostCode(postCode);
-		
+		aboutNotice(member, model);
 		if(member.getId() != post.getMemberId()) {
 			return "redirect:/home/home";
 		}
@@ -321,4 +323,16 @@ public class PostController {
 			e.printStackTrace();
 		}
 	}
+	
+	   public void aboutNotice(Member member, Model model) {
+		      if(member != null) {
+		    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
+		          int noticeCnt = 0;
+		          for(int i = 0 ; i < noticeList.size(); i++) {
+		        	  if(noticeList.get(i).getView()==0) noticeCnt++;
+		          }
+		          model.addAttribute("noticeCnt", noticeCnt);  
+		      }
+		   
+	   	}
 }

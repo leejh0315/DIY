@@ -5,10 +5,18 @@ $(document).ready(function() {
 
 let searchKeyword = document.getElementById("searchKeyword");
 let doSearch = document.getElementById("doSearch");
+let notice = document.getElementById("notice");
+let memberId = document.getElementById("memberId");
 
+if(memberId != null){
+	memberIdValue = memberId.value;
+}
 
-
-
+notice.addEventListener("click",(e)=>{
+	e.preventDefault();
+	console.log("눌림");
+	window.location.href = '/notice/'+memberIdValue;
+});
 
 doSearch.addEventListener("click", (e)=>{
 	e.preventDefault();

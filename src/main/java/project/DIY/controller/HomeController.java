@@ -2,7 +2,6 @@ package project.DIY.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +26,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.domain.Notice;
 import project.DIY.domain.Post;
 import project.DIY.form.JoinForm;
 import project.DIY.form.LoginForm;
+import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
 import project.DIY.service.EmailService;
@@ -50,6 +51,8 @@ public class HomeController {
    private final LoginService loginService;
    @Autowired
    private final RedisUtils redisUtils;
+   @Autowired
+   private final AboutPostRepository aboutPostRepository;
    
    @Autowired
    private PasswordEncoder passwordEncoder;
@@ -61,6 +64,8 @@ public class HomeController {
    public String getMain(Model model, HttpServletRequest req) {
       HttpSession session = req.getSession();
       Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+      
+      aboutNotice(member, model);
       
       LocalDate now = LocalDate.now();
       int monthValue = now.getMonthValue();
@@ -203,9 +208,15 @@ public class HomeController {
       
       HttpSession session = req.getSession(true);
       session.setAttribute(SessionVar.LOGIN_MEMBER, memberVO);
-
+      
+      
+      
       memberVO.setActiveUUID(session.getId());
       memberRepository.updateUUID(memberVO);
+      
+      
+      List<Notice> noticeList = aboutPostRepository.selectNoticeById(memberVO.getId());
+      req.setAttribute("noticeList", noticeList);
       
       List<Member> member = memberRepository.passwordUpdateSixMonth();
       System.out.println(member);
@@ -226,6 +237,7 @@ public class HomeController {
     	  }
       }
       return "redirect:/" + "home/home";
+      
    }
    
    //로그아웃 실행
@@ -339,4 +351,17 @@ public class HomeController {
 	        return cntStr;
 	    }
    }
+   
+   
+   public void aboutNotice(Member member, Model model) {
+	      if(member != null) {
+	    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
+	          int noticeCnt = 0;
+	          for(int i = 0 ; i < noticeList.size(); i++) {
+	        	  if(noticeList.get(i).getView()==0) noticeCnt++;
+	          }
+	          model.addAttribute("noticeCnt", noticeCnt);  
+	      }
+	   
+   	}
    }

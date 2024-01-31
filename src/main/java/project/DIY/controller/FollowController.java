@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import project.DIY.domain.ChatRoom;
 import project.DIY.domain.Follow;
 import project.DIY.domain.Member;
+import project.DIY.domain.Notice;
+import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.ChatRepository;
 import project.DIY.repository.FollowRepository;
 import project.DIY.repository.MemberRepository;
@@ -33,7 +35,8 @@ public class FollowController {
 	private final FollowRepository followRepository;
 	@Autowired
 	private final ChatRepository chatRepository;
-	
+	@Autowired
+	private final AboutPostRepository aboutPostRepository;
 	
 	@GetMapping("/follower/{id}")
 	public String followerPage(@PathVariable("id") int id,HttpServletRequest req, Model model) {
@@ -41,6 +44,7 @@ public class FollowController {
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		aboutNotice(member, model);
 		Member user = memberRepository.selectBymemberId(id);
 		int memberId = member.getId();
 		int userId = id;
@@ -110,15 +114,11 @@ public class FollowController {
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		aboutNotice(member, model);
 		Member user = memberRepository.selectBymemberId(id);
 		int memberId = member.getId();
 		int userId = id;
 
-		
-		
-		
-		
-		
 		
 //		팔로잉/팔로워 수	
 //		int following = followRepository.cntFollowee(member.getId());
@@ -184,5 +184,16 @@ public class FollowController {
 		
 		return "follow/followee";
 	}
+	
+	   public void aboutNotice(Member member, Model model) {
+		      if(member != null) {
+		    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
+		          int noticeCnt = 0;
+		          for(int i = 0 ; i < noticeList.size(); i++) {
+		        	  if(noticeList.get(i).getView()==0) noticeCnt++;
+		          }
+		          model.addAttribute("noticeCnt", noticeCnt);  
+		      }
+	   	}
 
 }

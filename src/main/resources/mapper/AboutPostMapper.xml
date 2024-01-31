@@ -21,6 +21,18 @@
 		delete from diydb.likepost where postCode=#{postCode};
 	</delete>
 	
-	
+	<insert id="insertNotice" parameterType="Notice">
+		insert into diydb.notice values(
+			null,
+			#{type},
+			#{targetId},
+			#{targetMemberId},
+			#{doMemberId},
+			0
+		);
+	</insert>
+	<select id="selectNoticeById" resultType="Notice">
+		select * from diydb.notice where targetMemberId = #{memberId};		
+	</select>
 	
 </mapper>

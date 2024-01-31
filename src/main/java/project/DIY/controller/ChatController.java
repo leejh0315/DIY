@@ -19,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import project.DIY.domain.ChatMessage;
 import project.DIY.domain.ChatRoom;
 import project.DIY.domain.Member;
+import project.DIY.domain.Notice;
+import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.ChatRepository;
 import project.DIY.repository.MemberRepository;
 import project.DIY.service.ChatService;
@@ -33,7 +35,8 @@ public class ChatController {
     private final ChatRepository chatRepository;
     @Autowired
     private final MemberRepository memberRepository;
-    
+    @Autowired
+    private final AboutPostRepository aboutPostRepository;
     
     
     @GetMapping("/chat/chatList/{id}")
@@ -44,14 +47,13 @@ public class ChatController {
         //List<ChatRoom> roomList = chatService.findAllRoom();
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-    	
+		aboutNotice(member, model);
 		
         List<ChatRoom> roomList = chatService.findMyRoom(id);
         Map<Integer, Member> roomMap = new HashMap<Integer, Member>();
         
         List<ChatMessage> chatOrder = chatRepository.selectMessageByOrder();
         
-        System.out.println(roomList);
         
         List<ChatRoom> tempList = new ArrayList<ChatRoom>();
         for(int i = 0 ; i < chatOrder.size(); i++) {
@@ -86,7 +88,7 @@ public class ChatController {
         		}
         	}
         }
-        System.out.println(roomMap);
+        System.out.println("chatOrder : " + chatOrder);
         /*
         for(int i = 0; i<roomList.size(); i++) {
         	if(member.getId() == roomList.get(i).getChatReceiverId()) {
@@ -111,10 +113,10 @@ public class ChatController {
         }
         */
         model.addAttribute("roomMap", roomMap);
-        model.addAttribute("roomList", roomList);
         model.addAttribute("tempList", tempList);
         model.addAttribute("id", member.getId());
         model.addAttribute("member", member);
+        model.addAttribute("chatOrder", chatOrder);
         return "chat/chatList";
     }
 
@@ -150,7 +152,7 @@ public class ChatController {
     	HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		String memberNick = member.getNickName();
-		
+		aboutNotice(member, model);
         ChatRoom room = chatService.findByRoomId(roomId);
         List<ChatMessage> originMessage = chatRepository.selectMessageByroomId(roomId);
     	//ChatRoom room = chatService.findRoomById(roomId);
@@ -163,4 +165,16 @@ public class ChatController {
         model.addAttribute("id", member.getId());
         return "chat/chatRoom";
     }
+	   public void aboutNotice(Member member, Model model) {
+		      if(member != null) {
+		    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
+		          int noticeCnt = 0;
+		          for(int i = 0 ; i < noticeList.size(); i++) {
+		        	  if(noticeList.get(i).getView()==0) noticeCnt++;
+		          }
+		          model.addAttribute("noticeCnt", noticeCnt);  
+		      }
+		   
+	   	}
+    
 }
