@@ -49,9 +49,9 @@ public class MybatisChatRepository implements ChatRepository{
 	}
 
 	@Override
-	public List<ChatMessage> selectMessageByOrder() {
+	public List<ChatMessage> selectMessageByOrder(int id) {
 		
-		return chatMapper.selectMessageByOrder();
+		return chatMapper.selectMessageByOrder(id);
 	}
 
 }

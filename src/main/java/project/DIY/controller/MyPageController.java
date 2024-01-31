@@ -30,6 +30,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Follow;
 import project.DIY.domain.Member;
+import project.DIY.domain.Notice;
 import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
 import project.DIY.form.PasswordUpdateForm;
@@ -47,7 +48,7 @@ public class MyPageController {	//myPage 관련
 	@Autowired
 	private final PostRepository postRepository;
 	@Autowired
-	private final AboutPostRepository aboutpostRepository;
+	private final AboutPostRepository aboutPostRepository;
 	@Autowired
 	private final MemberRepository memberRepository;
 	@Autowired
@@ -69,7 +70,7 @@ public class MyPageController {	//myPage 관련
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
 		Member memberVo = memberRepository.selectBymemberId(id);
-		
+		aboutNotice(member, model);
 		/*
 		if(!id.equals(Integer.toString(member.getId()))) {
 			return "redirect:/home/home";
@@ -98,11 +99,6 @@ public class MyPageController {	//myPage 관련
 		 System.out.println(memberprofileimg);
 		 model.addAttribute("profilesrc",memberprofileimg);
 		 */
-		 
-
-		 
-		 
-		 
 		 
 		 
 		LocalDate currentDate = LocalDate.now();
@@ -230,7 +226,7 @@ public class MyPageController {	//myPage 관련
 	public String getMyPageUpdate(@PathVariable("id") String id, HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		
+		aboutNotice(member, model);
 		if(!id.equals(Integer.toString(member.getId()))) {
 			return "redirect:/home/home";
 		}
@@ -307,6 +303,7 @@ public class MyPageController {	//myPage 관련
 	public String getPasswordUpdate(@PathVariable("id") String id, HttpServletRequest req, Model model, PasswordUpdateForm passwordUpdateForm) {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		aboutNotice(member, model);
 		model.addAttribute("passwordUpdateForm", passwordUpdateForm);
 		model.addAttribute("member", member);
 		return "myPage/updatePassword";
@@ -359,10 +356,26 @@ public class MyPageController {	//myPage 관련
 			BindingResult bindingResult,  HttpServletRequest req) {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		aboutNotice(member, model);
 		model.addAttribute("member", member);
 		model.addAttribute("passwordUpdateForm", passwordUpdateForm);		
 		return "myPage/directlyUpdatepassword";
 	}
 
+	   public void aboutNotice(Member member, Model model) {
+		      if(member != null) {
+		    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
+		          int noticeCnt = 0;
+		          int chatCnt = 0;
+		          for(int i = 0 ; i < noticeList.size(); i++) {
+		        	  if(!noticeList.get(i).getType().equals("chat")&& noticeList.get(i).getView()==0) noticeCnt++;
+		        	  else if(noticeList.get(i).getType().equals("chat") && noticeList.get(i).getView()==0) chatCnt++;
+		          }
+		          model.addAttribute("chatCnt", chatCnt);
+		          model.addAttribute("noticeCnt", noticeCnt);  
+		      }
+		   
+	   	}
+	
 }
 

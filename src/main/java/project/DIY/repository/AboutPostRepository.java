@@ -18,4 +18,6 @@ public interface AboutPostRepository {
 	public void deleteReportPost(int postCode); //신고게시글 삭제
 	public void insertNotice(Notice notice);
 	public List<Notice> selectNoticeById(int memberId);
+	public void deleteNoticeLike(Notice notice);
+	public void updateNoticeView(int view, int memberId);
 }	

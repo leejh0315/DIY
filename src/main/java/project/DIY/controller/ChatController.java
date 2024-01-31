@@ -48,17 +48,19 @@ public class ChatController {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		aboutNotice(member, model);
-		
+		aboutPostRepository.updateNoticeView(1, id);
         List<ChatRoom> roomList = chatService.findMyRoom(id);
         Map<Integer, Member> roomMap = new HashMap<Integer, Member>();
         
-        List<ChatMessage> chatOrder = chatRepository.selectMessageByOrder();
+        List<ChatMessage> chatOrder = chatRepository.selectMessageByOrder(id);
         
         
         List<ChatRoom> tempList = new ArrayList<ChatRoom>();
+        
         for(int i = 0 ; i < chatOrder.size(); i++) {
         	String tempId = chatOrder.get(i).getRoomId();
         	ChatRoom tempRoom = chatRepository.findRoomByChatroomId(tempId);
+        	
         	System.out.println(tempId);
         	for(int j = 0 ; j<roomList.size(); j++) {
         		if(tempId.equals(roomList.get(j).getRoomId())) {
@@ -165,16 +167,19 @@ public class ChatController {
         model.addAttribute("id", member.getId());
         return "chat/chatRoom";
     }
-	   public void aboutNotice(Member member, Model model) {
-		      if(member != null) {
-		    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
-		          int noticeCnt = 0;
-		          for(int i = 0 ; i < noticeList.size(); i++) {
-		        	  if(noticeList.get(i).getView()==0) noticeCnt++;
-		          }
-		          model.addAttribute("noticeCnt", noticeCnt);  
-		      }
-		   
-	   	}
+    public void aboutNotice(Member member, Model model) {
+	      if(member != null) {
+	    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
+	          int noticeCnt = 0;
+	          int chatCnt = 0;
+	          for(int i = 0 ; i < noticeList.size(); i++) {
+	        	  if(!noticeList.get(i).getType().equals("chat")&& noticeList.get(i).getView()==0) noticeCnt++;
+	        	  else if(noticeList.get(i).getType().equals("chat") && noticeList.get(i).getView()==0) chatCnt++;
+	          }
+	          model.addAttribute("chatCnt", chatCnt);
+	          model.addAttribute("noticeCnt", noticeCnt);  
+	      }
+	   
+ 	}
     
 }

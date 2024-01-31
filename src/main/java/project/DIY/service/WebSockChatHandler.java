@@ -19,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import project.DIY.domain.ChatMessage;
 import project.DIY.domain.ChatRoom;
+import project.DIY.domain.Notice;
+import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.ChatRepository;
 
 @Slf4j
@@ -30,6 +32,8 @@ public class WebSockChatHandler extends TextWebSocketHandler {
 
     @Autowired
     private final ChatRepository chatRepository;
+    @Autowired
+    private final AboutPostRepository aboutPostRepository;
     
     private final Set<WebSocketSession> Setsessions = new CopyOnWriteArraySet<>();
     
@@ -77,6 +81,22 @@ public class WebSockChatHandler extends TextWebSocketHandler {
         	cm.setMessage(chatMessage.getMessage());
         	cm.setSendDate(formattedDateTime);
         	System.out.println(payload);
+        	
+        	
+        	Notice notice = new Notice();
+        	notice.setDoMemberId(chatMessage.getSender());
+        	notice.setType("chat");
+        	String rId = chatMessage.getRoomId();
+        	ChatRoom nowR = chatRepository.findRoomByChatroomId(rId);
+        	if(nowR.getChatReceiverId() == chatMessage.getSender()) {
+        		notice.setTargetMemberId(nowR.getChatSenderId());
+        	}else {
+        		notice.setTargetMemberId(nowR.getChatReceiverId());
+        	}
+        	notice.setTargetId(nowR.getId());
+        	notice.setNoticeOn(currentDateTime);
+        	
+        	aboutPostRepository.insertNotice(notice);
         	
         	if(!chatMessage.getMessage().equals("")) {
         		System.out.println("notNull");

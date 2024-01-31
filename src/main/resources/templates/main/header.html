@@ -35,7 +35,8 @@
 
         <th:block th:if="${uuid == none}"> 
 			<a href="/home/dologin">Login</a>
-			<div id="notice"></div>
+			<input id="notice" type="hidden">
+			<input id="chat" type="hidden">
 		</th:block>
 		
 		<th:block th:if="${uuid != none}"> 
@@ -51,7 +52,16 @@
 						</a>
 						<div id="notice">
 							<i class="far fa-bell notice"></i>
-							<p class="notice" th:text="${noticeCnt}"></p>
+							<th:block th:if="${noticeCnt != 0}">
+								<p class="notice" th:text="${noticeCnt}"></p>
+							</th:block>
+						</div>
+						
+						<div id="chat">
+							<i class="far fa-comment-dots chat"></i>
+							<th:block th:if="${chatCnt != 0}">
+								<p class="chat" th:text="${chatCnt}"></p>
+							</th:block>
 						</div>
 	        	</div>
 	        	

@@ -92,6 +92,19 @@ public class MybatisAboutPostRepository implements AboutPostRepository {
 	public List<Integer> selectLikedPostsById(int memberId) {
 		return aboutPostMapper.selectLikedPostsById(memberId);
 	}
+
+
+	@Override
+	public void deleteNoticeLike(Notice notice) {
+		aboutPostMapper.deleteNoticeLike(notice);
+	}
+
+
+	@Override
+	public void updateNoticeView(int view, int memberId) {
+		aboutPostMapper.updateNoticeView(view, memberId);
+		
+	}
 	
 	
 	

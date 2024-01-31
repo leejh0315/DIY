@@ -19,6 +19,9 @@
         width: 100%;
         height: 100%;
     }
+    .flex-container {
+    	display: flex;
+	}
 
 	
 </style>
@@ -30,12 +33,28 @@
 	<h1>NOTICE</h1>
 	<div th:each="noticeList:${noticeList}" id="mostPosted" class="mostPosted">
 		<div th:with="doMember=${doMember[noticeList.doMemberId]}">
-		<div class="profileimg">
-			<img th:src="${doMember.profileSrc}">
-		</div>
-		<div th:text="${doMember.nickName}"></div>
-		<p>님이 </p>
-		<div th:text="${noticeList.type}"></div>
+			<div th:with="targetPost=${targetPost[noticeList.targetId]}"  >
+				
+				<th:block th:if="${noticeList.type != 'chat'}" >
+					<a th:href="@{|/posts/${noticeList.targetId}|}" class="flex-container">
+						<div class="profileimg">
+						<img th:src="${doMember.profileSrc}">
+					</div>
+					<div th:text="${doMember.nickName}"></div>
+					<div>님이 </div>
+					<div th:text="'<'+${targetPost.title}+'>'"></div>
+					<div>게시글에</div>
+					<div th:text="${noticeList.type}"></div>
+					<div class="profileimg">
+						<img th:src="${targetPost.targetThumbnail}">
+					</div>
+					<p th:text="${noticeList.diff}"></p>
+				</th:block>
+				
+				
+					
+				</a>
+			</div>
 	</div>	
 		
 		

@@ -28,15 +28,29 @@
 			#{targetId},
 			#{targetMemberId},
 			#{doMemberId},
-			0
+			0,
+			#{noticeOn}
 		);
 	</insert>
 	
 	<select id="selectNoticeById" resultType="Notice">
-		select * from diydb.notice where targetMemberId = #{memberId};
+		select * from diydb.notice where targetMemberId = #{memberId} order by id desc;
 	</select>		
 	<select id="selectLikedPostsById" parameterType="Integer">
 		SELECT postCode FROM diydb.likepost where memberId = #{memberId};
 	</select>
+	<delete id="deleteNoticeLike" parameterType="Notice">
+		delete from diydb.notice 
+		where 
+		type= #{type} 
+		and targetId =#{targetId}
+		and targetMemberId = #{targetMemberId}
+		and doMemberId = #{doMemberId};
+	</delete>
+	<update id="updateNoticeView">
+		UPDATE diydb.notice
+		set view = #{param1}
+		where targetMemberId= #{param2};
+	</update>
 	
 </mapper>

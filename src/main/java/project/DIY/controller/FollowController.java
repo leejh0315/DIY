@@ -189,11 +189,15 @@ public class FollowController {
 		      if(member != null) {
 		    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
 		          int noticeCnt = 0;
+		          int chatCnt = 0;
 		          for(int i = 0 ; i < noticeList.size(); i++) {
-		        	  if(noticeList.get(i).getView()==0) noticeCnt++;
+		        	  if(!noticeList.get(i).getType().equals("chat")&& noticeList.get(i).getView()==0) noticeCnt++;
+		        	  else if(noticeList.get(i).getType().equals("chat") && noticeList.get(i).getView()==0) chatCnt++;
 		          }
+		          model.addAttribute("chatCnt", chatCnt);
 		          model.addAttribute("noticeCnt", noticeCnt);  
 		      }
+		   
 	   	}
 
 }

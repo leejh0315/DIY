@@ -214,10 +214,6 @@ public class HomeController {
       memberVO.setActiveUUID(session.getId());
       memberRepository.updateUUID(memberVO);
       
-      
-      List<Notice> noticeList = aboutPostRepository.selectNoticeById(memberVO.getId());
-      req.setAttribute("noticeList", noticeList);
-      
       List<Member> member = memberRepository.passwordUpdateSixMonth();
       System.out.println(member);
       for(int i = 0 ; i < member.size(); i++) {
@@ -357,9 +353,12 @@ public class HomeController {
 	      if(member != null) {
 	    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
 	          int noticeCnt = 0;
+	          int chatCnt = 0;
 	          for(int i = 0 ; i < noticeList.size(); i++) {
-	        	  if(noticeList.get(i).getView()==0) noticeCnt++;
+	        	  if(!noticeList.get(i).getType().equals("chat")&& noticeList.get(i).getView()==0) noticeCnt++;
+	        	  else if(noticeList.get(i).getType().equals("chat") && noticeList.get(i).getView()==0) chatCnt++;
 	          }
+	          model.addAttribute("chatCnt", chatCnt);
 	          model.addAttribute("noticeCnt", noticeCnt);  
 	      }
 	   

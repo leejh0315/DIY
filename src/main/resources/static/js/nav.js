@@ -6,12 +6,17 @@ $(document).ready(function() {
 let searchKeyword = document.getElementById("searchKeyword");
 let doSearch = document.getElementById("doSearch");
 let notice = document.getElementById("notice");
+let chat = document.getElementById("chat");
 let memberId = document.getElementById("memberId");
 
 if(memberId != null){
 	memberIdValue = memberId.value;
 }
-
+chat.addEventListener("click",(e)=>{
+	e.preventDefault();
+	window.location.href = '/chat/chatList/'+memberIdValue;
+	console.log("눌림");
+})
 notice.addEventListener("click",(e)=>{
 	e.preventDefault();
 	console.log("눌림");

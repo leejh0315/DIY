@@ -1,5 +1,6 @@
 package project.DIY.controller;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -46,23 +47,52 @@ public class AboutPostController {
 		HttpSession session = req.getSession();
 	    Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 	    
+	    LocalDateTime currentDateTime = LocalDateTime.now();
+		
 	    List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
-	    /*
-	    List<Member> doMember = new ArrayList<Member>();
 	    
-	    for(int i =0;i<noticeList.size();i++) {
-	    	Member tempMember = memberRepository.selectBymemberId(noticeList.get(i).getDoMemberId());
-	    	doMember.get(i).setNickName(tempMember.getNickName());
-	    	doMember.get(i).setProfileSrc(tempMember.getProfileSrc());
-	    }
-	    */
+	   
 	    Map<Integer, Member> doMember = new HashMap<Integer,Member>();
+	    Map<Integer, Post> targetPost = new HashMap<Integer, Post>();
 	    for(int i =0;i<noticeList.size();i++) {
 	    	Member tempMember = memberRepository.selectBymemberId(noticeList.get(i).getDoMemberId());
 	    	doMember.put(tempMember.getId(), tempMember);
+	    	
+	    	Duration duration = Duration.between(noticeList.get(i).getNoticeOn(), currentDateTime);
+	    	 long hours = duration.toHours();
+	         long minutes = duration.toMinutes() % 60;
+	         System.out.println("두 시간의 차이: " + hours + " 시간 " + minutes + " 분");
+	         String diff = "";
+	         if(hours == 0) {
+	        	 diff = minutes + "분 전";
+	        	
+	         }else if(hours > 0 && hours < 24) {
+	        	 diff = hours + "시간 전";
+	         }
+	         else if(hours >= 24) {
+	        	 diff = (hours/24) + "일 전";
+	        	 if(hours/24 > 30) {
+	        		 diff = ((hours/24)/30) + "달 전";
+	        	 }
+	         }
+	         noticeList.get(i).setDiff(diff);
+	         aboutPostRepository.updateNoticeView(1, id);
+	         
+	         if(noticeList.get(i).getType().equals("reply")) {
+	        	 noticeList.get(i).setType("댓글을 작성하셨습니다.");
+	         }else if(noticeList.get(i).getType().equals("like")) {
+	        	 noticeList.get(i).setType("좋아요를 눌렀습니다.");
+	         }else if(noticeList.get(i).getType().equals("chat")) {
+	        	 noticeList.get(i).setType("chat");
+	         }
+	         
+	         if(!noticeList.get(i).getType().equals("chat")) {
+	        	 Post tempPost = postRepository.selectByPostCode(noticeList.get(i).getTargetId());
+	        	 targetPost.put(noticeList.get(i).getTargetId(), tempPost);
+	         }
 	    }
 	    
-	    
+	    model.addAttribute("targetPost", targetPost);
 	    model.addAttribute("member", member);
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("doMember", doMember);
@@ -85,23 +115,21 @@ public class AboutPostController {
 		int cnt = aboutPostRepository.selectLikes(likes);
 		System.out.println("이미 들어가 있는 갯수 cnt : " + cnt);
 		
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		Notice notice = new Notice();
+		notice.setType("like");
+		notice.setTargetId(postCode);
+		notice.setDoMemberId(member.getId());
+		notice.setTargetMemberId(post.getMemberId());
+		notice.setNoticeOn(currentDateTime);
 		if (cnt ==0) {
 			aboutPostRepository.insertLikes(likes);
-			
-			Notice notice = new Notice();
-			
-			notice.setType("post");
-			notice.setTargetId(postCode);
-			notice.setDoMemberId(member.getId());
-			notice.setTargetMemberId(post.getMemberId());
-			
 			aboutPostRepository.insertNotice(notice);
-			
-			
 			return "1";
 		}else {
 			//likes 가 삭제되어야 한다.
 			aboutPostRepository.deleteLikes(likes);
+			aboutPostRepository.deleteNoticeLike(notice);
 			return "0";
 		}
 	}

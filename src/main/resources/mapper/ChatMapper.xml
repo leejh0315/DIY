@@ -40,12 +40,13 @@
 		);
 	</insert>
 	
-	<select id="selectMessageByOrder" parameterType="ChatMessage">
+	<select id="selectMessageByOrder" resultType="ChatMessage">
 		SELECT id, roomId, sender, message, sendDate
 			FROM diydb.chatmessage
 			WHERE (roomId, sendDate) IN (
 			    SELECT roomId, MAX(sendDate)
-			    FROM diydb.chatmessage
+                FROM diydb.chatmessage
+                WHERE roomId in (select roomId from diydb.chatroom where chatReceiverId = #{param1} or chatSenderId = #{param1})
 			    GROUP BY roomId
 			)order by id desc
 			;

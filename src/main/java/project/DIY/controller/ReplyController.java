@@ -1,5 +1,6 @@
 package project.DIY.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +46,15 @@ public class ReplyController {
 		replyRepository.insertReply(reply);
 		rAttr.addAttribute("root", reply.getPostId());
 		
+		
 		Post post = postRepository.selectByPostCode(reply.getPostId());
-
+		
 		Notice notice = new Notice();
 		notice.setDoMemberId(member.getId());
 		notice.setTargetMemberId(post.getMemberId());
 		notice.setType("reply");
 		notice.setTargetId(reply.getPostId());
-		
+		notice.setNoticeOn(currentDateTime);
 		aboutPostRepository.insertNotice(notice);
 		return "redirect:/posts/{root}";
 	}
