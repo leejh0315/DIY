@@ -26,7 +26,6 @@ import project.DIY.repository.mybatis.ReplyMapper;
 @RequiredArgsConstructor
 public class AppBeanConfig {
 
-
    @Autowired
    private final MemberMapper memberMapper;
    @Autowired
