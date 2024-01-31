@@ -28,10 +28,12 @@ import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import project.DIY.domain.Follow;
 import project.DIY.domain.Member;
 import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
 import project.DIY.form.PasswordUpdateForm;
+import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.FollowRepository;
 import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
@@ -45,6 +47,8 @@ public class MyPageController {	//myPage 관련
 	@Autowired
 	private final PostRepository postRepository;
 	@Autowired
+	private final AboutPostRepository aboutpostRepository;
+	@Autowired
 	private final MemberRepository memberRepository;
 	@Autowired
 	private final PasswordUpdateService passwordUpdateService;
@@ -57,12 +61,12 @@ public class MyPageController {	//myPage 관련
 	@GetMapping("/myPage/{id}")
 	public String getMyPage(@PathVariable("id") int id,HttpServletRequest req, Model model,
 			@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "type", defaultValue = "all") String type
-			)throws Exception {
+			@RequestParam(value = "type", defaultValue = "all") String type,
+			@RequestParam(value="pgroup", defaultValue="myposts") String pgroup)
+			throws Exception {
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		
 		
 		Member memberVo = memberRepository.selectBymemberId(id);
 		
@@ -72,6 +76,7 @@ public class MyPageController {	//myPage 관련
 		}
 		*/
 		
+
 //		팔로잉/팔로워 수	
 		int following = followRepository.cntFollowee(id);
 		int follower = followRepository.cntFollower(id);
@@ -82,20 +87,24 @@ public class MyPageController {	//myPage 관련
 		List<Post> myPost = postRepository.selectUserPostbyId(id);
 		int size = myPost.size();
 
+		/*
 		List<String> memberprofileimg =new ArrayList<>();
 		 
 		 for(int i = 0; i<myPost.size();i++) {
 	    	  Integer memberId =((Post) myPost.get(i)).getMemberId();
-	    	  
-	    	  
-		   	  if(memberRepository.selectBymemberId(memberId).getProfileSrc()==null) {
-		   		  memberprofileimg.add("/img/defalut_profileimg.jpg");
-		    	  }
-		  	  else { memberprofileimg.add(memberRepository.selectBymemberId(memberId).getProfileSrc());}
+		   	  memberprofileimg.add(memberRepository.selectBymemberId(memberId).getProfileSrc());
 		    	 
 	      }
+		 System.out.println(memberprofileimg);
 		 model.addAttribute("profilesrc",memberprofileimg);
+		 */
+		 
 
+		 
+		 
+		 
+		 
+		 
 		LocalDate currentDate = LocalDate.now();
 		int thisMonth = currentDate.getMonthValue();
 		int thisyear = currentDate.getYear();
@@ -122,11 +131,70 @@ public class MyPageController {	//myPage 관련
 		PaginationVo paginationVo = new PaginationVo(myPost.size(), page);
 		paginationVo.setMemberId(memberVo.getId());
 		paginationVo.setType(type);
-		int cnt = postRepository.getPostsCountByMemberId(paginationVo);
+		
+		
+		
+//		여기수정
+		paginationVo.setPgourp(pgroup);
+		
+		
+		
+		
+		
+//		int cnt = postRepository.getPostsCountByMemberId(paginationVo);
+		int cnt;
 
+		
+		
+		List<Post> pgroupPosts = new ArrayList<Post>();
+		List<Post> list = new ArrayList<Post>();
+		List<String> profileSrc =new ArrayList<String>();
+		if(pgroup.equals("myfeed")) {
+			
+			List<Post> myFeedPost = postRepository.myFeedPost(id, type);
+			cnt = myFeedPost.size();
+			list = postRepository.myFeedPosts(paginationVo);
+			for(int i =0;i<list.size();i++) {
+				profileSrc.add(memberRepository.selectBymemberId(list.get(i).getMemberId()).getProfileSrc());
+			}
+//			List<Follow> followee = followRepository.selectFollowee(id);
+//			
+//			
+//			for(int i = 0;i<followee.size(); i++) {
+//				List<Post> temp= postRepository.selectUserPostbyId(followee.get(i).getFollowee());
+//				for(int j = 0;j<temp.size(); j++) {
+//					pgroupPosts.add(temp.get(i));
+//				}
+//			}
+		
+		}else if(pgroup.equals("likedposts")) {
+			
+			List<Post> likedPost = postRepository.likedPost(id, type);
+			cnt = likedPost.size();
+			list = postRepository.likedPosts(paginationVo);
+			for(int i =0;i<list.size();i++) {
+				profileSrc.add(memberRepository.selectBymemberId(list.get(i).getMemberId()).getProfileSrc());
+			}
+//			List<Integer> postCodeList = aboutpostRepository.selectLikedPostsById(id);
+//			
+//			for(int i = 0;i<postCodeList.size(); i++) {
+//				Post temp= postRepository.selectByPostCode(postCodeList.get(i));
+//				pgroupPosts.add(temp);
+//			}
+			
+		}else {
+			cnt = postRepository.getPostsCountByMemberId(paginationVo);
+			list = postRepository.getPostsByPageByMemberId(paginationVo);
+			for(int i =0;i<list.size();i++) {
+				profileSrc.add(memberRepository.selectBymemberId(list.get(i).getMemberId()).getProfileSrc());
+			}
+			
+		}
+		System.out.println("--------------------");
+		System.out.println("cnt :" + cnt);
+		System.out.println("--------------------");
 		paginationVo.setOffset((page-1)*5);
 		
-		List<Post> list = postRepository.getPostsByPageByMemberId(paginationVo);
 		
 		for(int i=0; i<list.size();i++) {
 			String contentTemp = list.get(i).getContent();
@@ -138,7 +206,14 @@ public class MyPageController {	//myPage 관련
 		
 		int endPage = (cnt/5 <= 0)? 1 :(int)(Math.ceil(cnt/5.0));  
 		paginationVo.setEndPage(endPage);
-
+		
+		model.addAttribute("pgroupPosts",pgroupPosts);
+		
+		model.addAttribute("pgroup",pgroup);	 
+		
+		model.addAttribute("profileSrc",profileSrc);
+		
+		
 		model.addAttribute("size",size);
 		model.addAttribute("type", type);
 	    model.addAttribute("page", page);

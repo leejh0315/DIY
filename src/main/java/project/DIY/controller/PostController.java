@@ -248,6 +248,8 @@ public class PostController {
 				reportPost.setMemberId(postItem.getMemberId());
 				reportPost.setReporterId(member.getId());
 				int likescnt = aboutPostRepository.selectLikes(likes);
+				System.out.println("likesCnt" + likescnt); 
+				
 				int reportpostcnt = aboutPostRepository.selectReportPost(reportPost);
 				aboutNotice(member, model);
 				model.addAttribute("likescnt",likescnt);

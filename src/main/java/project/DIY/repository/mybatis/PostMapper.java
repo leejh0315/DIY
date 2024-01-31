@@ -28,6 +28,13 @@ public interface PostMapper {
    public List<Post>selecetPostBySearch(PaginationVo paginationVo);
    public int countByMonth(int memberId, int year, int month);
    
-
    public void updateById(String memberNick, int postCode);
+   
+   public List<Post> likedPost(int memberId, String type);
+   public List<Post> myFeedPost(int memberId, String type );
+   
+   
+   public List<Post> likedPosts(PaginationVo paginationVo);
+   public List<Post> myFeedPosts(PaginationVo paginationVo);
+   
 }
