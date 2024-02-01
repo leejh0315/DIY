@@ -60,7 +60,14 @@ public class HomeController {
 	private final EmailService emailService;
    
    //홈 화면
-   @GetMapping("/home")
+
+
+
+
+
+
+
+@GetMapping("/home")
    public String getMain(Model model, HttpServletRequest req) {
       HttpSession session = req.getSession();
       Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
@@ -70,38 +77,51 @@ public class HomeController {
       LocalDate now = LocalDate.now();
       int monthValue = now.getMonthValue();
       
+
+LocalDate lastMonth = now.minusMonths(1);
+int lastMonthValue = lastMonth.getMonthValue();
+
+
+
       List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
+
+if(king.size() !=3){
+king= memberRepository.thisMonthWriteKing(
+lastMonthValue);
+
+}
+
       List<Post> post = postRepository.selectByPostCtCodeHome("book");
       
       List<String> kingProfileimg =new ArrayList<>();
       for(int i = 0; i<3;i++) {
-    	  Integer kingid =((Post) king.get(i)).getMemberId();
-    	  
-	   	  if(memberRepository.selectBymemberId(kingid).getProfileSrc()==null) {
-    		  kingProfileimg.add("/img/defalut_profileimg.jpg");
-    	  }else { 
-    		  kingProfileimg.add(memberRepository.selectBymemberId(kingid).getProfileSrc());
-    	  }
-	    	 
+         Integer kingid =((Post) king.get(i)).getMemberId();
+         
+           if(memberRepository.selectBymemberId(kingid).getProfileSrc()==null) {
+            kingProfileimg.add("/img/defalut_profileimg.jpg");
+         }else { 
+            kingProfileimg.add(memberRepository.selectBymemberId(kingid).getProfileSrc());
+         }
+           
       }
       
       
       List<String> top5_profileImg = new ArrayList<>();
       List<Post> top5posts = postRepository.selectTop5PopularPosts();
       for(int i=0; i<top5posts.size();i++) {
-			String contentTemp = top5posts.get(i).getContent();
-			String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
-			plainText = plainText.replaceAll("&nbsp;", "");
-			plainText = plainText.replaceAll("&gt;", "");
-			int maxLength = 50;
-	        if (plainText.length() > maxLength) {
-	            plainText = plainText.substring(0, maxLength);
-	        }
-			top5posts.get(i).setContent(plainText);
-			
-			int profileurl = top5posts.get(i).getMemberId();
-			top5_profileImg.add(memberRepository.selectBymemberId(profileurl).getProfileSrc());
-		}
+         String contentTemp = top5posts.get(i).getContent();
+         String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
+         plainText = plainText.replaceAll("&nbsp;", "");
+         plainText = plainText.replaceAll("&gt;", "");
+         int maxLength = 50;
+           if (plainText.length() > maxLength) {
+               plainText = plainText.substring(0, maxLength);
+           }
+         top5posts.get(i).setContent(plainText);
+         
+         int profileurl = top5posts.get(i).getMemberId();
+         top5_profileImg.add(memberRepository.selectBymemberId(profileurl).getProfileSrc());
+      }
       
       
       model.addAttribute("top5posts" ,top5posts);
@@ -113,6 +133,7 @@ public class HomeController {
 
       return "main/main";
    }
+   
    
    //홈 화면 토글에 맞는 게시물 반환
    @PostMapping("/{type}")
