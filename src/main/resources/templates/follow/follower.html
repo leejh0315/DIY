@@ -21,7 +21,7 @@
 
     <div th:each="follower, i : ${followerList}" class="followList">
         <input type="hidden" th:value="${follower.id}" class="userid">
-        <a th:href="@{|/myPage/${follower.id}|}">
+        <a th:href="@{|/userPage/${follower.id}|}">
 	        <div class="profileimg_div">
 	            <img th:src="${follower.profileSrc}">
 	        </div>

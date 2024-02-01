@@ -101,6 +101,7 @@
 		<div class="left_Wrap">
 			<div class="post_cmp">
 				<div th:each="post,i : ${post}">
+					<hr>
 					<a th:href="@{|/posts/${post.postCode}|}">
 						<div id="postComp">
 							<div th:id="${i.index}"></div>
@@ -134,7 +135,7 @@
 							</div>
 						</div>
 					</a>
-					<hr>
+					
 				</div>
 			</div>
 		</div>
@@ -170,7 +171,7 @@
 	
 	
 	
-	
+</div>
 	
 <div id="pagination">
 	<!-- 맨 처음 페이지로 이동하는 버튼 -->
@@ -198,13 +199,14 @@
 		<a th:href="@{'/myPage/${member.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
     </span> -->
 </div>
-</div>
+
 <script th:inline="javascript">
     var myData = /*[[${posts}]]*/ [];
     var cntArr = /*[[${cntArr}]]*/ [];
 	
     var pgroup = /*[[${pgroup}]]*/ '';
 </script>
+
 	<script>
 		
 	
@@ -452,6 +454,6 @@ new Chart(document.getElementById("bar-chart"), {
 			
 	
 	</script>
-			<script th:src="@{/js/nav.js}"></script>
+	<script th:src="@{/js/nav.js}"></script>
 </body>
 </html>
