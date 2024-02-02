@@ -23,7 +23,7 @@
     <div th:each="followeeList,i :${followeeList}" class="followList">
         <input type="hidden" th:value="${followeeList.id}" class="userid">
         
-        <a th:href="@{|/myPage/${followeeList.id}|}">
+        <a th:href="@{|/userPage/${followeeList.id}|}">
 	        <div class="profileimg_div">
 	            <img th:src="${followeeList.profileSrc}">
 	        </div>
