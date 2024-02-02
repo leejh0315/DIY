@@ -17,8 +17,7 @@
 </head>
 <body>
 	<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
-<input type="text" placeholder="보낼 메세지를 입력하세요." class="content">
-<button type="button" value="전송" class="sendBtn" onclick="sendMsg()">전송</button>
+
 <button type="button" value="방나가기" class="quit" onclick="quit()">방 나가기 </button>
 <div>
     <span>메세지</span>
@@ -35,6 +34,8 @@
 	</div>
     
     <div class="msgArea"></div>
+    <input type="text" placeholder="보낼 메세지를 입력하세요." class="content">
+<button type="button" value="전송" class="sendBtn" onclick="sendMsg()">전송</button>
 </div>
 </body>
 
@@ -96,6 +97,10 @@
             newMsg.innerHTML += hours + ':' + minutes + ':' + seconds;
             newMsg.className = className;
             msgArea.append(newMsg);
+                       var pageHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
+
+			// 화면을 가장 아래로 스크롤하기
+			window.scrollTo(0, pageHeight);
         }
 
 
@@ -105,6 +110,7 @@
              var talkMsg={"type" : "TALK","roomId":roomId ,"sender":member.id,  "senderNick":memberNick,"message":content};
            socket.send(JSON.stringify(talkMsg));
            document.querySelector('.content').value = "";
+
         }
 
         function quit(){

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.ChatMessage;
 import project.DIY.domain.ChatRoom;
+import project.DIY.domain.Notice;
 import project.DIY.repository.ChatRepository;
 
 @Repository
@@ -52,6 +53,12 @@ public class MybatisChatRepository implements ChatRepository{
 	public List<ChatMessage> selectMessageByOrder(int id) {
 		
 		return chatMapper.selectMessageByOrder(id);
+	}
+
+	@Override
+	public int chatRoomCount(Notice notice) {
+		int cnt = chatMapper.chatRoomCount(notice);
+		return cnt;
 	}
 
 }

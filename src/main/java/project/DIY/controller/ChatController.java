@@ -48,18 +48,24 @@ public class ChatController {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		aboutNotice(member, model);
-		aboutPostRepository.updateNoticeView(1, id);
+		
+		
+		
+		//aboutPostRepository.updateNoticeView(1, id);
         List<ChatRoom> roomList = chatService.findMyRoom(id);
         Map<Integer, Member> roomMap = new HashMap<Integer, Member>();
         
         List<ChatMessage> chatOrder = chatRepository.selectMessageByOrder(id);
         
+        System.out.println("roomList : " + roomList);
         
         List<ChatRoom> tempList = new ArrayList<ChatRoom>();
         
         for(int i = 0 ; i < chatOrder.size(); i++) {
         	String tempId = chatOrder.get(i).getRoomId();
         	ChatRoom tempRoom = chatRepository.findRoomByChatroomId(tempId);
+        	
+        	
         	
         	System.out.println(tempId);
         	for(int j = 0 ; j<roomList.size(); j++) {
@@ -91,29 +97,29 @@ public class ChatController {
         	}
         }
         System.out.println("chatOrder : " + chatOrder);
-        /*
-        for(int i = 0; i<roomList.size(); i++) {
-        	if(member.getId() == roomList.get(i).getChatReceiverId()) {
-        		for(int j = 0 ; j < roomList.size(); j++) {
-        			int you =roomList.get(j).getChatSenderId();
-        			if(you != member.getId()) {
-        				Member uMember = memberRepository.selectBymemberId(you);
-        				roomMap.put(you, uMember);
-        				roomList.get(i).setChatReceiverId(you);
-        			}
-        		}
+        Map<Integer, Integer> chatCntMap = new HashMap<Integer, Integer>();
+                
+        for(int i = 0 ; i < chatOrder.size(); i++) {
+        	Notice notice = new Notice();
+        	notice.setTargetId(tempList.get(i).getId());
+        	System.out.println("tempList.get=>"+i + tempList.get(i));
+            
+        	if(id == tempList.get(i).getChatSenderId()) {
+        		notice.setTargetMemberId(tempList.get(i).getChatReceiverId());
+        		notice.setDoMemberId(id);
+        		
+        	}else {
+        		notice.setDoMemberId(tempList.get(i).getChatSenderId());
+        		notice.setTargetMemberId(id);
         	}
-        	else if(member.getId() == roomList.get(i).getChatSenderId()) {
-        		for(int j = 0 ; j < roomList.size(); j++) {
-        			int you =roomList.get(j).getChatReceiverId();
-        			if(you != member.getId()) {
-        				Member uMember = memberRepository.selectBymemberId(you);
-        				roomMap.put(you, uMember);
-        			}
-        		}
-        	}
+        	System.out.println(notice);
+            int cnt = chatRepository.chatRoomCount(notice);
+            chatCntMap.put(tempList.get(i).getId(), cnt);
         }
-        */
+        System.out.println(chatCntMap);
+        System.out.println("tempList :" + tempList);
+        System.out.println("chatCntMap : " + chatCntMap);
+        
         model.addAttribute("roomMap", roomMap);
         model.addAttribute("tempList", tempList);
         model.addAttribute("id", member.getId());
@@ -153,9 +159,17 @@ public class ChatController {
     	
     	HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
+		
 		String memberNick = member.getNickName();
 		aboutNotice(member, model);
         ChatRoom room = chatService.findByRoomId(roomId);
+        
+        
+        if(member.getId() != room.getChatReceiverId() && member.getId() != room.getChatSenderId()) {
+        	return "redirect:/chat/chatList/"+member.getId();
+        }
+        
         List<ChatMessage> originMessage = chatRepository.selectMessageByroomId(roomId);
     	//ChatRoom room = chatService.findRoomById(roomId);
 

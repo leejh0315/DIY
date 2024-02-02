@@ -70,20 +70,21 @@ public class HomeController {
       LocalDate now = LocalDate.now();
       int monthValue = now.getMonthValue();
       
-      List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
+     List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
+
       List<Post> post = postRepository.selectByPostCtCodeHome("book");
-      
+
       List<String> kingProfileimg =new ArrayList<>();
-      for(int i = 0; i<3;i++) {
-    	  Integer kingid =((Post) king.get(i)).getMemberId();
-    	  
-	   	  if(memberRepository.selectBymemberId(kingid).getProfileSrc()==null) {
-    		  kingProfileimg.add("/img/defalut_profileimg.jpg");
-    	  }else { 
-    		  kingProfileimg.add(memberRepository.selectBymemberId(kingid).getProfileSrc());
-    	  }
-	    	 
-      }
+	      for(int i = 0; i<3;i++) {
+	    	  Integer kingid =((Post) king.get(i)).getMemberId();
+	    	  
+		   	  if(memberRepository.selectBymemberId(kingid).getProfileSrc()==null) {
+	    		  kingProfileimg.add("/img/defalut_profileimg.jpg");
+	    	  }else { 
+	    		  kingProfileimg.add(memberRepository.selectBymemberId(kingid).getProfileSrc());
+	    	  }
+		    	 
+	      }
       
       
       List<String> top5_profileImg = new ArrayList<>();

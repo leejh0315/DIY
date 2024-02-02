@@ -95,7 +95,7 @@ public class WebSockChatHandler extends TextWebSocketHandler {
         	}
         	notice.setTargetId(nowR.getId());
         	notice.setNoticeOn(currentDateTime);
-        	
+        	System.out.println("notice : " + notice);
         	aboutPostRepository.insertNotice(notice);
         	
         	if(!chatMessage.getMessage().equals("")) {

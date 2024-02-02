@@ -52,5 +52,14 @@
 			;
 	</select>
 	
+	<select id="chatRoomCount" parameterType="Notice">
+		select count(*) from diydb.notice 
+		where type='chat' and 
+		targetId = #{targetId} and 
+		targetMemberId = #{targetMemberId} and 
+		doMemberId = #{doMemberId};
+		
+	</select>
+	
 	
 </mapper>

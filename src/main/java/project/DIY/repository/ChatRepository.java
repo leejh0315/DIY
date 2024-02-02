@@ -4,6 +4,7 @@ import java.util.List;
 
 import project.DIY.domain.ChatMessage;
 import project.DIY.domain.ChatRoom;
+import project.DIY.domain.Notice;
 
 public interface ChatRepository {
 
@@ -13,4 +14,5 @@ public interface ChatRepository {
 	public List<ChatMessage> selectMessageByroomId(String randomId);
 	public void insertMessageByroomId(ChatMessage chatMessage);
 	public List<ChatMessage> selectMessageByOrder(int id);
+	public int chatRoomCount(Notice notice);
 }
