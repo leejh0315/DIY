@@ -61,12 +61,6 @@ public class HomeController {
    
    //홈 화면
 
-
-
-
-
-
-
 @GetMapping("/home")
    public String getMain(Model model, HttpServletRequest req) {
       HttpSession session = req.getSession();
@@ -76,9 +70,18 @@ public class HomeController {
       
       LocalDate now = LocalDate.now();
       int monthValue = now.getMonthValue();
-      
-     List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
+      LocalDate lastMonth = now.minusMonths(1);
+      int lastMonthValue = lastMonth.getMonthValue();
 
+
+
+            List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
+
+      if(king.size() !=3){
+      king= memberRepository.thisMonthWriteKing(
+      lastMonthValue);
+
+      }
       List<Post> post = postRepository.selectByPostCtCodeHome("book");
 
       List<String> kingProfileimg =new ArrayList<>();
