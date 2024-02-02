@@ -88,10 +88,13 @@ public class WebSockChatHandler extends TextWebSocketHandler {
         	notice.setType("chat");
         	String rId = chatMessage.getRoomId();
         	ChatRoom nowR = chatRepository.findRoomByChatroomId(rId);
+        	
         	if(nowR.getChatReceiverId() == chatMessage.getSender()) {
         		notice.setTargetMemberId(nowR.getChatSenderId());
+        		cm.setReceiver(nowR.getChatSenderId());
         	}else {
         		notice.setTargetMemberId(nowR.getChatReceiverId());
+        		cm.setReceiver(nowR.getChatReceiverId());
         	}
         	notice.setTargetId(nowR.getId());
         	notice.setNoticeOn(currentDateTime);
@@ -100,7 +103,7 @@ public class WebSockChatHandler extends TextWebSocketHandler {
         	
         	if(!chatMessage.getMessage().equals("")) {
         		System.out.println("notNull");
-        		
+        		System.out.println("cm : " + cm);
         		chatRepository.insertMessageByroomId(cm);
         	}
         	

@@ -11,6 +11,7 @@ public class ChatMessage {
     private MessageType type; // 메시지 타입
     private String roomId; // 방번호
     private int sender; // 메시지 보낸사람
+    private int receiver;
     private String message; // 메시지
     private String sendDate;	//보낸 날짜
 }

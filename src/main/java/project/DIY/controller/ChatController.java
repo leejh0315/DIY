@@ -64,9 +64,6 @@ public class ChatController {
         for(int i = 0 ; i < chatOrder.size(); i++) {
         	String tempId = chatOrder.get(i).getRoomId();
         	ChatRoom tempRoom = chatRepository.findRoomByChatroomId(tempId);
-        	
-        	
-        	
         	System.out.println(tempId);
         	for(int j = 0 ; j<roomList.size(); j++) {
         		if(tempId.equals(roomList.get(j).getRoomId())) {
@@ -74,7 +71,8 @@ public class ChatController {
         		}
         	}
         }
-        
+        System.out.println("this TempList : " + tempList);
+       
         for(int i = 0; i<tempList.size(); i++) {
         	if(member.getId() == tempList.get(i).getChatReceiverId()) {
         		for(int j = 0 ; j < tempList.size(); j++) {
@@ -96,27 +94,27 @@ public class ChatController {
         		}
         	}
         }
+        System.out.println("tempList : " + tempList);
         System.out.println("chatOrder : " + chatOrder);
         Map<Integer, Integer> chatCntMap = new HashMap<Integer, Integer>();
                 
         for(int i = 0 ; i < chatOrder.size(); i++) {
         	Notice notice = new Notice();
         	notice.setTargetId(tempList.get(i).getId());
-        	System.out.println("tempList.get=>"+i + tempList.get(i));
-            
-        	if(id == tempList.get(i).getChatSenderId()) {
-        		notice.setTargetMemberId(tempList.get(i).getChatReceiverId());
-        		notice.setDoMemberId(id);
-        		
+        	
+        	if(id != chatOrder.get(i).getSender()) {
+        		notice.setTargetMemberId(chatOrder.get(i).getReceiver());
+        		notice.setDoMemberId(chatOrder.get(i).getSender());
         	}else {
-        		notice.setDoMemberId(tempList.get(i).getChatSenderId());
-        		notice.setTargetMemberId(id);
+        		notice.setTargetMemberId(chatOrder.get(i).getSender());
+        		notice.setDoMemberId(chatOrder.get(i).getReceiver());
         	}
-        	System.out.println(notice);
+        	
+        	 
+        	System.out.println("thisNotice : " + notice);
             int cnt = chatRepository.chatRoomCount(notice);
             chatCntMap.put(tempList.get(i).getId(), cnt);
         }
-        System.out.println(chatCntMap);
         System.out.println("tempList :" + tempList);
         System.out.println("chatCntMap : " + chatCntMap);
         

@@ -38,15 +38,16 @@
 	
 	<div id="container" class="container">
 		<div th:each="post,i:${post}" id="mostPosted" class="mostPosted">
-				<div id="postComp" class="postComp">
-					<div th:id="${i.index}"></div>
-					<div  class="Thumb">
-						<img th:src="${post.targetThumbnail}">
-					</div>
-					<div class="postcontent title" th:text="${post.targetName}"></div>				
-					<div class="subtitle" th:text="${post.targetSubName}"></div>
-					<div class="postcontent author" th:text="${post.targetAuthor}"></div>
-					<div th:text="'★  '+${post.starCount}"></div>
+				<div th:id="${post.targetName}" class="postComp" onclick="doSearch(this)">
+						<div th:id="${i.index}"></div>
+						<div  class="Thumb">
+							<img th:src="${post.targetThumbnail}">
+						</div>
+						
+						<div class="postcontent title" th:text="${post.targetName}"></div>				
+						<div class="subtitle" th:text="${post.targetSubName}"></div>
+						<div class="postcontent author" th:text="${post.targetAuthor}"></div>
+						<div th:text="'★  '+${post.starCount}"></div>
 				</div>
 				
 		</div>
@@ -144,7 +145,7 @@
                 	
 						$("#container").empty();
                 		$.each(data, function (index, post) {
-                    	$('#container').append('<div class="mostPosted">'+
+                    	$('#container').append('<div class="mostPosted" id="'+post.targetName+'" onclick="doSearch(this)")>'+
 						'<div id="' + index + '">' +
 						'<div class="Thumb"> '+
 						'<img src="'+ post.targetThumbnail + '">' +
@@ -159,7 +160,25 @@
 		});
 		
 		}
-
+		
+		function doSearch(e){
+			console.log($(e).attr('id'));
+			let keywordValue = $(e).attr('id');
+			if (keywordValue.includes('[')) {
+				keywordValue =  keywordValue.substring(0, keywordValue.indexOf('['));
+			}
+			$.ajax({
+			type : "POST",
+			url : "/home/search/" + keywordValue,
+			data : {
+				keywordValue
+			},success:function (data) {
+				console.log(data);
+				window.location.href = '/home/searchResult?searchKeyword='+keywordValue+'&totalCount='+data+'&page=1';
+			
+		}
+		})
+		}
 
 	</script>
 	

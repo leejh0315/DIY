@@ -35,13 +35,14 @@
 			null,
 			#{roomId}, 
 			#{sender}, 
+			#{receiver},
 			#{message}, 
 			#{sendDate}
 		);
 	</insert>
 	
 	<select id="selectMessageByOrder" resultType="ChatMessage">
-		SELECT id, roomId, sender, message, sendDate
+		SELECT id, roomId, sender, receiver, message, sendDate
 			FROM diydb.chatmessage
 			WHERE (roomId, sendDate) IN (
 			    SELECT roomId, MAX(sendDate)
