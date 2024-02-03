@@ -38,19 +38,19 @@
 	<div class="posttitle" th:text="${post.title}"></div>
 	
 	<div class="writerinfo">
-		<div class="writer_profileimg">
-			<img th:src="${postWriteMember.profileSrc}"  alt="">
+		<div>
+			<div class="writer_profileimg">
+				<img th:src="${postWriteMember.profileSrc}"  alt="">
+			</div>
+			<p th:text="${postWriteMember.nickName}" class="wirter"></p>    
+			<p th:text="${post.createOn}" class="createOn"></p>
 		</div>
-		<p th:text="${postWriteMember.nickName}" class="nickName"></p>    
-		<p th:text="${post.createOn}" class="createOn"></p>
-
 		<th:block th:if="${member != null}">
 			<th:block th:if="${member.id == postWriteMember.id}">
 				<i class="fas fa-ellipsis-h fa-sm" onclick="toggleEditDeleteButtons(this)"></i>
 				<div class="edit-delete-buttons">
 					<a th:href="@{|/update/${post.postCode}|}">수정하기</a>
 					<div id="deleteBtn">삭제하기</div>
-			
 				</div>
 			</th:block>
 		</th:block>
@@ -105,53 +105,89 @@
 			<!-- 댓글 없을 때 -->
 			<th:block th:if="${replyCnt == 0}">
 			 <div class="noReply">
-				<div>댓글이 없습니다.</div>
+				<div class="noreplydiv">댓글이 없습니다.</div>
 			 </div>
+			 <hr>
 			</th:block>
 		 	<!-- 댓글 있을 때 -->
 			<th:block th:if="${replyCnt != 0}">
 				<!-- 댓글리스트 -->
 				<tr th:each="replylist :${replylist}">
+					<div class="replyWrap">
 					<img class="img" th:src="${replylist.userProfileSrc}" alt=""></img>
-					
-					<div><td th:text ="${replylist.nickName}"></td></div>
-					<div><td th:text="${replylist.replyContent}"></td></div>
-					<div><td th:text="${replylist.replyCreateDate}"></td></div>
-					
+						<div class="reply_top">
+							<div><td th:text ="${replylist.nickName}"></td></div>
+							<div><td th:text="${replylist.replyContent}"></td></div>
+							<div class="reply_btm">
+								<div><td th:text="${replylist.replyCreateDate}"></td></div>
+								<!-- 대댓글버튼 -->
+								<th:block th:if="${member != null}">
+									<div class="rereplybtn" style="cursor: pointer;">답글</div>
+								</th:block>
+							</div>
+							<!-- 대댓글입력폼 -->
+							<th:block th:if="${member != null}">
+							
+							<div class="reReplyformArea" style="display: none;">
+								<img class="img" th:src="${member.profileSrc}"  alt="">
+								<div class="reReplyform_form">
+								<div th:text="${member.nickName}" class="nickName"></div>
+							<form th:action="@{/reReplyPost/{postCode}(postCode=${post.postCode})}" 
+									method="post" id="reReplyform" name="Reply">
+										<div id="reReply" class="reReply"></div>
+										<input th:value="${replylist.replyId}" name="postId" type="hidden">
+									</form>
+								</div>
+							
+							</div>
+							</th:block>
+							<!--  -->
+						</div>
+					</div>
+					<hr>
 					<th:block th:if="${reRep[replylist.replyId] != null}">
 						<div th:each="reRep : ${reRep[replylist.replyId]}">
 							<div th:each="item : ${reRep}" class="rereply">
-								<img class="img" th:src="${item.userProfileSrc}"  alt="">							
-								<div th:text="${item.nickName}"></div>
-								<div th:text="${item.rereply}"></div>
+								<div class="replyWrap">
+								<img class="img" th:src="${item.userProfileSrc}"  alt="">
+								<div class="rereplycont">							
+									<div th:text="${item.nickName}"></div>
+									<div th:text="${item.rereply}"></div>
+									
+								</div>
 							</div>
+							</div>
+							<hr>
 						</div>
+						
 					</th:block>
 					
 					
-					<th:block th:if="${member != null}">
-						<form th:action="@{/reReplyPost/{postCode}(postCode=${post.postCode})}" method="post" id="reReplyform" name="Reply">
-							<div id="reReply" class="reReply" style="cursor: pointer;">답글</div>
-							<input th:value="${replylist.replyId}" name="postId" type="hidden">
-						</form>
-					</th:block>
+					
+					
 				</tr>
 			</th:block>
-		<hr>
+		
 			<!-- 댓글 작성 -->
 			<div class="replyWrite">
 				<div>
 					<!-- 로그인 안한 사람은 이거 못봤나...? 만약 못보는거면 th:block 여는태그 닫는태그 지워버리면 될듯 -->
 					<th:block th:if="${member != null}">
 						<form action="/replypost" method="post">
-							<div class="replyer_profileimg">
-								<img th:src="${member.profileSrc}"  alt="">
+							<div class="replyformArea">
+								<div class="replyer_profileimg">
+									<img class="img" th:src="${member.profileSrc}"  alt="">
+								</div>
+								<div class="replyform_form">
+									<div th:text="${member.nickName}" class="nickName"></div>
+									<textarea th:field="*{reply.replyContent}"  type='text' placeholder='댓글을 작성하세요.'></textarea>
+									<input th:field="*{reply.postId}" type="hidden" id="postCode">
+									<div th:text="*{postCode}" id="postCodeDiv" style="display: none;"></div>
+								</div>
+								
 							</div>
-							<p th:text="${member.nickName}" class="nickName"></p>
-							<input  th:field="*{reply.replyContent}" type="text" class="" placeholder="댓글을 입력하세요">
-							<input th:field="*{reply.postId}" type="hidden" id="postCode">
-							<div th:text="*{postCode}" id="postCodeDiv" style="display: none;"></div>
 							<button id="submitBtn" class="submitBtn" type="submit">등록</button>
+							
 						</form>
 					</th:block>
 
@@ -219,7 +255,10 @@
 		let likes = document.getElementById("likes");
 		let postCode = document.getElementById("postCode");
 		let postCodeDiv = document.getElementById("postCodeDiv");
+		
 		let reReply = document.querySelectorAll(".reReply");
+		let testReply = document.querySelectorAll(".testReply");
+		
 		let likescnt = (member != null)?document.getElementById("likescnt"):"";
 		
 		let likesicon = document.getElementById("likesicon");
@@ -280,31 +319,35 @@
 		}
 		
 		
-		
-
-   		
+		let reReplyformArea = document.querySelectorAll(".reReplyformArea")
+		let rereplybtn = document.querySelectorAll(".rereplybtn");
 		var addedDiv = document.createElement("div");
 			
+			
+
 			for(let i=0; i<reReply.length; i++){
 				
-					reReply[i].addEventListener("click", (e)=>{
-						e.preventDefault();
+				rereplybtn[i].addEventListener("click", (e)=>{
+					e.preventDefault();
 
-	 					if(document.getElementById(i+'Div')){
-							 document.getElementById(i+'Div').remove();
-						 } else {
-						addedDiv.id = i +'Div';
-						reReply[i].after(addedDiv);
-						addedDiv.innerHTML = "<div id='" + i +"'>\
-								<input type='text' name='replyContent'>\
-								<button type='submit'>작성</button>\
-							 </div>";
-						 }
-						
-						});
-				
-						
-			}
+					 if(document.getElementById(i+'Div')){
+						 document.getElementById(i+'Div').remove();
+						 reReplyformArea[i].style.display = 'none';
+					 } else {
+						reReplyformArea[i].style.display = 'flex';
+					addedDiv.id = i +'Div';
+					reReply[i].after(addedDiv);
+					addedDiv.innerHTML = "<div id='" + i +"' class='replyformdiv'>\
+							<textarea type='text' name='replyContent' placeholder='댓글을 작성하세요.'></textarea>\
+							<button type='submit'>등록</button>\
+						 </div>";
+					 }
+					
+					});
+			
+					
+		}
+	 
 			
 			if(member.id != post.memberId){
 				let reportbtn = document.getElementById("reportbtn");
