@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import io.lettuce.core.dynamic.annotation.Param;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
 import project.DIY.domain.ReReply;
@@ -52,6 +53,12 @@ public class MybatisReplyRepository implements ReplyRepository{
 	public void deleteReplybypostCode(int postId) {
 		replyMapper.deleteReplybypostCode(postId);
 		
+	}
+
+	@Override
+	public int replyCnt(@Param("postId") int postId) {
+		
+		return replyMapper.replyCnt(postId);
 	}
 	
 	

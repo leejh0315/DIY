@@ -9,42 +9,28 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/postdetail.css}">
-<style>
-	.img{
-		height: 50px;
-		width: 50px;
-	}
-	.rereply{
-		margin-left: 150px;
-	}
-	.edit-delete-buttons {
-      display: none;
-    }
-	
-</style>
+
 </head>
 <body>
+
 	<th:block th:if="${member == null}">
 		<div th:replace="main/header :: headFrag(${none})"></div>
 	</th:block>
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
+	
 	<!-- 신고확인모달 -->
-			<div class="reportCheckModal" id="reportCheckModal" style="z-index: 1;
-			position: absolute; display:none; width: 100%; height: 100%; background: #333333ca; top: 0; left: 0;">
-				<div class="reportCheck" id="reportCheck" style="width:400px; height:200px;
-				background:#fff; border-radius:10px;
-				position:relative; top:50%; left:50%;
-				margin-top:-100px; margin-left:-200px;
-				text-align:center;
-				box-sizing:border-box; padding:74px 0;
-				line-height:23px; cursor:pointer;">
-					<div id="modalcontent">글을 신고하시겠습니까?</div>
-					<div id="reportCancle">취소</div>
-					<div id="reportConfirm">신고</div>
-				</div>
-			</div>
+	<div class="modalBackground" id="modalBackground" style="display: none;"></div>
+
+	<div class="reportCheckModal" id="reportCheckModal" style="display: none;">
+		<div>
+			<div id="modalcontent">글을 신고하시겠습니까?</div>
+			<div id="reportCancle">취소</div>
+			<div id="reportConfirm">신고</div>
+		</div>
+	</div>
+
 
 
 	<!-- posts -->
@@ -93,53 +79,64 @@
 			<hr>
 		<div class="postcontent" th:utext="${post.content}"></div>
 		
-		<th:block th:if="${member != null}">
-			<div class="likes" id="likes" onclick="postLikes()">
-				<input th:value="${likescnt}" type="hidden" id="likescnt">
-				<i id="likesicon" class="far fa-heart" style="color: #9A9E7B;"></i>
-				<p>좋아요</p>
-			</div>
-		</th:block>
-		
-		<th:block th:if="${member != null}">
-			<th:block th:if="${member.id != postWriteMember.id}" >
-					<input th:value="${reportpostcnt}" type="hidden" id="reportedcheck">
-					<button class="reportbtn" id="reportbtn" >신고</button>
+		<div class="likeReportWrap">
+			<th:block th:if="${member != null}">
+				<div class="likes" id="likes" onclick="postLikes()">
+					<input th:value="${likescnt}" type="hidden" id="likescnt">
+					<i id="likesicon" class="far fa-heart" style="color: #9A9E7B;"></i>
+					<p>좋아요</p>
+				</div>
 			</th:block>
-					<input type="hidden" id="reportedcheck">
-		</th:block>
+			
+			<th:block th:if="${member != null}">
+				<th:block th:if="${member.id != postWriteMember.id}" >
+						<input th:value="${reportpostcnt}" type="hidden" id="reportedcheck">
+						<button class="reportbtn" id="reportbtn" >신고</button>
+				</th:block>
+						
+			</th:block>
+		</div>		
 				
 
 			
 
-		<div class="replycnt">댓글<div>2</div></div>
+		<div class="replycnt">댓글<div th:text="${replyCnt}"></div></div>
 		<hr>
-			<!-- 댓글리스트 -->
-			<tr th:each="replylist :${replylist}">
-				<img class="img" th:src="${replylist.userProfileSrc}" alt=""></img>
-				
-				<div><td th:text ="${replylist.nickName}"></td></div>
-				<div><td th:text="${replylist.replyContent}"></td></div>
-				<div><td th:text="${replylist.replyCreateDate}"></td></div>
-				
-				<th:block th:if="${reRep[replylist.replyId] != null}">
-    				<div th:each="reRep : ${reRep[replylist.replyId]}">
-						<div th:each="item : ${reRep}" class="rereply">
-							<img class="img" th:src="${item.userProfileSrc}"  alt="">							
-							<div th:text="${item.nickName}"></div>
-							<div th:text="${item.rereply}"></div>
+			<!-- 댓글 없을 때 -->
+			<th:block th:if="${replyCnt == 0}">
+			 <div class="noReply">
+				<div>댓글이 없습니다.</div>
+			 </div>
+			</th:block>
+		 	<!-- 댓글 있을 때 -->
+			<th:block th:if="${replyCnt != 0}">
+				<!-- 댓글리스트 -->
+				<tr th:each="replylist :${replylist}">
+					<img class="img" th:src="${replylist.userProfileSrc}" alt=""></img>
+					
+					<div><td th:text ="${replylist.nickName}"></td></div>
+					<div><td th:text="${replylist.replyContent}"></td></div>
+					<div><td th:text="${replylist.replyCreateDate}"></td></div>
+					
+					<th:block th:if="${reRep[replylist.replyId] != null}">
+						<div th:each="reRep : ${reRep[replylist.replyId]}">
+							<div th:each="item : ${reRep}" class="rereply">
+								<img class="img" th:src="${item.userProfileSrc}"  alt="">							
+								<div th:text="${item.nickName}"></div>
+								<div th:text="${item.rereply}"></div>
+							</div>
 						</div>
-					</div>
-				</th:block>
-				
-				
-				<th:block th:if="${member != null}">
-					<form th:action="@{/reReplyPost/{postCode}(postCode=${post.postCode})}" method="post" id="reReplyform" name="Reply">
-						<div id="reReply" class="reReply" style="cursor: pointer;">답글</div>
-						<input th:value="${replylist.replyId}" name="postId" type="hidden">
-					</form>
-				</th:block>
-			</tr>
+					</th:block>
+					
+					
+					<th:block th:if="${member != null}">
+						<form th:action="@{/reReplyPost/{postCode}(postCode=${post.postCode})}" method="post" id="reReplyform" name="Reply">
+							<div id="reReply" class="reReply" style="cursor: pointer;">답글</div>
+							<input th:value="${replylist.replyId}" name="postId" type="hidden">
+						</form>
+					</th:block>
+				</tr>
+			</th:block>
 		<hr>
 			<!-- 댓글 작성 -->
 			<div class="replyWrite">
@@ -207,13 +204,15 @@
 			})
 		}
 
-		$(document).ready(function() {
+		
    		
-   		console.log(member);
+   		console.log(member.id);
    		console.log(post);
+		
    		let targetInformation = document.getElementById("targetInformation");
 
-		
+		let reportpostcnt =(member != null && member.id != post.memberId)?document.getElementById("reportedcheck"):"";
+		console.log(reportpostcnt.value)
 		let reportCheckModal = document.getElementById("reportCheckModal");
 		let modalcontent = document.getElementById("modalcontent");
 		
@@ -221,16 +220,16 @@
 		let postCode = document.getElementById("postCode");
 		let postCodeDiv = document.getElementById("postCodeDiv");
 		let reReply = document.querySelectorAll(".reReply");
-		let likescnt = document.getElementById("likescnt");
-		let reportpostcnt =document.getElementById("reportedcheck");
+		let likescnt = (member != null)?document.getElementById("likescnt"):"";
+		
 		let likesicon = document.getElementById("likesicon");
 		postCode.value = postCodeDiv.innerText;
 
-		
-		let cnt =likescnt.value;
-		let reportcnt = reportedcheck.value;
-		
-		let deleteBtn = (member.id == post.memberId)? document.getElementById("deleteBtn") : "";
+		let cnt = likescnt.value;
+		// let reportcnt = reportpostcnt.value;
+		let reportcnt = 1;
+
+		let deleteBtn = (member != null && member.id == post.memberId)? document.getElementById("deleteBtn") : "";
 		// let deleteBtn = document.getElementById("deleteBtn");
 		if(deleteBtn != ""){
 			deleteBtn.addEventListener("click",(e)=>{
@@ -313,13 +312,16 @@
 				let reportConfirm = document.getElementById("reportConfirm");
 			    reportbtn.addEventListener("click", (e)=>{
 					jQuery(".reportCheckModal").fadeIn();
+					jQuery(".modalBackground").fadeIn();
 				
 					reportCancle.addEventListener("click", (e)=>{
 						jQuery(".reportCheckModal").fadeOut();
+						jQuery(".modalBackground").fadeOut();
 					});
 					
 					reportCancle.addEventListener("click", (e)=>{
 						jQuery(".reportCheckModal").fadeOut();
+						jQuery(".modalBackground").fadeOut();
 					});
 					reportConfirm.addEventListener("click", (e)=>{
 						$.ajax({
@@ -344,7 +346,7 @@
 			
 			});
 			}
-		});
+		
 		
 		
 	</script>

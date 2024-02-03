@@ -9,6 +9,17 @@ hr {
     border:0;
 }
 
+.img{
+    height: 50px;
+    width: 50px;
+}
+.rereply{
+    margin-left: 150px;
+}
+.edit-delete-buttons {
+  display: none;
+}
+
 .writerinfo {
     display: flex;
     flex-direction: row;
@@ -128,6 +139,7 @@ hr {
     padding: 0 5px;
 }
 .replycnt{
+    padding: 3% 0 1% 0;
     display: inline-block;
     font-weight: 700;
     font-size: 14px;
@@ -137,3 +149,63 @@ hr {
     padding-left: 8px;
     display: inline-block;
 }
+.likeReportWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;    
+}
+.reportbtn {
+    margin: 40px 0 40px 0;
+    background-color: #eaeaea;
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid #9A9E7B;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 14px;
+}
+.reportCheckModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 200px;
+    background: #fff;
+    display: table-cell;
+  vertical-align: middle;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 23px;
+    cursor: pointer;
+    z-index: 1;
+  }
+  
+.reportCheckModal>div:nth-of-type(1){
+    position: absolute;
+
+	  top: 50%;
+
+	  left: 50%;
+
+	  transform: translate(-50%, -50%);
+}
+.reportCheckModal>div>div{
+    padding-bottom: .5em;
+}
+  .modalBackground {
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #33333373;
+    z-index: 1;
+  }
+  .noReply{
+    padding: 1% 1%;
+  }

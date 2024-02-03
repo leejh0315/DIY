@@ -40,6 +40,13 @@
 		);
 	</insert>
 	
+	<select id="replyCnt" resultType="Integer">
+		SELECT
+		    (SELECT COUNT(*) FROM diydb.reply WHERE postId = #{postId}) +
+		    COALESCE((SELECT COUNT(*) FROM diydb.rereply WHERE replyId 
+		    IN (SELECT replyId FROM diydb.reply WHERE postId = #{postId})), 0) as totalCommentsCount;
+	</select>
+	
 	<select id="selectReReplyById" resultType="ReReply">
 		select * from diydb.rereply where replyId = #{param1};
 	</select>
