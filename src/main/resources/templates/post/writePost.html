@@ -24,9 +24,6 @@
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/post.css}">
 <style>
-	.error{
-		color:red;
-	}
 	
 </style>
 </head>
@@ -74,7 +71,7 @@
 		</div>
 	</div>
 	 
-	
+	<div class="writePost_wrap">
 	   <div class="post_topwrap">
   			<div class="post_topleft">		
 				<p class="p1">어떤 작품에 대하여 쓰나요?</p>
@@ -83,7 +80,10 @@
 			</div>
 			
 			<div class="post_topmid">
+				
 				<p>선택한 작품</p>
+				<p class="error"  th:errors="*{targetName}"></p>
+
 				<div class="selectedWork" id="selectedWork">
 					<th:block th:if="${postForm != null and postForm.targetThumbnail != null}">
 						<img th:src="${postForm.targetThumbnail}">
@@ -103,7 +103,7 @@
 				
 				<input type="hidden" id="targetGenre" name="targetGenre" th:value="${postForm.targetGenre}">
 			</div>
-			<div class="error"  th:errors="*{targetName}"></div>
+			
 		
 			 <div class="post_topright">
 				<p>나의 별점</p>
@@ -120,19 +120,24 @@
 			<input type="hidden" id="stars" th:field="*{starCount}" value="">
 				
 
-		 
-		<label class="title_lb">제목<span></span>
-		<input class="posttitle" name="title" th:value="${postForm.title}" placeholder="게시글 제목을 입력해주세요"></label>
-		<div class="error"  th:errors="*{title}"></div>
+		<div class="titlearea">
+			<label class="title_lb">제목<span></span>
+			<input class="posttitle" name="title" th:value="${postForm.title}" placeholder="게시글 제목을 입력해주세요">
+		</label>
+			<div class="error"  th:errors="*{title}"></div>
+		</div>
 		<div class="content_wrap">
-		 <p>내용</p>
-		 <div class="error" th:errors="*{content}"></div>
+			<div>
+			<p>내용</p>
+			<p class="error" th:errors="*{content}"></p>
+			</div> 
 		<textarea id="summernote" name="content" th:utext="${postForm.content}">
 			
 		</textarea>
 		<button id="submitBtn" class="submitBtn"type="submit">업로드</button>
 		</div>
 	</form>
+	</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>			
 	<script>
 		$("#spinner").css("display","none");
