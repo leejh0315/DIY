@@ -11,6 +11,7 @@ h3{
 .mypage_Wrap{
     width: 60%;
     min-width: 855px;
+    max-width: 960px;
     vertical-align:middle; 
     display:inline-block;
 }

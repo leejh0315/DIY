@@ -4,33 +4,39 @@
     <meta charset="UTF-8">
     <title>Title</title>
 <style>
-	img{
-		width: 100px;
-		height: 100px;
-	}
+	
 </style>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/chatlist.css}">
+
 <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 </head>
 <body>
 	
 <div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
-    
-
+<div class="wrapcontainer">
+	<div class="chatlistwrap">
+<h3>채팅</h3>
 <table>
+	<hr>
     <div th:each="room, i : ${tempList}" >
 			<div th:id="${i.index}" class="room" onclick="selected(this)">
 				<div th:with="member=${roomMap.get(room.chatReceiverId)}">
-					<img th:src="${member.profileSrc}">
-					<div th:text="${member.nickName}"></div>
-					<div th:text="${chatOrder[i.index].message}"></div>
-					<div th:text="${chatOrder[i.index].sendDate}"></div>
+					<div class="chatlist_rowWrap">
+						<img th:src="${member.profileSrc}">
+						<div class="chatlist_colWrap">
+							<div th:text="${member.nickName}"></div>
+							<div th:text="${chatOrder[i.index].message}"></div>
+							<div th:text="${chatOrder[i.index].sendDate}"></div>
+						</div>
+					</div>
 				</div>
             </div>
     </div>
 </table>
-
+</div>
+</div>  
 <script th:inline="javascript">
 	var room = /*[[${tempList}]]*/ [];
 	var roomMap =  /*[[${roomMap}]]*/ [];

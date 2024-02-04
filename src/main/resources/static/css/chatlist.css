@@ -1,0 +1,80 @@
+img{
+    width: 100px;
+    height: 100px;
+    border: 70%;
+}
+
+/* chatlist.css */
+
+body {
+    
+    margin: 0;
+    padding: 0;
+  
+}
+.wrapcontainer{
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    
+}
+.chatlistwrap{
+    margin-top: 5%;
+    width: 50%;
+    vertical-align:middle; 
+    display:inline-block;
+    min-width: 500px;
+    max-width: 820px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.room {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+
+.room:hover {
+    background-color: #f0f0f0;
+}
+
+.room img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.room div {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.chatlist_rowWrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.chatlist_colWrap{
+    display: flex;
+    flex-direction: column;
+    gap: .3em;
+}
+.chatlist_colWrap>div:nth-of-type(1){
+    font-weight: 600;
+}
+.chatlist_colWrap>div:nth-of-type(2){
+    color: #555;
+}
+.chatlist_colWrap>div:nth-of-type(3){
+    color: #777;
+    font-size: 13px;
+}
