@@ -20,6 +20,7 @@
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
+	<div class="wrapcontainer">
 	<div class="menu_Wrap">
 		<div class="typename" th:text="${typeName}"></div>
 		<hr>
@@ -58,7 +59,7 @@
 			<hr>
 		</div>
 	</div>
-	
+</div>	
 	<div id="pagination" class="pagination">
 	<!-- 맨 처음 페이지로 이동하는 버튼 -->
 	<!--

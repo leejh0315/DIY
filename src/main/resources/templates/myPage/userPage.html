@@ -24,6 +24,7 @@
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
+	<div class="wrapcontainer">
     <div class="mypage_Wrap">
     <h1>UserPage</h1>
     
@@ -69,7 +70,7 @@
 			<div class="post_cmp">
 				<div th:each="post,i : ${post}">
 					<a th:href="@{|/posts/${post.postCode}|}">
-						<div id="postComp">
+						
 							<div th:id="${i.index}"></div>
 							<div class="ctt_Wrap">
 								<div class="writerinfo_Wrap">
@@ -104,6 +105,32 @@
 					<hr>
 				</div>
 			</div>
+			<div id="pagination">
+				<!-- 맨 처음 페이지로 이동하는 버튼 -->
+				<span th:if="${pageVo.startPage > 1}">
+					<a th:href="@{'/userPage/' + user.id + '?page=1&type=' + ${type}}" th:text="'처음&emsp;'"></a>
+				</span>
+			
+				<!-- 이전 블록으로 이동하는 버튼 -->
+				<span th:if="${pageVo.isPrev == true}">
+					<a th:href="@{'/userPage/' + user.id + '?page=' + (pageVo.startPage - 1) + '&type=' + ${type}}" th:text="'이전'"></a>
+				</span>
+			
+				<!-- 시퀀스 보여주는 값을 변경. -->
+				<span th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
+					<a class="div2" th:href="@{'/userPage/'+ ${user.id} +'?page='+${pageNum}+'&type='+${type}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
+				</span>
+				
+				<!-- 다음 블록으로 이동하는 버튼 -->
+				<span th:if="${pageVo.isNext == true}">
+				<a th:href="@{'/userPage/${user.id}?page='+|${pageVo.endPage + 1}|+'&type='+${type}}" th:text="'다음'"></a>
+				</span>
+				
+				<!-- 맨 뒷 페이지로 이동하는 버튼 -->
+			   <!-- <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
+					<a th:href="@{'/userPage/${user.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
+				</span> -->
+			</div>
 		</div>
 		
 
@@ -111,14 +138,17 @@
 			<form>
 				<div class="chooseType">
 					<p>종류</p>
+					<div>
 					<label onclick="checked(this, 0)"><input type="checkbox" name="chooseType" value="all" class="checkType all">전체</label>
 					<label onclick="checked(this, 1)"><input type="checkbox" name="chooseType" value="book" class="checkType book">책</label>
 					<label onclick="checked(this, 2)"><input type="checkbox" name="chooseType" value="movie" class="checkType movie">영화</label>
 					<label onclick="checked(this, 3)"><input type="checkbox" name="chooseType" value="concert" class="checkType concert">공연</label>
+					</div>
 				</div>
 				</form>
 			
-			<div id='calendar-container' class="calendar-container">    
+			<div id='calendar-container' class="calendar-container">  
+				<p>내 캘린더</p> 
 				<div id='calendar'></div>  
 			</div>
 		</div>
@@ -131,31 +161,7 @@
 	
 	
 	
-<div id="pagination">
-	<!-- 맨 처음 페이지로 이동하는 버튼 -->
-    <span th:if="${pageVo.startPage > 1}">
-        <a th:href="@{'/userPage/' + user.id + '?page=1&type=' + ${type}}" th:text="'처음&emsp;'"></a>
-    </span>
 
-	<!-- 이전 블록으로 이동하는 버튼 -->
-    <span th:if="${pageVo.isPrev == true}">
-    	<a th:href="@{'/userPage/' + user.id + '?page=' + (pageVo.startPage - 1) + '&type=' + ${type}}" th:text="'이전'"></a>
-    </span>
-
-    <!-- 시퀀스 보여주는 값을 변경. -->
-    <span th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
-        <a class="div2" th:href="@{'/userPage/'+ ${user.id} +'?page='+${pageNum}+'&type='+${type}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
-    </span>
-	
-    <!-- 다음 블록으로 이동하는 버튼 -->
-    <span th:if="${pageVo.isNext == true}">
-	<a th:href="@{'/userPage/${user.id}?page='+|${pageVo.endPage + 1}|+'&type='+${type}}" th:text="'다음'"></a>
-    </span>
-	
-    <!-- 맨 뒷 페이지로 이동하는 버튼 -->
-   <!-- <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
-		<a th:href="@{'/userPage/${user.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
-    </span> -->
 </div>
 </div>
 <script th:inline="javascript">
@@ -217,7 +223,7 @@
 		$(function(){      // calendar element 취득      
 		var calendarEl = $('#calendar')[0];      // full-calendar 생성하기      
 		var calendar = new FullCalendar.Calendar(calendarEl, {        
-			height: '1000px',// calendar 높이 설정
+			height: '700px',// calendar 높이 설정
 			         
 			expandRows: false, // 화면에 맞게 높이 재설정        
 			slotMinTime: '08:00', // Day 캘린더에서 시작 시간        
@@ -282,11 +288,13 @@
     // Set the content of the calendar event to be the container
     eventInfo.el.innerHTML = '';
     eventInfo.el.appendChild(container);
+	eventInfo.el.style.backgroundColor="transparent";
+	eventInfo.el.style.border="none";
 }
     
     
 	let cal = document.getElementById("calendar");
- 	cal.style.width = '30%';			
+	cal.style.width = '100%';			
 
 	
 	let types = document.querySelectorAll(".checkType");

@@ -1,10 +1,21 @@
+.wrapcontainer{
+    padding: 3% 0;
+    height: 150%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .menu_Wrap {
-    position: relative;
+    width: 70%;
+    vertical-align:middle; 
+    display:inline-block;
+    min-width: 650px;
+    /* position: relative;
     left: 20%;
     margin-left: -150px;
     width: 77%;
     top: 50%;
-    margin-top: 60px;
+    margin-top: 60px; */
 }
 .typename{
     font-size: 30px;

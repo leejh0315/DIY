@@ -18,7 +18,7 @@
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
-	
+	<div class="wrapcontainer">
 	<div class="home_Wrap">
 	<div class="banner">
 		<img th:src="@{/img/bannerimg_900x200.png}" alt="" usemap="banner-map">
@@ -108,6 +108,7 @@
 
 	</div>
 	</div>
+</div>
 </div>
 	<!-- <footer class="footer">
 
