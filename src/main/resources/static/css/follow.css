@@ -1,3 +1,15 @@
+.wrapcontainer{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+.followlistWrap{
+    min-width: 600px;
+    padding: 1em 0 3em 0;
+    width: 50%;
+    vertical-align:middle; 
+    display:inline-block;
+}
 .profileimg_div {
     width: 4em;
     height: 4em;
@@ -10,4 +22,56 @@
     overflow: hidden;
     border-radius: 70px;
 }
+.followList{
+    min-width: 600px;
+    padding: 1em 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+.list_rowwrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+}
+.btn_rowwrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+}
+.list_colwrap >div:nth-of-type(1){
+    font-weight: 500;}
+.list_colwrap >div:nth-of-type(2){
+    font-size: 14px;
+    height: 16px;
+    color: #555;}
+.list_colwrap{
+    display: flex;
+    flex-direction: column;
+    gap: .3em;
+}
 
+.btn_rowwrap>div:nth-of-type(1){
+    border: solid 1px #9A9E7B;
+    background-color: #9A9E7B;
+    color: white;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 14px;
+}
+.btn_rowwrap>div:nth-of-type(1)>a{
+
+    color: white;
+   
+}
+.followbtn {
+    border: 1px solid #9A9E7B;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 14px;
+    background-color: white;
+}
