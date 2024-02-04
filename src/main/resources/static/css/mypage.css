@@ -1,3 +1,6 @@
+h3{
+    display: inline-block;
+}
 .wrapcontainer{
     padding: 3% 0;
     height: 150%;
@@ -32,6 +35,13 @@
     font-size: 14px;
     font-weight: 600;
 }
+.recordchart .rec_title{
+    margin: 10px 15px;
+}
+.recordchart .rec_title > p{
+    margin: 0;
+}
+
 canvas{
     margin: auto;
 }
@@ -44,9 +54,50 @@ canvas{
     display: flex;
     flex-direction: column;
 }
-.user_wrap > .userimg{
-    width: 70px;
-    height: 70px;
+.user_wrap button {
+    border: solid 1px #9A9E7B;
+    background-color: white;
+	cursor: pointer;
+	border-radius: 9px;
+	text-align: center;
+    margin: 0 5%;
+    padding: 2%;
+    font-weight: 700;
+	
+}
+.fa-gear{
+    float: right;
+    padding: .5em .6em 0 0;
+    color: #9A9E7B;
+}
+
+.userimg_colwrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5em;
+}
+.userimg_colwrap>.userid{
+    font-weight: 600;
+}
+.userwrap_span{
+    height: 24px;
+}
+.userimg_colwrap>.userintro{
+    height: 16px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    width: 90%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+.userimg_colwrap > .userimg{
+    width: 90px;
+    height: 90px;
     overflow: hidden;
     border-radius: 70px;
 }
@@ -54,12 +105,20 @@ canvas{
     width: 100%;
     height: 100%;
 }
+
 .followinfo{
+    font-size: 15px;
+    padding: .5em 0;
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
+    justify-content: space-around;
 }
-
+.followinfo div{
+    font-weight: 700;
+    text-align: center;
+}
 .mid_Wrap{
     width: 100%;
     display: flex;
@@ -159,6 +218,7 @@ canvas{
 }
 
 .thumb_Wrap{
+    max-width: 90px;
     min-width: 90px;
 }
 .thumb_Wrap > img {

@@ -49,7 +49,7 @@
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 <div class="wrapcontainer">
 	<div class="mypage_Wrap">
-	<h1>MyPage</h1>
+	<h1>나의 페이지</h1>
 	
 	    <div class="top_wrap">
         <div class="recordchart">
@@ -70,11 +70,13 @@
             <a th:href="@{|/myPage/update/${memberVo.id}|}">
             <i class="fa-solid fa-gear"></i>
             </a>
+			<div class="userimg_colwrap">
             <div class="userimg">
                 <img th:src="${memberVo.profileSrc}" alt="">
             </div>
             <div class="userid" th:text="*{memberVo.nickName}"></div>
             <div class="userintro" th:text="*{memberVo.memberIntro}"></div>
+			</div>
             <div class="followinfo">
 				<a th:href="@{|/followee/${memberVo.id}|}">
 				팔로잉<div class="following" id="following" th:text="${following}"></div>

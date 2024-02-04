@@ -7,6 +7,7 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/myPage.css}">
 
@@ -15,7 +16,6 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
 </head>
 <body>
     <th:block th:if="${member == null}">
@@ -26,28 +26,32 @@
 	</th:block>
 	<div class="wrapcontainer">
     <div class="mypage_Wrap">
-    <h1>UserPage</h1>
+    <h3 th:text="*{user.nickName}"></h3> <h3>님의 페이지</h3>
     
     <div class="top_wrap">
         <div class="recordchart">
-            <p>나의 기록 통계</p>
+			<div class="rec_title">
+           	 	<p th:text="*{user.nickName}"></p><p>님의 기록 통계</p>	
+			</div>
             <canvas id="pie-chart" width="200" height="200"></canvas>
+			
         </div>
         <div class="recordchart">
             <p>월별 기록 통계</p>
             <canvas id="bar-chart" width="200" height="200"></canvas>
         </div>
+		<!--유저 -->
         <div class="user_wrap">
-			
 			<input type="hidden" th:value="${user.id}" id="userId">
 			<input type="hidden" th:value="${type}" id="thisType">
-		
-			
-            <div class="userimg">
-                <img th:src="${user.profileSrc}" alt="">
-            </div>
-            <div class="userid" th:text="*{user.nickName}"></div>
-            <div class="userintro" th:text="*{user.memberIntro}"></div>
+			<span class="userwrap_span"></span>
+			<div class="userimg_colwrap">
+				<div class="userimg">
+					<img th:src="${user.profileSrc}" alt="">
+				</div>
+				<div class="userid" th:text="*{user.nickName}"></div>
+				<div class="userintro" th:text="*{user.memberIntro}"></div>
+			</div>
             <div class="followinfo">
                 <input type="hidden" th:value="${followingcheck}" id="followingcheck">
                 <a th:href="@{|/followee/${user.id}|}">
@@ -57,18 +61,20 @@
                     <a th:href="@{|/follower/${user.id}|}">
                     팔로워<div class="follower" id="follower" th:text="${follower}"></div>
                     </a>
-            </div>
-            
+				</div>
             <button id="followbtn">
             </button>
-        </div>
+        
+		<!--  -->
     </div>
+	</div>
 
 	<div class="mid_Wrap">
 
 		<div class="left_Wrap">
 			<div class="post_cmp">
 				<div th:each="post,i : ${post}">
+					<hr>
 					<a th:href="@{|/posts/${post.postCode}|}">
 						
 							<div th:id="${i.index}"></div>
@@ -102,7 +108,7 @@
 							</div>
 						</div>
 					</a>
-					<hr>
+					
 				</div>
 			</div>
 			<div id="pagination">
@@ -148,7 +154,6 @@
 				</form>
 			
 			<div id='calendar-container' class="calendar-container">  
-				<p>내 캘린더</p> 
 				<div id='calendar'></div>  
 			</div>
 		</div>
@@ -156,7 +161,7 @@
 	</div>
 
     
-	
+	</div>
 	
 	
 	
