@@ -1,0 +1,90 @@
+/* main.css 또는 별도의 chat.css 파일에 추가 */
+
+body {
+    margin: 0;
+    padding: 0;
+}
+.wrapcontainer{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.chat_wrap{
+    min-width: 600px;
+    margin: 1em 0 2em 0;
+    padding: 1em ;
+    width: 30%;
+    vertical-align:middle; 
+    display:inline-block;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    
+}
+
+.myMessage, .yourMessage {
+    width: fit-content;
+    max-width: 80%; /* 50%에서 70%로 변경 */
+    min-width: 20%;
+    word-wrap: break-word;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.myMessage {
+    
+    background-color: #9A9E7B;
+    color: white;
+    margin-left: auto;
+}
+
+.yourMessage {
+    background-color: #ddd;
+    color: black;
+    align-self: flex-start;
+}
+/* 폰트 크기 조절 및 메시지 내용에 비해 덜 눈에 띄게 */
+.myMessage div:nth-of-type(2), .yourMessage div:nth-of-type(2){
+    font-size: 0.8em; /* 폰트 크기 조절 */
+    margin-top: 5px;
+    
+}
+.msgArea {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    display: flex;
+}
+.msgArea>input{
+    flex-grow: 1;
+}
+.msgArea>button{
+    min-width: 50px;
+}
+
+.content {
+    width: 60%;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.sendBtn {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.quit {
+    padding: 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

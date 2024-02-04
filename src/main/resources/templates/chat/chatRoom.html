@@ -6,6 +6,7 @@
 <style>
 	.myMessage{
 		margin-left: 300px;
+        
 	}
 	.yourMessage{
 		margin-left: 10px;
@@ -14,28 +15,38 @@
 </style>
 <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/chatroom.css}">
+
 </head>
 <body>
 	<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 
-<button type="button" value="방나가기" class="quit" onclick="quit()">방 나가기 </button>
-<div>
-    <span>메세지</span>
+
+<div class="wrapcontainer">
+<div class="chat_wrap">
+    <button type="button" value="방나가기" class="quit" onclick="quit()">방 나가기 </button>
+    <hr>
     <div th:each="message : ${message}">
 		<th:block th:if="${member.id == message.sender}">
-			<div th:text="${message.message}"  class="myMessage"></div>
-			<div th:text="${message.sendDate}"  class="myMessage"></div>
+            <div class="myMessage">
+                <div th:text="${message.message}" ></div>
+                <div th:text="${message.sendDate}"></div>
+            </div>
 		</th:block>
 		<th:block th:if="${member.id != message.sender}" >
-			<div  th:text="${message.message}" class="yourMessage"></div>
-			<div th:text="${message.sendDate}" class="yourMessage"></div>
+            <div class="yourMessage">
+			    <div  th:text="${message.message}" ></div>
+			    <div th:text="${message.sendDate}"></div>
+            </div>
 		</th:block>
 		
 	</div>
     
-    <div class="msgArea"></div>
-    <input type="text" placeholder="보낼 메세지를 입력하세요." class="content">
-<button type="button" value="전송" class="sendBtn" onclick="sendMsg()">전송</button>
+    <div class="msgArea">
+        <input type="text" placeholder="보낼 메세지를 입력하세요." class="content">
+        <button type="button" value="전송" class="sendBtn" onclick="sendMsg()">전송</button>
+    </div>
+</div>
 </div>
 </body>
 
