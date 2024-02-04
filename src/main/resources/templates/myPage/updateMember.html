@@ -9,72 +9,87 @@
 <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/updatemember.css}">
+
 <style>
-	img{
-		width: 100px;
-		height: 100px;
-	}
+	
 </style>
 </head>
 <body>
-	<h1>updateMember</h1>
 	
-	<i onclick="deleteSrc()" class="fa-solid fa-trash"></i>
-	
-	<div id="newProfile">
-		<img id="profileSrcImg" th:src="${member.profileSrc}">
-	</div>
-	
-	<form method="post" action="/myPage/update/" enctype="multipart/form-data">
-	    <input type="file" name="files" multiple="multiple" id="profileSrc"/>
-	    <input th:field="*{member.profileSrc}" id="profilePath" type="hidden">
-	    
-	    
-	    <label>닉네임<input th:field="*{member.nickName}"></label>
-	    <label>한줄소개<input th:field="*{member.memberIntro}"></label>
-	     
-	    <button type="submit" id="submit">전송</button>
-	</form>
-	<br>
-	<a th:href="@{|/directlyUpdatepassword/${member.id}|}">
-		<p>비밀번호 변경하기</p>
-	</a>
+	<th:block th:if="${member == null}">
+		<div th:replace="main/header :: headFrag(${none})"></div>
+	</th:block>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+	<div class="wrapcontainer">
+		<div class="updateMemberWrap">
+			<h3>회원정보 변경</h3>
 
+			<div class="update_colwrap">
+			<div>
+				<div id="newProfile">
+					<img id="profileSrcImg" th:src="${member.profileSrc}">
+				</div>
+				<div class="profile_delWrap">
+					<p>프로필 이미지 삭제</p>
+					<i onclick="deleteSrc()" class="fa-solid fa-trash"></i>
+				</div>
+			</div>
+			<form method="post" action="/myPage/update/" enctype="multipart/form-data">
+				<input type="file" name="files" multiple="multiple" id="profileSrc"/>
+				<input th:field="*{member.profileSrc}" id="profilePath" type="hidden">
+				
+				<div class="info_colwrap">
+					<label>닉네임<input class="nick" th:field="*{member.nickName}"></label>
+					<label>한줄소개<input class="intro" th:field="*{member.memberIntro}"></label>
+				</div>
+				<button type="submit" id="submit">변경하기</button>
+			</form>
+			<a th:href="@{|/directlyUpdatepassword/${member.id}|}">
+				<p>비밀번호 변경하기</p>
+			</a>
+		</div>
+		
+		</div>
+	</div>
 	<script>
-	$(document).ready(function() {
-		
-		let profileSrc = document.getElementById("profileSrc");
-		let newProfile = document.getElementById("newProfile");	
-		let profilePath = document.getElementById("profilePath");
-		let profileSrcImg = document.getElementById("profileSrcImg");
-		
-		
-		profileSrc.addEventListener("change", (e)=>{
-			e.preventDefault();
-			
-			let image = e.target.files[0];
-			data = new FormData();
-			data.append('file', image);
-			 $.ajax({
-	            data: data,
-	            type: 'POST',
-	            url: '/myPage/profileImage',
-	            contentType: false,
-	            enctype: 'multipart/form-data',
-	            processData: false,
-	            success: function (imageData) {
-					console.log(imageData.src);
-					newProfile.innerHTML = "<img src='"+imageData.src+"'>";
-					profilePath.value = imageData.src;
-	        
-            },
-        })
+		$(document).ready(function() {
+			let profileSrc = document.getElementById("profileSrc");
+			let newProfile = document.getElementById("newProfile");
+			let profilePath = document.getElementById("profilePath");
+			let profileSrcImg = document.getElementById("profileSrcImg");
+	
+			profileSrc.addEventListener("change", (e) => {
+				e.preventDefault();
+	
+				let image = e.target.files[0];
+				data = new FormData();
+				data.append('file', image);
+				$.ajax({
+					data: data,
+					type: 'POST',
+					url: '/myPage/profileImage',
+					contentType: false,
+					enctype: 'multipart/form-data',
+					processData: false,
+					success: function (imageData) {
+						console.log(imageData.src);
+						newProfile.innerHTML = "<img src='" + imageData.src + "'>";
+						profilePath.value = imageData.src;
+					},
+				});
+			});
 		});
-		function deleteSrc(){
-			profilePath.value = "/img/defalut_profileimg.jpg";
-			profileSrcImg.src = "/img/defalut_profileimg.jpg";
+	
+		// deleteSrc 함수를 전역 범위에서 정의
+		function deleteSrc() {
+			let profilePath = document.getElementById("profilePath");
+			let profileSrcImg = document.getElementById("profileSrcImg");
+			profilePath.value = "/img/default_profileimg.jpg";
+			profileSrcImg.src = "/img/default_profileimg.jpg";
 		}
-});
 	</script>
 			<script th:src="@{/js/nav.js}"></script>
 </body>
