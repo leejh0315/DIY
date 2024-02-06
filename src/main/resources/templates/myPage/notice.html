@@ -27,6 +27,7 @@
 	<div th:each="noticeList:${noticeList}" id="noticelist" class="noticelist">
 		<th:block th:if="${#lists.isEmpty(noticeList)}">
 		    <!-- '알림이 없습니다' 라는 문구를 표시할 내용 -->
+			<p>새로운 알림이 없습니다.</p>    
 		</th:block>
 
 

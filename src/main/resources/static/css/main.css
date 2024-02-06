@@ -65,8 +65,10 @@ nav{
     color: white;
 
 }
-
-/* #notice::before {
+#notice {
+   height: fit-content;
+}
+/* :before {
     content: 'N';
 }
 
