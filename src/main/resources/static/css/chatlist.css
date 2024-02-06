@@ -13,13 +13,13 @@ body {
   
 }
 .wrapcontainer{
-    height: 85vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     
 }
 .chatlistwrap{
-    margin-top: 5%;
+    margin-top: 3%;
     width: 50%;
     vertical-align:middle; 
     display:inline-block;
