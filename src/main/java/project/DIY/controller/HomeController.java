@@ -27,6 +27,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
 import project.DIY.domain.Notice;
+import project.DIY.domain.PasswordHistory;
 import project.DIY.domain.Post;
 import project.DIY.form.JoinForm;
 import project.DIY.form.LoginForm;
@@ -173,6 +174,11 @@ public class HomeController {
          member.setNickName(joinForm.getNickName());
          member.setCreateOn(currentDateTime);
          memberRepository.insertMember(member);
+         Member newMember = memberRepository.selectById(joinForm.getLoginId());
+         PasswordHistory pH = new PasswordHistory();
+         pH.setMemberId(newMember.getId());
+         pH.setPassword(newMember.getPassword());
+         memberRepository.insertPasswordHistory(pH);
          return "redirect:/" + "home/welcome";   
       }
    }
