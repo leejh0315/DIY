@@ -1,0 +1,14 @@
+.wrapcontainer{
+    padding: 3% 0;
+    height: 150%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.searchresult_Wrap {
+    width: 70%;
+    vertical-align:middle; 
+    display:inline-block;
+    min-width: 650px;
+
+}
