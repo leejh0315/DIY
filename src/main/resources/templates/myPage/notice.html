@@ -19,12 +19,18 @@
 	<h3>알림</h3>
 	
 	<div th:each="noticeList:${noticeList}" id="noticelist" class="noticelist">
+		<th:block th:if="${#lists.isEmpty(noticeList)}">
+		    <!-- '알림이 없습니다' 라는 문구를 표시할 내용 -->
+		</th:block>
+
+
+
+
 		<div th:with="doMember=${doMember[noticeList.doMemberId]}">
 			<div th:with="targetPost=${targetPost[noticeList.targetId]}"  >
-				
 				<th:block th:if="${noticeList.type != 'chat'}" >
 					<a th:href="@{|/posts/${noticeList.targetId}|}" class="flex-container">
-						<div class="profileimg">
+						<div class="notice_profileimg">
 							<img th:src="${doMember.profileSrc}">
 						</div>
 

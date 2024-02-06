@@ -55,7 +55,7 @@ body {
     background-color: #f0f0f0;
 }
 
-.profileimg {
+.notice_profileimg {
     width: 40px;
     height: 40px;
     overflow: hidden;
@@ -72,7 +72,7 @@ body {
     overflow: hidden;
     object-fit: cover;
 }
-.profileimg > img {
+.notice_profileimg > img {
     overflow: hidden;
     border-radius: 50%;
     width: 100%;
