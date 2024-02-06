@@ -27,6 +27,7 @@ a:hover, a:active {
 }
 
 nav{
+    min-width: 1045px;
     justify-content: center;
     display: flex;
     flex-direction: row;
@@ -37,12 +38,12 @@ nav{
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
-.notice, .chat {
+.noticealram, .chatalram {
     display: inline-block;
     position: relative;
 }
 
-.notice::before, .chat::before {
+.noticealram::before, .chatalram::before {
     content: "";
     position: absolute;
     width: 10px;
@@ -147,5 +148,5 @@ input:focus{
     font-size: 18px;
 }
 .nav_username{
-    font-weight: 700;
+    font-weight: 500;
 }

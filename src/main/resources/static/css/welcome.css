@@ -1,0 +1,38 @@
+canvas{z-index:10;pointer-events: none;position: fixed;top: 0;transform: scale(1.1);}
+	.canvasBtn{display: none;}
+
+	.wrapcontainer{
+    
+    padding: 10% 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	}	
+	.welcom_wrap{
+        text-align: center;
+		width: 50%;
+        min-width: 350px;
+		vertical-align:middle;
+		display:inline-block;
+	}
+
+    .welcom_wrap>div:nth-of-type(1){
+        display: inline-block;
+        width: 150px;
+    }
+    
+    .welcom_wrap>div:nth-of-type(1)>img{
+        width: 100%;
+    }
+
+    .welcom_wrap>button{
+        font-weight: 600;
+        width: 350px;
+        height: 45px;
+        background-color: #9A9E7B;
+        border-radius: 12px;
+        color: white;
+        border: none;
+        margin: 10px 0;
+        font-size: 16px;
+    }

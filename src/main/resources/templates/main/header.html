@@ -51,14 +51,14 @@
                     <div id="notice">
                         <i class="far fa-bell" style="color: #808465;"></i>
                         <th:block th:if="${noticeCnt != 0}">
-                            <p class="notice" th:value="${noticeCnt}"></p>
+                            <p class="noticealram" th:value="${noticeCnt}"></p>
                         </th:block>
                     </div>
 
                     <div id="chat">
 						<i class="far fa-comment-dots" style="color: #808465;"></i>
 						<th:block th:if="${chatCnt != 0}">
-							<p class="chat" th:value="${chatCnt}"></p>
+							<p class="chatalram" th:value="${chatCnt}"></p>
 						</th:block>
 					</div>
                 </div>
