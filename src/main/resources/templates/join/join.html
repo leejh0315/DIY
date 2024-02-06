@@ -57,16 +57,16 @@
       <div id="passwordBox">
          <p>비밀번호</p><br>
          <input id="password" type="password" name="password" th:value="${joinForm.password}" placeholder="비밀번호를 입력하세요"><br>
-         <div th:errors="*{password}"></div>
+         <div class="errorMsg" th:errors="*{password}"></div>
          <p>비밀번호 확인</p><br>
          <input id="passwordCheck" type="password" name="passwordCheck"  th:value="${joinForm.passwordCheck}" placeholder="비밀번호를 입력하세요">
-         <div th:errors="*{passwordCheck}"></div>
+         <div class="errorMsg" th:errors="*{passwordCheck}"></div>
       </div>
    
       <div id="nameBox">
          <p>닉네임</p><br>
          <input id="name" name="nickName"  th:value="${joinForm.nickName}" placeholder="사용할 닉네임을 입력해주세요">
-         <div th:errors="*{nickName}"></div>
+         <div class="errorMsg" th:errors="*{nickName}"></div>
       </div>
          
    <div th:if="${#fields.hasGlobalErrors()}">

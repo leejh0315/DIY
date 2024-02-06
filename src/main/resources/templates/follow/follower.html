@@ -17,34 +17,39 @@
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
-    <h1>팔로워</h1>
-
-    <div th:each="follower, i : ${followerList}" class="followList">
+<div class="wrapcontainer">
+<div class="followlistWrap">
+    <h3>팔로워</h3>
+    <hr>
+    <div th:each="follower, i : ${followerList}">
+        <div class="followList">
         <input type="hidden" th:value="${follower.id}" class="userid">
         <a th:href="@{|/userPage/${follower.id}|}">
+            <div class="list_rowwrap">
 	        <div class="profileimg_div">
 	            <img th:src="${follower.profileSrc}">
 	        </div>
-	        <div th:text="${follower.nickName}"></div>
-	        <div th:text="${follower.memberIntro}"></div>
+            <div class="list_colwrap">
+                <div th:text="${follower.nickName}"></div>
+                <div th:text="${follower.memberIntro}"></div>
+            </div>
+        </div>
 		</a>
-		
-		
-        <div th:with="chatValue=${chatMap[follower.id]}">
-			 <th:block th:if="${chatValue == null}">
-				 <a th:href="@{|/chat/createRoom/${follower.id}|}">
-					채팅					 
-				 </a>	
-			 </th:block>
-			 <th:block th:if="${chatValue != null}">
-				<a th:href="@{|/chat/chatRoom/${chatValue}|}">
-					채팅					 
-				 </a>	 
-			 </th:block>
-				 
-    	</div>
-		
-		
+		<th:block th:if="${follower.id != member.id}">
+		<div class="btn_rowwrap">
+            <div th:with="chatValue=${chatMap[follower.id]}">
+                <th:block th:if="${chatValue == null}">
+                    <a th:href="@{|/chat/createRoom/${follower.id}|}">
+                        <i class="far fa-comment-dots chat"></i> 채팅
+                    </a>
+                </th:block>
+                <th:block th:if="${chatValue != null}">
+                    <a th:href="@{|/chat/chatRoom/${chatValue}|}">
+                        <i class="far fa-comment-dots chat"></i> 채팅
+                    </a>
+                </th:block>
+            </div>
+            
         <!-- 각 follower에 대응하는 followCheck 값을 가져옴 -->
         <div th:with="status=${followCheckList[i.index]}">
             <!-- 조건에 따라 버튼을 생성 -->
@@ -53,6 +58,12 @@
             <!-- 2인 경우 본인, 버튼 숨김처리 -->
             <button th:if="${status eq 2}" type="button" class="followbtn" style="display: none;">본인</button>
         </div>
+    </div>
+    </th:block>
+    </div>
+    <hr>
+</div>
+    </div>
     </div>
 
     <script>

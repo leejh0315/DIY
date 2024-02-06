@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-<link rel="stylesheet" th:href="@{/css/main.css}">
-<link rel="stylesheet" th:href="@{/css/mypage.css}">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+	<link rel="stylesheet" th:href="@{/css/mypage.css}">
+	<link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
 
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
@@ -26,9 +27,7 @@
 			width: 100px;
 			height: 100px;
 		}
-		.chooseType{
-			border: solid 1px black;
-		}
+		
 		.fc-header-toolbar {    
 			padding-top: 1em;    
 			padding-left: 1em;    
@@ -48,9 +47,9 @@
 <body>
 
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
-
+<div class="wrapcontainer">
 	<div class="mypage_Wrap">
-	<h1>MyPage</h1>
+	<h3>나의 페이지</h3>
 	
 	    <div class="top_wrap">
         <div class="recordchart">
@@ -71,11 +70,13 @@
             <a th:href="@{|/myPage/update/${memberVo.id}|}">
             <i class="fa-solid fa-gear"></i>
             </a>
+			<div class="userimg_colwrap">
             <div class="userimg">
                 <img th:src="${memberVo.profileSrc}" alt="">
             </div>
             <div class="userid" th:text="*{memberVo.nickName}"></div>
             <div class="userintro" th:text="*{memberVo.memberIntro}"></div>
+			</div>
             <div class="followinfo">
 				<a th:href="@{|/followee/${memberVo.id}|}">
 				팔로잉<div class="following" id="following" th:text="${following}"></div>
@@ -93,9 +94,15 @@
     </div>
 
 
-	<a th:href="@{|/chat/chatList/${member.id}|}">채팅하러 가기</a>
+	<!-- <a th:href="@{|/chat/chatList/${member.id}|}">채팅하러 가기</a> -->
 	
-
+	<form>
+		<div class="chooseposts">
+			<div class="posttype 1" id="type_1" onclick="selected(this, 0)" value="myposts">내가 쓴 글</div>
+			<div class="posttype 2" id="type_2" onclick="selected(this, 1)" value="myfeed">나의 피드</div>
+			<div class="posttype 3" id="type_3" onclick="selected(this, 2)" value= "likedposts">좋아요 한 글</div>
+		</div>
+	</form>
 	<div class="mid_Wrap">
 
 		<div class="left_Wrap">
@@ -103,7 +110,6 @@
 				<div th:each="post,i : ${post}">
 					<hr>
 					<a th:href="@{|/posts/${post.postCode}|}">
-						<div id="postComp">
 							<div th:id="${i.index}"></div>
 							<div class="ctt_Wrap">
 								<div class="writerinfo_Wrap">
@@ -138,6 +144,33 @@
 					
 				</div>
 			</div>
+			<!-- 페이징 -->
+			<div id="pagination">
+				<!-- 맨 처음 페이지로 이동하는 버튼 -->
+				<span th:if="${pageVo.startPage > 1}">
+					<a th:href="@{'/myPage/' + memberVo.id + '?page=1&type=' + ${type} + '&pgroup=' + ${pgroup}}" th:text="'처음&emsp;'"></a>
+				</span>
+			
+				<!-- 이전 블록으로 이동하는 버튼 -->
+				<span th:if="${pageVo.isPrev == true}">
+					<a th:href="@{'/myPage/' + memberVo.id + '?page=' + (pageVo.startPage - 1) + '&type=' + ${type} + '&pgroup=' + ${pgroup}}" th:text="'이전'"></a>
+				</span>
+			
+				<!-- 시퀀스 보여주는 값을 변경. -->
+				<span th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
+					<a class="div2" th:href="@{'/myPage/'+ ${memberVo.id} +'?page='+${pageNum}+'&type='+${type} + '&pgroup=' + ${pgroup} }" th:text="|&emsp;${pageNum}&emsp;|"></a>
+				</span>
+				
+				<!-- 다음 블록으로 이동하는 버튼 -->
+				<span th:if="${pageVo.isNext == true}">
+				<a th:href="@{'/myPage/${memberVo.id}?page='+|${pageVo.endPage + 1}|+'&type='+${type} + '&pgroup=' + ${pgroup}}" th:text="'다음'"></a>
+				</span>
+				
+				<!-- 맨 뒷 페이지로 이동하는 버튼 -->
+			   <!-- <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
+					<a th:href="@{'/myPage/${member.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
+				</span> -->
+			</div>
 		</div>
 		
 
@@ -145,20 +178,16 @@
 			<form>
 				<div class="chooseType">
 					<p>종류</p>
+					<div>
 					<label onclick="checked(this, 0)"><input type="checkbox" name="chooseType" value="all" class="checkType all">전체</label>
 					<label onclick="checked(this, 1)"><input type="checkbox" name="chooseType" value="book" class="checkType book">책</label>
 					<label onclick="checked(this, 2)"><input type="checkbox" name="chooseType" value="movie" class="checkType movie">영화</label>
 					<label onclick="checked(this, 3)"><input type="checkbox" name="chooseType" value="concert" class="checkType concert">공연</label>
+					</div>
 				</div>
 				</form>
 
-			<form>
-				<div class="chooseposts">
-					<div class="posttype 1" id="type_1" onclick="selected(this, 0)" value="myposts">내가 쓴 글</div>
-					<div class="posttype 2" id="type_2" onclick="selected(this, 1)" value="myfeed">나의 피드</div>
-					<div class="posttype 3" id="type_3" onclick="selected(this, 2)" value= "likedposts">좋아요 한 글</div>
-				</div>
-			</form>
+			
 			
 			<div id='calendar-container' class="calendar-container">    
 				<div id='calendar'></div>  
@@ -173,33 +202,8 @@
 	
 </div>
 	
-<div id="pagination">
-	<!-- 맨 처음 페이지로 이동하는 버튼 -->
-    <span th:if="${pageVo.startPage > 1}">
-        <a th:href="@{'/myPage/' + memberVo.id + '?page=1&type=' + ${type} + '&pgroup=' + ${pgroup}}" th:text="'처음&emsp;'"></a>
-    </span>
 
-	<!-- 이전 블록으로 이동하는 버튼 -->
-    <span th:if="${pageVo.isPrev == true}">
-    	<a th:href="@{'/myPage/' + memberVo.id + '?page=' + (pageVo.startPage - 1) + '&type=' + ${type} + '&pgroup=' + ${pgroup}}" th:text="'이전'"></a>
-    </span>
-
-    <!-- 시퀀스 보여주는 값을 변경. -->
-    <span th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
-        <a class="div2" th:href="@{'/myPage/'+ ${memberVo.id} +'?page='+${pageNum}+'&type='+${type} + '&pgroup=' + ${pgroup} }" th:text="|&emsp;${pageNum}&emsp;|"></a>
-    </span>
-	
-    <!-- 다음 블록으로 이동하는 버튼 -->
-    <span th:if="${pageVo.isNext == true}">
-	<a th:href="@{'/myPage/${memberVo.id}?page='+|${pageVo.endPage + 1}|+'&type='+${type} + '&pgroup=' + ${pgroup}}" th:text="'다음'"></a>
-    </span>
-	
-    <!-- 맨 뒷 페이지로 이동하는 버튼 -->
-   <!-- <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
-		<a th:href="@{'/myPage/${member.id}?page='+${pageVo.totalPageCount}+'&type='+${type}}" th:text="|&emsp;끝|"></a>
-    </span> -->
 </div>
-
 <script th:inline="javascript">
     var myData = /*[[${posts}]]*/ [];
     var cntArr = /*[[${cntArr}]]*/ [];
@@ -232,7 +236,7 @@
 		$(function(){      // calendar element 취득      
 		var calendarEl = $('#calendar')[0];      // full-calendar 생성하기      
 		var calendar = new FullCalendar.Calendar(calendarEl, {        
-			height: '1000px',// calendar 높이 설정
+			height: '700px',// calendar 높이 설정
 			         
 			expandRows: false, // 화면에 맞게 높이 재설정        
 			slotMinTime: '08:00', // Day 캘린더에서 시작 시간        
@@ -297,11 +301,14 @@
     // Set the content of the calendar event to be the container
     eventInfo.el.innerHTML = '';
     eventInfo.el.appendChild(container);
+	eventInfo.el.style.backgroundColor="transparent";
+	eventInfo.el.style.border="none";
+
 }
     
     
 	let cal = document.getElementById("calendar");
- 	cal.style.width = '30%';			
+ 	cal.style.width = '100%';			
 
 	
 	let types = document.querySelectorAll(".checkType");

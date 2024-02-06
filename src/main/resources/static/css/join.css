@@ -69,9 +69,18 @@ button {
 .emailCheckMsg {
     width: 100%;
     text-align: left;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     padding:  0 5px 10px 5px;
+}
+
+.errorMsg {
+    width: 100%;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    padding:  0 5px 10px 5px;
+    color: #E52834;
 }
 .countBox{
     display: inline-block;

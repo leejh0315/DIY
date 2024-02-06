@@ -96,6 +96,7 @@ public class AboutPostController {
 	    model.addAttribute("member", member);
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("doMember", doMember);
+		System.out.println(noticeList);
 		return "myPage/notice";
 	}
 	

@@ -43,9 +43,11 @@
 				<p>선택한 작품은 수정할 수 없어요</p>
 				<div class="selectedWork" id="selectedWork">	
 					<img th:src="${post.targetThumbnail}" class='targetThumb'>
-					<div th:text="*{targetName}"></div>
-					<div th:text="*{targetSubName}"></div>
-					<div th:text="*{targetAuthor}"></div>
+					<div>
+						<div th:text="*{targetName}"></div>
+						<div th:text="*{targetSubName}"></div>
+						<div th:text="*{targetAuthor}"></div>
+					</div>
 				</div>
 			</div>
 		

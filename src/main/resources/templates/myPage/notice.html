@@ -7,48 +7,37 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
-<style>
-	.profileimg{
-        width: 40px;
-        height: 40px;
-        overflow: hidden;
-    }
-    .profileimg >img{
-		overflow: hidden;
-        border-radius: 70px;
-        width: 100%;
-        height: 100%;
-    }
-    .flex-container {
-    	display: flex;
-	}
+<link rel="stylesheet" th:href="@{/css/notice.css}">
 
-	
-</style>
 </head>
 <body>
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
-	<h1>NOTICE</h1>
-	<div th:each="noticeList:${noticeList}" id="mostPosted" class="mostPosted">
+	<div class="wrapcontainer">
+	<div class="noticeWrap">
+	<h3>알림</h3>
+	
+	<div th:each="noticeList:${noticeList}" id="noticelist" class="noticelist">
 		<div th:with="doMember=${doMember[noticeList.doMemberId]}">
 			<div th:with="targetPost=${targetPost[noticeList.targetId]}"  >
 				
 				<th:block th:if="${noticeList.type != 'chat'}" >
 					<a th:href="@{|/posts/${noticeList.targetId}|}" class="flex-container">
 						<div class="profileimg">
-						<img th:src="${doMember.profileSrc}">
-					</div>
-					<div th:text="${doMember.nickName}"></div>
+							<img th:src="${doMember.profileSrc}">
+						</div>
+
+					<div th:text="${doMember.nickName}" class="nickNamediv"></div>
 					<div>님이 </div>
-					<div th:text="'<'+${targetPost.title}+'>'"></div>
+					
+					<div class="title" th:text="'<'+${targetPost.title}+'>'"></div>
 					<div>게시글에</div>
 					<div th:text="${noticeList.type}"></div>
-					<div class="profileimg">
-						<img th:src="${targetPost.targetThumbnail}">
+					<div class="targetpostimg">
+						<img th:src="${targetPost.targetThumbnail}" >
 					</div>
-					<p th:text="${noticeList.diff}"></p>
+					<p th:text="${noticeList.diff}" class="daydiv"></p>
 				</th:block>
 				
 				
@@ -57,7 +46,9 @@
 			</div>
 	</div>	
 		
-		
+	</div>
+</div>
+</div>
 
 	
 <script>

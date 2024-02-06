@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.wrapcontainer{
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+
+}
+.noticeWrap{
+    margin-top: 3%;
+    width: 50%;
+    vertical-align:middle; 
+    display:inline-block;
+    min-width: 500px;
+    max-width: 820px;
+    /* margin: 1em 0 2em 0;
+    padding: 1em ;
+    width: 30%;
+    vertical-align:middle; 
+    display:inline-block; */
+
+}
+.noticelist{
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between; /* 우측 정렬을 위한 수정 */
+    min-width: 770px;
+
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    color: black;
+}
+
+.title{
+    max-width:300px ;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+.flex-container:hover {
+    background-color: #f0f0f0;
+}
+
+.profileimg {
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    margin-right: 10px;
+}
+.targetpostimg {
+    width: 40px;
+    height: 60px;
+    margin-left: auto; /* 자동으로 우측으로 이동 */
+}
+.targetpostimg > img{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    object-fit: cover;
+}
+.profileimg > img {
+    overflow: hidden;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+.flex-container > div {
+    margin-right: 5px;
+}
+
+.nickNamediv{
+    margin: 0  0 0 5px;
+    font-weight: 600;
+}
+.daydiv {
+    color: #555;
+    font-size: 14px;
+    margin-left: 10px; /* 좌측 마진 추가 */
+}
