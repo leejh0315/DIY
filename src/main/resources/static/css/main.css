@@ -4,6 +4,10 @@
     font-family: 'Pretendard';
 
 }
+nav > p{
+    margin: 0;
+    font-size: 16px;
+}
 body{
     margin: 0px;
 }
@@ -12,6 +16,7 @@ ul{
     margin: 0px;
 }
 li {
+    font-size: 16px;
     padding: 0px 40px;
 }
 ul li {
@@ -149,4 +154,5 @@ input:focus{
 }
 .nav_username{
     font-weight: 500;
+    font-size: 16px;
 }

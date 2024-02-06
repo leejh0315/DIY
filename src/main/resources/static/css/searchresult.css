@@ -12,3 +12,8 @@
     min-width: 650px;
 
 }
+.searchresult_Wrap>div:nth-of-type(1){
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 40px;
+}

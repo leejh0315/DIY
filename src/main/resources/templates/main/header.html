@@ -45,7 +45,7 @@
                         <img th:src="${member.profileSrc}"  alt="">
                     </div>
                     <a th:href="@{|/myPage/${member.id}|}">
-                        <p class="nav_username"th:text="${member.nickName}"></p>
+                        <div class="nav_username"th:text="${member.nickName}"></div>
                         <input type="hidden" id="memberId" th:value="${member.id}">
                     </a>
                     <div id="notice">

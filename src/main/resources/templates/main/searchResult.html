@@ -23,9 +23,8 @@
 	
 	<div class="wrapcontainer">
 		<div class="searchresult_Wrap">
-			<h1>검색</h1>
+			<div>검색</div>
 			
-
 			<h2 th:text="*{searchKeyword}"></h2><h2>검색결과</h2>
 			
 			<div th:each="post,i:${post}" id="postResult">
