@@ -140,7 +140,7 @@ public class ChatController {
 		int receiverId = id;
 			
     	String randomId = UUID.randomUUID().toString();
-    	
+    	System.out.println("채팅 create 진입");
         chatService.createRoomDB(randomId, name, receiverId, senderId);
         ChatRoom newRoom = chatService.findByRoomId(randomId);
         

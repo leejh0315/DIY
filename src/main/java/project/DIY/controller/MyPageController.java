@@ -71,11 +71,9 @@ public class MyPageController {	//myPage 관련
 		
 		Member memberVo = memberRepository.selectBymemberId(id);
 		aboutNotice(member, model);
-		/*
-		if(!id.equals(Integer.toString(member.getId()))) {
+		if(id != member.getId()) {
 			return "redirect:/home/home";
 		}
-		*/
 		
 
 //		팔로잉/팔로워 수	

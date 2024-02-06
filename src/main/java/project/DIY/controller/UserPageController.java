@@ -1,6 +1,7 @@
 package project.DIY.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,11 @@ public class UserPageController { //userPage관련
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
+		if(member.getId() == Integer.parseInt(id)) {
+			return "redirect:/myPage/"+id;
+		}
+		
 		aboutNotice(member, model);
 		int memberId = member.getId();
 		Member user = memberRepository.selectBymemberId(Integer.parseInt(id));
@@ -140,6 +146,16 @@ public class UserPageController { //userPage관련
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		
+		Notice notice = new Notice();
+		notice.setDoMemberId(member.getId());
+		notice.setTargetMemberId(followee);
+		notice.setType("followee");
+		notice.setTargetId(followee);
+		notice.setNoticeOn(currentDateTime);
+		
 		int memberId = member.getId();
 		System.out.println(memberId);
 		int cnt = followRepository.followCheck(memberId, followee);
@@ -147,10 +163,12 @@ public class UserPageController { //userPage관련
 		if (cnt == 0) {
 			//팔로잉중 아니면 팔로우
 			followRepository.insertFollow(memberId, followee);
+			aboutPostRepository.insertNotice(notice);
 			return "1";
 		} else {
 			//이미 팔로잉중이면 언팔로우
 			followRepository.unfollow(memberId, followee);
+			aboutPostRepository.deleteNoticeLike(notice);
 			return "0";
 		}
 	}
