@@ -104,8 +104,17 @@
 		</div>
 	</form>
 	<div class="mid_Wrap">
-
+		
 		<div class="left_Wrap">
+			
+			<th:block th:if="${size} == 0">
+				<div class="post_cmp">
+					게시글이 존재하지 않습니다.
+				</div>
+			</th:block>
+			
+			
+			
 			<div class="post_cmp">
 				<div th:each="post,i : ${post}">
 					<hr>
