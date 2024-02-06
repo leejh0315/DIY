@@ -7,6 +7,8 @@
 <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/searchresult.css}">
+
 <style>
 	
 </style>
@@ -19,23 +21,28 @@
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
 	
-	<h1>SearchResult</h1>
-	
-	<h2 th:text="*{searchKeyword}"></h2><h2>검색결과</h2>
-	
-	
-	<div th:each="post,i:${post}" id="mostPosted">
-		<div id="postComp">
-			<div th:id="${i.index}"></div>
-			<img th:src="${post.targetThumbnail}">
-			<div th:text="${post.targetName}"></div>
-			<div th:text="${post.targetSubName}"></div>
-			<div th:text="${post.targetAuthor}"></div>
-			<div th:text="${post.starCount}"></div>
-			<div th:text="${memberNick}"></div>
-		</div>
-		<hr>
-		</div>
+	<div class="wrapcontainer">
+		<div class="searchresult_Wrap">
+			<div>검색</div>
+			
+			<h2 th:text="*{searchKeyword}"></h2><h2>검색결과</h2>
+			
+			<div th:each="post,i:${post}" id="postResult">
+				<div id="postComp">
+					<div th:id="${i.index}"></div>
+					<img th:src="${post.targetThumbnail}">
+					<div th:text="${post.targetName}"></div>
+					<div th:text="${post.targetSubName}"></div>
+					<div th:text="${post.targetAuthor}"></div>
+					<div th:text="${post.starCount}"></div>
+					<div th:text="${memberNick}"></div>
+				</div>
+				<hr>
+			</div>
+
+		
+	</div>
+</div>
 		<script th:src="@{/js/nav.js}"></script>
 </body>
 </html>

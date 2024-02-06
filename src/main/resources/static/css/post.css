@@ -1,8 +1,6 @@
 @import url("font.css");
 
 
-
-
 .title{
     font-weight: 800 ;
 } 
@@ -17,7 +15,9 @@
     height: 550px;
     background-color:rgb(248, 248, 248);
 }
-
+.searchModal>div:nth-of-type(1){
+    height: 100%;
+}
 .searchModal>div>div:nth-of-type(1){
     background-color:#9A9E7B ;
     padding: 15px 20px;
@@ -66,7 +66,7 @@
 
 #searchResult {
     margin: 0 50px 0 50px;
-    height: 45vh; 
+    height: 65%;
     overflow-y: auto;
 }
 
@@ -284,6 +284,7 @@ label{
         background-color: #9A9E7B;
         border-radius: 10px;
         border: none;
+        margin-bottom: 2%;
     }
 
     /* 모달창 css */

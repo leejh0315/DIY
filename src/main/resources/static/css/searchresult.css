@@ -1,0 +1,19 @@
+.wrapcontainer{
+    padding: 3% 0;
+    height: 150%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.searchresult_Wrap {
+    width: 70%;
+    vertical-align:middle; 
+    display:inline-block;
+    min-width: 650px;
+
+}
+.searchresult_Wrap>div:nth-of-type(1){
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
