@@ -42,39 +42,39 @@ nav{
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
+.alrmicon_wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+    padding-left: 1em;
+}
 
 .noticealram, .chatalram {
     display: inline-block;
     position: relative;
+    line-height: 1; /* 높이를 10px로 유지 */
+    font-size: 0;
+
 }
 
 .noticealram::before, .chatalram::before {
     content: "";
-    position: absolute;
+    z-index: 1;
+    position: absolute; /* 상대 위치로 변경 */
     width: 10px;
     height: 10px;
     background-color: #da5353;
     border-radius: 50%;
-    top: -5px;
-    right: -4px;
+    top: -17px;
+    right: -2px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 10px;
-    
-    color: white;
-
 }
 #notice {
    height: fit-content;
 }
-/* :before {
-    content: 'N';
-}
-
-#chat::before {
-    content: 'N';
-} */
 
 .logo{
     width: 80px;
@@ -115,7 +115,8 @@ input:focus{
     padding-left: 20px;
     display: flex;
     flex-direction: row;
-    width: 200px;
+    width: 220px;
+    min-width: 220px;
     height: 40px;
     align-items: center;
     gap: .5em;
@@ -152,7 +153,10 @@ input:focus{
     border: none;
 }
 .fa-comment-dots, .fa-bell{
-    font-size: 18px;
+    font-size: 16px;
+}
+.fa-sign-out-alt{
+    font-size: 14px;
 }
 .nav_username{
     font-weight: 500;
