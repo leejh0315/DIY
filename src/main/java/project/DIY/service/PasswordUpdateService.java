@@ -48,6 +48,7 @@ public class PasswordUpdateService {
 	    } else if (!passwordEncoder.matches(originPasswordCheck, member.getPassword())) {
 	        errors.rejectValue("originPassword", null, "비밀번호가 일치하지 않습니다.");
 	    }
+	    
 	    if (!StringUtils.hasText(passwordUpdateForm.getNewPassword())) {
 	        errors.rejectValue("newPassword", null, "새 비밀번호를 입력해주세요.");
 	    } else if (passwordUpdateForm.getNewPassword().length() < 8) {

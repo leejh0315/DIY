@@ -68,7 +68,6 @@ public class HomeController {
       Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
       
       aboutNotice(member, model);
-      
       LocalDate now = LocalDate.now();
       int monthValue = now.getMonthValue();
       LocalDate lastMonth = now.minusMonths(1);
