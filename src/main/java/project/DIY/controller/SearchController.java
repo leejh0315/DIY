@@ -47,7 +47,7 @@ public class SearchController {		//검색 관련 controller
             					  HttpServletRequest req,
             					  Model model) {
 		
-		HttpSession session = req.getSession(false);
+		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		aboutNotice(member, model);
 		PaginationVo pageVo = new PaginationVo(totalCount, page);

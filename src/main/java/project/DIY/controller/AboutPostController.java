@@ -98,6 +98,7 @@ public class AboutPostController {
 	         
 	         aboutPostRepository.updateNoticeView(1, id);
 	         if(!noticeList.get(i).getType().equals("chat")) {
+	        	 
 	        	 if(noticeList.get(i).getType().equals("reply")) {
 		        	 noticeList.get(i).setType("댓글을 작성하셨습니다.");
 		         }else if(noticeList.get(i).getType().equals("like")) {

@@ -23,30 +23,30 @@
 
 
 <div class="wrapcontainer">
-<div class="chat_wrap">
-    <button type="button" value="방나가기" class="quit" onclick="quit()">방 나가기 </button>
-    <hr>
-    <div th:each="message : ${message}">
-		<th:block th:if="${member.id == message.sender}">
-            <div class="myMessage">
-                <div th:text="${message.message}" ></div>
-                <div th:text="${message.sendDate}"></div>
-            </div>
-		</th:block>
-		<th:block th:if="${member.id != message.sender}" >
-            <div class="yourMessage">
-			    <div  th:text="${message.message}" ></div>
-			    <div th:text="${message.sendDate}"></div>
-            </div>
-		</th:block>
+	<div class="chat_wrap">
+    	<button type="button" value="방나가기" class="quit" onclick="quit()">방 나가기 </button>
+    	<hr>
+   		<div th:each="message : ${message}">
+			<th:block th:if="${member.id == message.sender}">
+	            <div class="myMessage">
+	                <div th:text="${message.message}" ></div>
+	                <div th:text="${message.sendDate}"></div>
+	            </div>
+			</th:block>
+			<th:block th:if="${member.id != message.sender}" >
+	            <div class="yourMessage">
+				    <div  th:text="${message.message}" ></div>
+				    <div th:text="${message.sendDate}"></div>
+	            </div>
+			</th:block>
 		
+		</div>
 	</div>
     
     <div class="msgArea">
         <input type="text" placeholder="보낼 메세지를 입력하세요." class="content">
         <button type="button" value="전송" class="sendBtn" onclick="sendMsg()">전송</button>
     </div>
-</div>
 </div>
 </body>
 
@@ -100,7 +100,7 @@
             if(jsonData.sender == member.id){
 				className = 'myMessage';
 			}
-            let msgArea = document.querySelector('.msgArea');
+            let msgArea = document.querySelector('.chat_wrap');
             let newMsg = document.createElement('div');
             newMsg.innerHTML += jsonData.message;
             newMsg.innerHTML += "<br>";

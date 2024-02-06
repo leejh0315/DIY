@@ -36,7 +36,16 @@
 		<div th:with="doMember=${doMember[noticeList.doMemberId]}">
 			<div th:with="targetPost=${targetPost[noticeList.targetId]}"  >
 				<th:block th:if="${noticeList.type != 'chat'}" >
-					<a th:href="@{|/posts/${noticeList.targetId}|}" class="flex-container">
+					
+					<th:block th:if="${noticeList.type != 'followee'}">
+						<a th:href="@{|/posts/${noticeList.targetId}|}" class="flex-container">
+					</th:block>
+					
+					<th:block th:if="${noticeList.type == 'followee'}">
+						<a th:href="@{|/userPage/${doMember.id}|}" class="flex-container">
+					</th:block>
+					
+					
 						<div class="notice_profileimg">
 							<img th:src="${doMember.profileSrc}">
 						</div>
@@ -44,12 +53,27 @@
 					<div th:text="${doMember.nickName}" class="nickNamediv"></div>
 					<div>님이 </div>
 					
-					<div class="title" th:text="'<'+${targetPost.title}+'>'"></div>
-					<div>게시글에</div>
-					<div th:text="${noticeList.type}"></div>
-					<div class="targetpostimg">
+					<th:block th:if="${noticeList.type != 'chat'}" >
+						<th:block th:if="${noticeList.type != 'followee'}">
+							<div class="title" th:text="'<'+${targetPost.title}+'>'"></div>
+								<div>게시글에</div>
+						</th:block>
+					</th:block>
+					
+					<th:block th:if="${noticeList.type == 'followee'}" >
+						<div>회원님을 팔로우 하였습니다.</div>
+					</th:block>
+					
+					<th:block th:if="${noticeList.type != 'followee'}" >
+						<div th:text="${noticeList.type}"></div>
+					</th:block>
+					
+					<th:block th:if="${noticeList.type != 'chat' && noticeList.type != 'followee'}" >
+						<div class="targetpostimg">
 						<img th:src="${targetPost.targetThumbnail}" >
 					</div>
+					</th:block>
+					
 					<p th:text="${noticeList.diff}" class="daydiv"></p>
 				</th:block>
 				
