@@ -36,8 +36,11 @@ public class AdminController {
 	
 	@GetMapping("/admin/reportPostManage")
 	public String getreportPostManagePage(Model model, HttpServletRequest req) {
-		HttpSession session = req.getSession();
+		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		if(!member.getLoginId().equals("admin")) {
+			return "redirect:/home/home";
+		}
 
 		model.addAttribute("member", member);
 		
@@ -67,7 +70,10 @@ public class AdminController {
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 //		member.getLoginId().equals("admin");
 		List<Post> allPosts = postReposiroty.selectAllpost();
-		
+		if(!member.getLoginId().equals("admin")) {
+			return "redirect:/home/home";
+		}
+
 		
 
 		model.addAttribute("member", member);
@@ -83,6 +89,9 @@ public class AdminController {
 	public String getuserManagePage(Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		if(!member.getLoginId().equals("admin")) {
+			return "redirect:/home/home";
+		}
 
 		model.addAttribute("member", member);
 		

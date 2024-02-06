@@ -97,14 +97,14 @@ public class AboutPostController {
 	         noticeList.get(i).setDiff(diff);
 	         
 	         aboutPostRepository.updateNoticeView(1, id);
-	         
-	         if(noticeList.get(i).getType().equals("reply")) {
-	        	 noticeList.get(i).setType("댓글을 작성하셨습니다.");
-	         }else if(noticeList.get(i).getType().equals("like")) {
-	        	 noticeList.get(i).setType("좋아요를 눌렀습니다.");
-	         }else if(noticeList.get(i).getType().equals("chat")) {
-	        	 noticeList.get(i).setType("chat");
+	         if(!noticeList.get(i).getType().equals("chat")) {
+	        	 if(noticeList.get(i).getType().equals("reply")) {
+		        	 noticeList.get(i).setType("댓글을 작성하셨습니다.");
+		         }else if(noticeList.get(i).getType().equals("like")) {
+		        	 noticeList.get(i).setType("좋아요를 눌렀습니다.");
+		         }
 	         }
+	         
 	         
 	         if(!noticeList.get(i).getType().equals("chat")) {
 	        	 Post tempPost = postRepository.selectByPostCode(noticeList.get(i).getTargetId());
@@ -113,11 +113,13 @@ public class AboutPostController {
 	    }
 	    int chatCnt = 0;
 	    int noticeCnt = 0;
+	    int noticeListLen = noticeList.size();
 	    model.addAttribute("chatCnt", chatCnt);
         model.addAttribute("noticeCnt", noticeCnt); 
 	    model.addAttribute("targetPost", targetPost);
 	    model.addAttribute("member", member);
 		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("noticeListLen", noticeListLen);
 		model.addAttribute("doMember", doMember);
 		
 		return "myPage/notice";
