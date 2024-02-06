@@ -27,6 +27,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
 import project.DIY.domain.Notice;
+import project.DIY.domain.PasswordHistory;
 import project.DIY.domain.Post;
 import project.DIY.form.JoinForm;
 import project.DIY.form.LoginForm;
@@ -173,6 +174,11 @@ public class HomeController {
          member.setNickName(joinForm.getNickName());
          member.setCreateOn(currentDateTime);
          memberRepository.insertMember(member);
+         Member newMember = memberRepository.selectById(joinForm.getLoginId());
+         PasswordHistory pH = new PasswordHistory();
+         pH.setMemberId(newMember.getId());
+         pH.setPassword(newMember.getPassword());
+         memberRepository.insertPasswordHistory(pH);
          return "redirect:/" + "home/welcome";   
       }
    }
@@ -198,16 +204,14 @@ public class HomeController {
    public String doLogin(@ModelAttribute LoginForm loginForm,
          BindingResult bindingResult, HttpServletResponse resp , HttpServletRequest req, Model model) {
 	  
-	   if(redisUtils.getData(loginForm.getLoginId()).equals("LOCK")) {
+	   if(redisUtils.getData(loginForm.getLoginId()) != null &&
+			   redisUtils.getData(loginForm.getLoginId()).equals("LOCK")) {
 		   bindingResult.reject("loginForm", "현재 로그인 시도 횟수 초과로 계정이 임시 잠금 처리 되었습니다. 잠시 후에 다시 시도해주세요");
 	       return "login/login";
 	   }
 	   
       validateLoginForm(loginForm, bindingResult);
       Member memberVO = loginService.login(loginForm.getLoginId(), loginForm.getPassWord());
-      
-
-      
 
 
 	  int failCount = 0;

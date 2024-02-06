@@ -28,10 +28,10 @@ import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import project.DIY.domain.Follow;
 import project.DIY.domain.Member;
 import project.DIY.domain.Notice;
 import project.DIY.domain.PaginationVo;
+import project.DIY.domain.PasswordHistory;
 import project.DIY.domain.Post;
 import project.DIY.form.PasswordUpdateForm;
 import project.DIY.repository.AboutPostRepository;
@@ -323,8 +323,8 @@ public class MyPageController {	//myPage 관련
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
+		
 		String originPasswordCheck = passwordUpdateForm.getOriginPassword();
-
 		String type;
 		if(passwordUpdateForm.getType().equals("sixMonth")) {
 			type = "/myPage/updatePassword";
@@ -343,6 +343,10 @@ public class MyPageController {	//myPage 관련
 			 member.setPassword(passwordEncoder.encode(passwordUpdateForm.getNewPassword()));
 			 member.setPasswordUpdate(currentDateTime);
 			 memberRepository.updatePasswordById(member);
+			 PasswordHistory pH = new PasswordHistory();
+			 pH.setMemberId(member.getId());
+			 pH.setPassword(passwordEncoder.encode(passwordUpdateForm.getNewPassword()));
+			 memberRepository.insertPasswordHistory(pH);
 			 SecurityContextHolder.clearContext();
 			 session.invalidate();
 	         return "redirect:/" + "home/dologin";   

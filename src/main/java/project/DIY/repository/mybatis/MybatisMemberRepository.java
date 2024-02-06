@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
 import project.DIY.domain.Member;
+import project.DIY.domain.PasswordHistory;
 import project.DIY.repository.MemberRepository;
 
 @Repository
@@ -101,6 +102,22 @@ public class MybatisMemberRepository implements MemberRepository{
 	@Override
 	public void updatePasswordByLoginId(Member member) {
 		memberMapper.updatePasswordByLoginId(member);
+	}
+
+	@Override
+	public void insertPasswordHistory(PasswordHistory passwordHistory) {
+		memberMapper.insertPasswordHistory(passwordHistory);
+		
+	}
+
+	@Override
+	public int selectCountByMemberIdAndPassword(PasswordHistory passwordHistory) {
+		return memberMapper.selectCountByMemberIdAndPassword(passwordHistory);
+	}
+
+	@Override
+	public List<PasswordHistory> passwordHistoryByMemberId(int memberId) {
+		return memberMapper.passwordHistoryByMemberId(memberId);
 	}
 	
 }

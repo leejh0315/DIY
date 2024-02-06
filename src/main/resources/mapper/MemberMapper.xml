@@ -105,4 +105,31 @@
 		passwordFind = "Y"
 		where loginId = #{loginId};
 	</update>
+	
+	<insert id="insertPasswordHistory" parameterType="project.DIY.domain.PasswordHistory">
+		INSERT INTO diydb.passwordhistory
+		VALUES (
+			null,
+			#{memberId}, 
+			#{password}
+			);
+	</insert>
+	
+	<select id="selectCountByMemberIdAndPassword" parameterType="project.DIY.domain.PasswordHistory">
+		select count(*) 
+		from diydb.passwordhistory 
+		where
+		memberId = #{memberId}
+		and
+		password = #{password}
+	</select>
+	
+	<select id="passwordHistoryByMemberId" resultType="project.DIY.domain.PasswordHistory">
+		select *
+		from diydb.passwordhistory 
+		where
+		memberId = #{param1};
+		
+	</select>
+	
 </mapper>

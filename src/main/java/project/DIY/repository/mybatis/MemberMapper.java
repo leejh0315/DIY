@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import project.DIY.domain.Member;
+import project.DIY.domain.PasswordHistory;
 
 @Mapper
 public interface MemberMapper {
@@ -25,4 +26,7 @@ public interface MemberMapper {
 	public void updateUserStatusCode(HashMap<String, String> map); //회원 활성화 및 비활성화 업데이트
 	public Member selectBymemberId(int id); //id값에 해당하는 멤버 정보 가져옴
 	public void updatePasswordByLoginId(Member member); //해당 loginId 멤버 비밀번호 변경
+	public void insertPasswordHistory(PasswordHistory passwordHistory);
+	public int selectCountByMemberIdAndPassword(PasswordHistory passwordHistory);
+	public List<PasswordHistory> passwordHistoryByMemberId(int memberId);
 }
