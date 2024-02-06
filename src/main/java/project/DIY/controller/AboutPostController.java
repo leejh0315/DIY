@@ -32,6 +32,7 @@ import project.DIY.repository.ReplyRepository;
 import project.DIY.session.SessionVar;
 @Controller
 @RequiredArgsConstructor
+
 public class AboutPostController {
 	@Autowired
 	private final AboutPostRepository aboutPostRepository;
@@ -42,6 +43,21 @@ public class AboutPostController {
 	@Autowired
 	private final MemberRepository memberRepository;
 	
+	
+	public void aboutNotice(Member member, Model model) {
+	      if(member != null) {
+	    	  List<Notice> noticeList = aboutPostRepository.selectNoticeById(member.getId());
+	          int noticeCnt = 0;
+	          int chatCnt = 0;
+	          for(int i = 0 ; i < noticeList.size(); i++) {
+	        	  if(!noticeList.get(i).getType().equals("chat")&& noticeList.get(i).getView()==0) noticeCnt++;
+	        	  else if(noticeList.get(i).getType().equals("chat") && noticeList.get(i).getView()==0) chatCnt++;
+	          }
+	          model.addAttribute("chatCnt", chatCnt);
+	          model.addAttribute("noticeCnt", noticeCnt);  
+	      }
+	   
+ 	}
 	@GetMapping("/notice/{id}")
 	public String getNotice(Model model, HttpServletRequest req, @PathVariable("id") int id) {
 		HttpSession session = req.getSession();
@@ -76,6 +92,7 @@ public class AboutPostController {
 	        	 }
 	         }
 	         noticeList.get(i).setDiff(diff);
+	         
 	         aboutPostRepository.updateNoticeView(1, id);
 	         
 	         if(noticeList.get(i).getType().equals("reply")) {
@@ -92,12 +109,14 @@ public class AboutPostController {
 	         }
 	    }
 	    
+	    
 	    model.addAttribute("targetPost", targetPost);
 	    model.addAttribute("member", member);
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("doMember", doMember);
 		System.out.println(noticeList);
 		return "myPage/notice";
+		
 	}
 	
 	

@@ -13,66 +13,65 @@
 </head>
 <body>
 	<th:block th:fragment="headFrag(uuid)">
-	<nav>
-		<a href="/home/home">
-	        <div class="logo">
-            	<img th:src="@{/img/logo.png}" alt="">
-	        </div>
-	    </a>
+        <nav>
+            <a href="/home/home">
+                <div class="logo">
+                    <img th:src="@{/img/logo.png}" alt="">
+                </div>
+            </a>
 
-        <ul>
-            <li><a href="/menu/book">책</a></li>
-            <li><a href="/menu/movie">영화</a></li>
-            <li><a href="/menu/concert">공연</a></li>
-        </ul>
+            <ul>
+                <li><a href="/menu/book">책</a></li>
+                <li><a href="/menu/movie">영화</a></li>
+                <li><a href="/menu/concert">공연</a></li>
+            </ul>
 
-			<div class="searchbox">
-		        <input id="searchKeyword" class="search" type="text" placeholder="Search" autocomplete="off" onclick="searchHistory()">
-		       <svg class="fa-search" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512" id="doSearch">
+            <div class="searchbox">
+                <input id="searchKeyword" class="search" type="text" placeholder="Search" autocomplete="off" onclick="searchHistory()">
+                <svg class="fa-search" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512" id="doSearch">
                     <path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6 .1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
                 </svg>
-           </div>
+            </div>
 
-        <th:block th:if="${uuid == none}"> 
-			<a href="/home/dologin">Login</a>
-			<input id="notice" type="hidden">
-			<input id="chat" type="hidden">
-		</th:block>
-		
-		<th:block th:if="${uuid != none}"> 
-	        
-		        <div class="userinfo">
-			            <div class="profileimg">
-		    	            <img th:src="${member.profileSrc}"  alt="">
-		        	    </div>
-		        	    <a th:href="@{|/myPage/${member.id}|}">
-		            		<p th:text="${member.nickName}"></p>
-		            		<input type="hidden" id="memberId" th:value="${member.id}">
-		            		
-						</a>
-						<div id="notice">
-							<i class="far fa-bell notice"></i>
-							<th:block th:if="${noticeCnt != 0}">
-								<p class="notice" th:text="${noticeCnt}"></p>
-							</th:block>
-						</div>
-						
-						<div id="chat">
-							<i class="far fa-comment-dots chat"></i>
-							<th:block th:if="${chatCnt != 0}">
-								<p class="chat" th:text="${chatCnt}"></p>
-							</th:block>
-						</div>
-	        	</div>
-	        	
-	        
-        <form th:action="@{/home/logout}" method="post">
-			<button type="submit">로그아웃</button>
-		</form>
-		</th:block>
-			
-    </nav>
-	</th:block>
+            <th:block th:if="${uuid == none}"> 
+                <a href="/home/dologin">Login</a>
+                <input id="notice" type="hidden">
+                <input id="chat" type="hidden">
+            </th:block>
 
+            <th:block th:if="${uuid != none}"> 
+                <div class="userinfo">
+                    <div class="profileimg">
+                        <img th:src="${member.profileSrc}"  alt="">
+                    </div>
+                    <a th:href="@{|/myPage/${member.id}|}">
+                        <p th:text="${member.nickName}"></p>
+                        <input type="hidden" id="memberId" th:value="${member.id}">
+                    </a>
+                    <div id="notice">
+                        <i class="far fa-bell" style="color: #808465;"></i>
+                        <th:block th:if="${noticeCnt != 0}">
+                            <p class="notice" th:text="${noticeCnt}"></p>
+                        </th:block>
+                    </div>
+
+                    <div id="chat">
+						<i class="far fa-comment-dots" style="color: #808465;"></i>
+						<th:block th:if="${chatCnt != 0}">
+							<p class="chat" th:text="${chatCnt}"></p>
+						</th:block>
+					</div>
+                </div>
+
+                <form th:action="@{/home/logout}" method="post">
+                    <button class="logoutbtn" type="submit"><i class="fas fa-sign-out-alt" style="color: #9A9E7B;"></i></button>
+                </form>
+            </th:block>
+        </nav>
+    </th:block>
+
+	<script>
+
+	</script>
 </body>
 </html>
