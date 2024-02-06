@@ -146,3 +146,6 @@ input:focus{
 .fa-comment-dots, .fa-bell{
     font-size: 18px;
 }
+.nav_username{
+    font-weight: 700;
+}

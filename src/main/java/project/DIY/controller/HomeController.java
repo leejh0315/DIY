@@ -197,49 +197,47 @@ public class HomeController {
    @PostMapping("/login")
    public String doLogin(@ModelAttribute LoginForm loginForm,
          BindingResult bindingResult, HttpServletResponse resp , HttpServletRequest req, Model model) {
-	  
-	   if(redisUtils.getData(loginForm.getLoginId()).equals("LOCK")) {
-		   bindingResult.reject("loginForm", "현재 로그인 시도 횟수 초과로 계정이 임시 잠금 처리 되었습니다. 잠시 후에 다시 시도해주세요");
-	       return "login/login";
-	   }
-	   
+     
+      if(redisUtils.getData(loginForm.getLoginId()) != null &&
+            redisUtils.getData(loginForm.getLoginId()).equals("LOCK")) {
+         bindingResult.reject("loginForm", "현재 로그인 시도 횟수 초과로 계정이 임시 잠금 처리 되었습니다. 잠시 후에 다시 시도해주세요");
+          return "login/login";
+      }
+      
       validateLoginForm(loginForm, bindingResult);
       Member memberVO = loginService.login(loginForm.getLoginId(), loginForm.getPassWord());
-      
-
-      
 
 
-	  int failCount = 0;
+     int failCount = 0;
       if(bindingResult.hasErrors()) {
-    	  model.addAttribute("loginForm", loginForm);
+         model.addAttribute("loginForm", loginForm);
          return "login/login";
       }
       if(memberVO == null) { //계정정보가 없거나, 비밀번호가 안맞거나 로그인 실패
-	     
-    	  if(redisUtils.getData(loginForm.getLoginId()) != null && !redisUtils.getData(loginForm.getLoginId()).equals("LOCK")) {
-	    	 failCount = Integer.parseInt(redisUtils.getData(loginForm.getLoginId()));
-	    	 System.out.println(failCount);
-	    	 redisUtils.setData(loginForm.getLoginId(), Integer.toString(failCount+1));
-	    	 
-    	  } 
-	      if(redisUtils.getData(loginForm.getLoginId()) != null &&
-	    		  redisUtils.getData(loginForm.getLoginId()).equals("5")){
-	     	 bindingResult.reject("loginForm","로그인 실패 5회입니다. 잠시 후에 다시 시도해주세요.");
-	     	 System.out.println("로그인 실패 5회입니다. 잠시 후에 다시 시도해주세요.");
-	     	 redisUtils.setDataExpire(loginForm.getLoginId(), "LOCK", 60*10L);//10분동안 잠금
-	      } 
-	      else if(redisUtils.getData(loginForm.getLoginId()) != null &&
-				  redisUtils.getData(loginForm.getLoginId()).equals("LOCK")) {
-	          bindingResult.reject("loginForm", "현재 로그인 시도 횟수 초과로 계정이 임시 잠금 처리 되었습니다. 잠시 후에 다시 시도해주세요");
-	          System.out.println("\"현재 로그인 시도 횟수 초과로 계정이 임시 잠금 처리 되었습니다. 잠시 후에 다시 시도해주세요\"");
-	          return "login/login";
-	      }
-	      else{
-	    	  
-	      bindingResult.reject("loginForm", "아이디 또는 비밀번호를 잘못 입력했습니다.");
-	      }
-	      return "login/login";
+        
+         if(redisUtils.getData(loginForm.getLoginId()) != null && !redisUtils.getData(loginForm.getLoginId()).equals("LOCK")) {
+           failCount = Integer.parseInt(redisUtils.getData(loginForm.getLoginId()));
+           System.out.println(failCount);
+           redisUtils.setData(loginForm.getLoginId(), Integer.toString(failCount+1));
+           
+         } 
+         if(redisUtils.getData(loginForm.getLoginId()) != null &&
+               redisUtils.getData(loginForm.getLoginId()).equals("5")){
+            bindingResult.reject("loginForm","로그인 실패 5회입니다. 잠시 후에 다시 시도해주세요.");
+            System.out.println("로그인 실패 5회입니다. 잠시 후에 다시 시도해주세요.");
+            redisUtils.setDataExpire(loginForm.getLoginId(), "LOCK", 60*10L);//10분동안 잠금
+         } 
+         else if(redisUtils.getData(loginForm.getLoginId()) != null &&
+              redisUtils.getData(loginForm.getLoginId()).equals("LOCK")) {
+             bindingResult.reject("loginForm", "현재 로그인 시도 횟수 초과로 계정이 임시 잠금 처리 되었습니다. 잠시 후에 다시 시도해주세요");
+             System.out.println("\"현재 로그인 시도 횟수 초과로 계정이 임시 잠금 처리 되었습니다. 잠시 후에 다시 시도해주세요\"");
+             return "login/login";
+         }
+         else{
+            
+         bindingResult.reject("loginForm", "아이디 또는 비밀번호를 잘못 입력했습니다.");
+         }
+         return "login/login";
       }
       if(memberVO.getStatusCode().equals("N")) { //탈퇴한 회원일때...
          bindingResult.reject("loginForm", "탈퇴한 회원입니다. 회원가입을 다시 진행해주세요.");
@@ -263,20 +261,20 @@ public class HomeController {
       List<Member> member = memberRepository.passwordUpdateSixMonth();
       System.out.println(member);
       for(int i = 0 ; i < member.size(); i++) {
-    	  if(memberVO.getLoginId().equals(member.get(i).getLoginId())) {
-	    	  if(member.get(i).getLoginId().equals(memberVO.getLoginId())) {
-	    		  return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
-	    	  }
-    	  }
+         if(memberVO.getLoginId().equals(member.get(i).getLoginId())) {
+            if(member.get(i).getLoginId().equals(memberVO.getLoginId())) {
+               return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
+            }
+         }
       }
       List<Member> allMember = memberRepository.selectAllUser();
       for(int i = 0 ; i<allMember.size(); i++) {
-    	  if(memberVO.getLoginId().equals(allMember.get(i).getLoginId())) {
-    		  if(allMember.get(i).getPasswordFind().equals("Y")) {
-        		  System.out.println("pw찾음");
-        		  return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
-        	  }
-    	  }
+         if(memberVO.getLoginId().equals(allMember.get(i).getLoginId())) {
+            if(allMember.get(i).getPasswordFind().equals("Y")) {
+                System.out.println("pw찾음");
+                return "redirect:/myPage/passwordUpdate/" + memberVO.getId();
+             }
+         }
       }
       return "redirect:/" + "home/home";
       
