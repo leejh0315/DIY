@@ -54,10 +54,13 @@ public class AboutPostController {
 	        	  else if(noticeList.get(i).getType().equals("chat") && noticeList.get(i).getView()==0) chatCnt++;
 	          }
 	          model.addAttribute("chatCnt", chatCnt);
-	          model.addAttribute("noticeCnt", noticeCnt);  
+	          model.addAttribute("noticeCnt", noticeCnt); 
+	          System.out.println(chatCnt);
+	          System.out.println(noticeCnt);
 	      }
 	   
  	}
+	
 	@GetMapping("/notice/{id}")
 	public String getNotice(Model model, HttpServletRequest req, @PathVariable("id") int id) {
 		HttpSession session = req.getSession();
@@ -108,13 +111,15 @@ public class AboutPostController {
 	        	 targetPost.put(noticeList.get(i).getTargetId(), tempPost);
 	         }
 	    }
-	    
-	    
+	    int chatCnt = 0;
+	    int noticeCnt = 0;
+	    model.addAttribute("chatCnt", chatCnt);
+        model.addAttribute("noticeCnt", noticeCnt); 
 	    model.addAttribute("targetPost", targetPost);
 	    model.addAttribute("member", member);
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("doMember", doMember);
-		System.out.println(noticeList);
+		
 		return "myPage/notice";
 		
 	}
