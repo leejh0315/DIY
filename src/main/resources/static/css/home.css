@@ -1,16 +1,16 @@
 .type{
 
     border: solid 1px #9A9E7B;
-    width: 45px;
+    width: 50px;
     cursor: pointer;
     border-radius: 15px;
     text-align: center;
-    padding: 4px 5px;
+    padding: 3px 5px;
 }
 
 .wrapcontainer{
     padding: 3% 0;
-    height: 150%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,7 +31,8 @@
     width: 55%;
     vertical-align:middle; 
     display:inline-block;
-    min-width: 650px;
+    min-width: 1045px;
+    height: 100%;
 }
 
 .mostPosted_Wrap{
@@ -154,15 +155,46 @@
     font-size: 16px;
 }
 
+.homebtm_wrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+    height: 50%;
+}
 
 .king_Wrap {
-    width: fit-content;
-    height: 10%;
+    /* width: fit-content; */
+    height: 100%;
     border: solid 1px #9A9E7B;
     border-radius: 15px;
     padding: 0 30px;
     margin: 20px 0;
     
+}
+#bestsellerWrap{
+    /* width: 100%;
+    background-color: #9A9E7B;
+    border-radius: 7px;
+    flex-grow: 1;
+    height: 100%; */
+    flex-grow: 1;
+    height: 100%;
+    
+    border-radius: 15px;
+    padding: 0 30px;
+    margin: 20px 0;
+}
+.bestsellerdiv{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.bestseller_thumb {
+    width: 85px;
+}
+.bestsellerWrap p {
+    margin: 10px 10px 10px 10px;
 }
 .king_Wrap p {
     margin: 10px 10px 10px 10px;
@@ -191,8 +223,8 @@
 }
 
 .rank.scd>.kingimgdiv, .rank.thd>.kingimgdiv {
-    width: 5em;
-    height: 5em;
+    width: 4em;
+    height: 4em;
 }
 .rank.scd, .rank.thd {
     margin-top: 30px;
@@ -202,8 +234,8 @@
     
 }
 .kingimgdiv{
-    width: 6em;
-    height: 6em;
+    width: 5em;
+    height: 5em;
 }
 .rank {
     display: flex;
@@ -217,3 +249,5 @@
     border-radius: 50%;
     object-fit: cover;
 }
+
+
