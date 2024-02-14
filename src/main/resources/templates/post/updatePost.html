@@ -32,7 +32,7 @@
     <form th:action="@{'/update/' + ${post.postCode}}" method="post" th:object="${post}" enctype="multipart/form-data">
 
 		<div class="post_topwrap">
-  			<div class="post_topleft">		
+  			<div class="post_topleft" style="width: 352px;">		
 				<p class="p1">게시글을 수정하는 페이지입니다.</p>
 				<p class="p2">수정할 내용을 입력하세요</p>
 				
@@ -64,13 +64,20 @@
 		</div>
 	</div>
 		<input id="stars" th:field="*{starCount}" value="" type="hidden">
-			
-		<label class="title_lb">제목<span></span>
-			<input class="posttitle" th:field="*{title}" placeholder="게시글 제목을 입력해주세요">
-		</label>
+		
+
+		<div class="titlearea">
+			<label class="title_lb">제목<span></span>
+				<input class="posttitle" th:field="*{title}" placeholder="게시글 제목을 입력해주세요">
+			</label>
+			<div class="error"  th:errors="*{title}"></div>
+		</div>
+		
 		<div class="content_wrap">
-		 <p>내용</p>
-		 
+			<div>
+				<p>내용</p>
+				<p class="error" th:errors="*{content}"></p>
+			</div> 
 		<textarea id="summernote" name="editordata"  th:utext="*{content}" th:field="*{content}"></textarea>
 		<button id="submitBtn" class="submitBtn"type="submit">업로드</button>
 		</div>
