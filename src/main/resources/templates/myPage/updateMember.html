@@ -48,6 +48,11 @@
 				</div>
 				<button type="submit" id="submit">변경하기</button>
 			</form>
+			
+			
+				<p onclick="doAsk()">문의하기</p>
+			
+			
 			<a th:href="@{|/directlyUpdatepassword/${member.id}|}">
 				<p>비밀번호 변경하기</p>
 			</a>
@@ -58,7 +63,12 @@
 		
 		</div>
 	</div>
-	<script>
+	<script th:inline="javascript">
+    var member = /*[[${member}]]*/ [];
+		function doAsk(){
+			window.location.href = "/chat/createRoom/" + member.id + "?name=admin";
+		}
+		
 		$(document).ready(function() {
 			let profileSrc = document.getElementById("profileSrc");
 			let newProfile = document.getElementById("newProfile");

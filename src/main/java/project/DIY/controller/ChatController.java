@@ -135,13 +135,16 @@ public class ChatController {
     	
     	HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		
 		int senderId = member.getId();
 		int receiverId = id;
-			
+		
+		if(name.equals("admin")) {
+			receiverId = 13;
+		}
+		
     	String randomId = UUID.randomUUID().toString();
     	System.out.println("채팅 create 진입");
-        chatService.createRoomDB(randomId, name, receiverId, senderId);
+        chatService.createRoomDB(randomId, "", receiverId, senderId);
         ChatRoom newRoom = chatService.findByRoomId(randomId);
         
         System.out.println(newRoom);
