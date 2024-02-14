@@ -180,21 +180,19 @@ public class PostController {
 	@PostMapping("/postdelete")
 	@ResponseBody
 	public String deletePostByPostId(@RequestParam(value = "previousPage") String previousPage
-			, @RequestParam(value = "postCode") String postCode,
+			, @RequestParam(value = "postCode") int postCode,
 			
 			
 			 HttpServletRequest req) {
 		System.out.println("접근");
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		/*
 		
 		postRepository.deletePost(postCode);
 		
 		aboutPostRepository.deletePostLikes(postCode);
 		aboutPostRepository.deleteReportPost(postCode);
 		replyRepository.deleteReplybypostCode(postCode);
-		*/
 		System.out.println(previousPage);
 		
 	
