@@ -80,33 +80,47 @@
 		</div>
 	</div>
 			
-	
-	<div class="king_Wrap">
-		<p>이달의 기록왕</p>
-		<div class="kingcontent">
-		<div class="rank scd">
-			<div>2등</div>
-			<div class="kingimgdiv">
-				<img th:src="${kingProfileimg[1]}">
+	<div class="homebtm_wrap">
+
+		<!-- -->
+		<div id="bestsellerWrap">
+			<p>주목할 만한 신간</p>
+			<div class="bestsellerdiv" id="bestsellerdiv">
+				
+
 			</div>
-			<div th:text="${king[1].memberNick}"></div>
-		</div>
-		<div class="rank fst">
-			<div>1등</div>
-			<div class="kingimgdiv">
-				<img th:src="${kingProfileimg[0]}">
-			</div>	
-			<div th:text="${king[0].memberNick}"></div>
-		</div>
-		<div class="rank thd">
-		<div>3등</div>
-			<div class="kingimgdiv">
-				<img th:src="${kingProfileimg[2]}">
-			</div>
-			<div th:text="${king[2].memberNick}"></div>
 		</div>
 
-	</div>
+	  <!-- end -->
+
+		<div class="king_Wrap">
+			<p>이달의 기록왕</p>
+			<div class="kingcontent">
+			<div class="rank scd">
+				<div>2등</div>
+				<div class="kingimgdiv">
+					<img th:src="${kingProfileimg[1]}">
+				</div>
+				<div th:text="${king[1].memberNick}"></div>
+			</div>
+			<div class="rank fst">
+				<div>1등</div>
+				<div class="kingimgdiv">
+					<img th:src="${kingProfileimg[0]}">
+				</div>	
+				<div th:text="${king[0].memberNick}"></div>
+			</div>
+			<div class="rank thd">
+			<div>3등</div>
+				<div class="kingimgdiv">
+					<img th:src="${kingProfileimg[2]}">
+				</div>
+				<div th:text="${king[2].memberNick}"></div>
+			</div>
+
+		</div>
+		</div>
+		
 	</div>
 </div>
 </div>
@@ -121,11 +135,39 @@
 	
 	<script>
 		let types = document.querySelectorAll(".type");
-		
+		let checking = document.getElementById("checkbtn");
 		$("#type_1").css("background-color", "#9A9E7B");
 		$("#type_1").css("color", "white");
 		
 		
+		
+				$.ajax({
+					type: "GET",
+					url: "/home/aladinBestSeller",
+					dataType: "json",
+					contentType: "application/json",
+					success: function(data) {
+						// console.log("확인");
+						console.log(data.item);
+						for(let i =0;i<3;i++){
+							$('#bestsellerdiv').append('<div class="bestsellercomp">'+
+								
+						'<div id="' + i + '">' +
+						'<div class="bestseller_thumb"> '+
+						'<img src="'+ data.item[i].cover + '">' +
+						'</div>'+
+                        '<div class="bestseller_title" >' + data.item[i].title + '</div>' +
+                        
+                        '<div class="bestseller_author ">' + data.item[i].author + '</div>' +
+                        
+                        '</div></div>');
+						}
+				}
+			})
+		
+
+
+
 		function selected(e, type){
 			$(types).css("background-color", "white");
 			$(types).css("color", "black");		
@@ -180,6 +222,8 @@
 		}
 		})
 		}
+		
+		
 
 	</script>
 	

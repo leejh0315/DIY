@@ -27,6 +27,7 @@
 	<div th:each="noticeList:${noticeList}" id="noticelist" class="noticelist">
 		<th:block th:if="${#lists.isEmpty(noticeList)}">
 		    <!-- '알림이 없습니다' 라는 문구를 표시할 내용 -->
+			<p>새로운 알림이 없습니다.</p>    
 		</th:block>
 
 
@@ -36,33 +37,33 @@
 			<div th:with="targetPost=${targetPost[noticeList.targetId]}"  >
 				<th:block th:if="${noticeList.type != 'chat'}" >
 					
-					<th:block th:if="${noticeList.type != 'followee'}">
-						<a th:href="@{|/posts/${noticeList.targetId}|}" class="flex-container">
-					</th:block>
-					
-					<th:block th:if="${noticeList.type == 'followee'}">
-						<a th:href="@{|/userPage/${doMember.id}|}" class="flex-container">
-					</th:block>
-					
-					
-						<div class="notice_profileimg">
-							<img th:src="${doMember.profileSrc}">
-						</div>
-
-					<div th:text="${doMember.nickName}" class="nickNamediv"></div>
-					<div>님이 </div>
-					
-					<th:block th:if="${noticeList.type != 'chat'}" >
 						<th:block th:if="${noticeList.type != 'followee'}">
-							<div class="title" th:text="'<'+${targetPost.title}+'>'"></div>
-								<div>게시글에</div>
+							<a th:href="@{|/posts/${noticeList.targetId}|}" class="flex-container">
 						</th:block>
-					</th:block>
-					
-					<th:block th:if="${noticeList.type == 'followee'}" >
-						<div>회원님을 팔로우 하였습니다.</div>
-					</th:block>
-					
+						
+						<th:block th:if="${noticeList.type == 'followee'}">
+							<a th:href="@{|/userPage/${doMember.id}|}" class="flex-container">
+						</th:block>
+						
+						<div class="notice_innerWrap">
+							<div class="notice_profileimg">
+								<img th:src="${doMember.profileSrc}">
+							</div>
+						
+							<div th:text="${doMember.nickName}" class="nickNamediv"></div>
+							<div>님이 </div>
+							
+							<th:block th:if="${noticeList.type != 'chat'}" >
+								<th:block th:if="${noticeList.type != 'followee'}">
+									<div class="title" th:text="'<'+${targetPost.title}+'>'"></div>
+										<div>게시글에</div>
+								</th:block>
+							</th:block>
+							
+							<th:block th:if="${noticeList.type == 'followee'}" >
+								<div>회원님을 팔로우 하였습니다.</div>
+							</th:block>
+						</div>
 					<th:block th:if="${noticeList.type != 'followee'}" >
 						<div th:text="${noticeList.type}"></div>
 					</th:block>

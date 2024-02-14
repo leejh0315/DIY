@@ -42,7 +42,14 @@ body {
     text-decoration: none;
     color: black;
 }
-
+.notice_innerWrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: auto;
+    gap: .2em;
+    
+}
 .title{
     max-width:300px ;
     text-overflow: ellipsis;

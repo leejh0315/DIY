@@ -56,6 +56,43 @@ public class ApiController {
 	}
 	*/
 	
+	
+	@GetMapping("/home/aladinBestSeller")
+    public String aladinbestseller() throws Exception{
+          
+              URI uri = UriComponentsBuilder
+                      .fromUriString("http://www.aladin.co.kr")
+                      .path("/ttb/api/ItemList.aspx")
+                      .queryParam("ttbkey", "ttb7116won1455001")
+
+                      .queryParam("QueryType", "ItemNewSpecial")
+						.queryParam("SearchTarget", "Book")
+						.queryParam("Version", "20131101")
+						.queryParam("MaxResults", 3)
+                      .encode(StandardCharsets.UTF_8)
+                      .build()
+                      .toUri();
+          
+              RestTemplate restTemplate = new RestTemplate();
+              RequestEntity<Void> req = RequestEntity
+                    .get(uri)
+                    
+                    .build();
+          
+               ResponseEntity<String> result = restTemplate.exchange(req, String.class);
+                 
+//               System.out.println(result);
+//               System.out.println(uri);
+               String xmlString = result.getBody().toString();
+               String jsonString = convertXmlToJson(xmlString);
+          
+                  
+               return jsonString;
+          }
+
+
+
+	
 	//카카오 책 검색 API
 	@GetMapping("/kakaoBookSearch/{keyword}")
 	public String kakaoBookSearch(@PathVariable("keyword") String keyword){
@@ -84,6 +121,10 @@ public class ApiController {
         return result.getBody();
 	}
 
+	
+	
+	
+	
 	//공연 정보 kopis API
 	@GetMapping("/concert/{keyword}")
 	public String concert(@PathVariable("keyword") String keyword) throws Exception{
