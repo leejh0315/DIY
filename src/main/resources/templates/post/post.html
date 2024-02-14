@@ -241,8 +241,10 @@
 		}
 
 		
-   		
+   		if(member != null){
    		console.log(member.id);
+			   
+		   }
    		console.log(post);
 		
    		let targetInformation = document.getElementById("targetInformation");
@@ -265,8 +267,8 @@
 		postCode.value = postCodeDiv.innerText;
 
 		let cnt = likescnt.value;
-		// let reportcnt = reportpostcnt.value;
-		let reportcnt = 1;
+		 let reportcnt = reportpostcnt.value;
+		//let reportcnt = 1;
 
 		let deleteBtn = (member != null && member.id == post.memberId)? document.getElementById("deleteBtn") : "";
 		// let deleteBtn = document.getElementById("deleteBtn");
