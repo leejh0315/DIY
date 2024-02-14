@@ -8,18 +8,24 @@
 <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/notice.css}">
+<link rel="stylesheet" th:href="@{/css/memberout.css}">
+
 
 </head>
 <body>
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
-	<h1>회원 탈퇴</h1>
-	<div>회원 탈퇴시, 회원님이 작성하신 게시글과 댓글, 채팅 내역은 삭제됩니다.</div>
-	<div>내용이 복구되지 않으니, 신중하게 선택하여주세요.</div>
-	
-	
-	<button onclick="memberOut()">회원탈퇴</button>
+	<div class="wrapcontainer">
+		<div class="memberout_wrap">
+			<h1>회원 탈퇴</h1>
+			<div>회원 탈퇴시, 회원님이 작성하신 게시글과 댓글, 채팅 내역은 삭제됩니다.</div>
+			<div>내용이 복구되지 않으니, 신중하게 선택하여주세요.</div>
+			
+			
+			<button onclick="memberOut()">회원탈퇴</button>
+		</div>
+	</div>
 <script th:inline="javascript">
     var member = /*[[${member}]]*/ [];
 	function nextAction() {

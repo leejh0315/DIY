@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.wrapcontainer{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	}	
+	.memberout_wrap{
+        text-align: center;
+		width: 50%;
+        min-width: 350px;
+		vertical-align:middle;
+		display:inline-block;
+	}
+
+    .memberout_wrap>button{
+
+        font-weight: 600;
+        width: 350px;
+        height: 45px;
+        background-color: #9A9E7B;
+        border-radius: 12px;
+        color: white;
+        border: none;
+        margin: 3em 0;
+        font-size: 16px;
+    }
