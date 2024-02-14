@@ -1,7 +1,10 @@
 package project.DIY.controller;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +44,10 @@ public class AdminController {
 		if(!member.getLoginId().equals("admin")) {
 			return "redirect:/home/home";
 		}
-
+		
+		List<Post> allPost = postReposiroty.selectAllpost();
+		getImages(allPost);
+		
 		model.addAttribute("member", member);
 		
 		List<ReportPost> allReportPost = aboutPostRepository.selectAllReportPost();
@@ -74,13 +80,8 @@ public class AdminController {
 			return "redirect:/home/home";
 		}
 
-		
-
 		model.addAttribute("member", member);
 		model.addAttribute("allPosts", allPosts);
-		System.out.println(allPosts);
-		
-		
 		
 		return "admin/postManage";
 	}
@@ -139,9 +140,55 @@ public class AdminController {
 		}
 		
 		return "1";
-		
-		
 	}
 	
+	
+
+	
+	
+	public  void getImages(List<Post> allPost) {
+		
+		
+		String directoryPath = "C:\\DIY\\src\\main\\resources\\static\\image\\post\\";
+		
+		
+        // File 객체를 생성하여 해당 경로의 디렉터리를 나타내도록 합니다.
+        File directory = new File(directoryPath);
+        // 디렉터리가 존재하는지 확인합니다.
+        if (directory.exists() && directory.isDirectory()) {
+            // 디렉터리 내의 파일 리스트를 가져옵니다.
+            File[] files = directory.listFiles(); 
+
+            // 파일 리스트를 순회하며 각 파일의 정보를 출력합니다.
+            for (File file : files) {
+                int num = 0;
+                // 파일명 출력
+                /*
+                System.out.println("File name: " + file.getName());
+                // 파일 경로 출력
+                System.out.println("File path: " + file.getAbsolutePath());
+                // 파일 크기 출력
+                System.out.println("File size (bytes): " + file.length());
+                // 파일이 디렉터리인지 여부 출력
+                System.out.println("Is directory: " + file.isDirectory());
+                System.out.println("-----------------------------");
+                */
+                
+                for(int i = 0 ; i < allPost.size(); i++) {
+                	String a = allPost.get(i).getContent();
+                	if(a.contains(file.getName())) {
+                		num ++;
+                	}
+                	
+                }
+                if(num == 0) {
+                	file.delete();
+                }
+                
+            }
+        } else {
+            System.out.println("Directory does not exist or is not a directory.");
+        }
+    }
 
 }
