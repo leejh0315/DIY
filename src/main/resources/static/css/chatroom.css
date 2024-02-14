@@ -35,10 +35,12 @@ body {
     margin: 0;
     max-height: 400px;
     overflow-y: auto;
-    display: block;
+    display: flex;
+    flex-direction: row;
 }
 
 .msgArea > input {
+    flex-grow: 1;
     width: 60%;
     padding: 10px;
     margin-right: 10px;
