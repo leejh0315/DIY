@@ -320,8 +320,7 @@ public class MyPageController {	//myPage 관련
 			BindingResult bindingResult,  HttpServletRequest req) {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		
-		
+		aboutNotice(member, model);
 		String originPasswordCheck = passwordUpdateForm.getOriginPassword();
 		String type;
 		if(passwordUpdateForm.getType().equals("sixMonth")) {
