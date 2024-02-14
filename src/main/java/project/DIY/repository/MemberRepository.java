@@ -26,4 +26,16 @@ public interface MemberRepository {
 	public void insertPasswordHistory(PasswordHistory passwordHistory);
 	public int selectCountByMemberIdAndPassword(PasswordHistory passwordHistory);
 	public List<PasswordHistory> passwordHistoryByMemberId(int memberId);
+	
+	public void deleteMemberById(String id);
+	public void deletePostByMemberId(String id);
+	public void deleteReplyByMemberId(String id);
+	public void deleteReReplyByMemberId(String id);
+	public void deleteChatRoomByMemberId(String id);
+	public void deleteFollowByMemberId(String id);
+	public void deleteLikePostByMemberId(String id);
+	public void deleteNocieByMemberId(String id);
+	public void deletePasswordHistoryByMemberId(String id);
+	 
+	 
 }

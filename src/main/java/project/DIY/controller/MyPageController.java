@@ -363,6 +363,40 @@ public class MyPageController {	//myPage 관련
 		model.addAttribute("passwordUpdateForm", passwordUpdateForm);		
 		return "myPage/directlyUpdatepassword";
 	}
+	
+	@GetMapping("/memberOut/{id}")
+	public String getMemberOut(Model model,
+			@PathVariable("id") String id,
+			HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
+		if(member.getId() != Integer.parseInt(id)) {
+			return "redirect:/home/home";
+		}
+		
+		aboutNotice(member, model);
+		model.addAttribute("member", member);
+		return "myPage/memberOut";
+	}
+	
+	@PostMapping("/memberOut/{id}")
+	@ResponseBody
+	public String postMemberOut(@PathVariable("id") String id, HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		memberRepository.deleteMemberById(id);
+		memberRepository.deletePostByMemberId(id);
+		memberRepository.deleteReplyByMemberId(id);
+		memberRepository.deleteReReplyByMemberId(id);
+		memberRepository.deleteReReplyByMemberId(id);
+		memberRepository.deleteChatRoomByMemberId(id);
+		memberRepository.deleteFollowByMemberId(id);
+		memberRepository.deleteLikePostByMemberId(id);
+		memberRepository.deleteNocieByMemberId(id);
+		memberRepository.deletePasswordHistoryByMemberId(id);
+		session.invalidate();
+		return "done";
+	}
 
 	   public void aboutNotice(Member member, Model model) {
 		      if(member != null) {
@@ -376,7 +410,6 @@ public class MyPageController {	//myPage 관련
 		          model.addAttribute("chatCnt", chatCnt);
 		          model.addAttribute("noticeCnt", noticeCnt);  
 		      }
-		   
 	   	}
 	
 }

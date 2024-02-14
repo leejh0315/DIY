@@ -26,8 +26,9 @@
 	<div class="wrapcontainer">
 		<div class="updateMemberWrap">
 			<h3>회원정보 변경</h3>
-
+	
 			<div class="update_colwrap">
+				<i class="fas fa-arrow-left" onclick="goBack()" style="cursor: pointer;"></i>
 			<div>
 				<div id="newProfile">
 					<img id="profileSrcImg" th:src="${member.profileSrc}">
@@ -49,6 +50,9 @@
 			</form>
 			<a th:href="@{|/directlyUpdatepassword/${member.id}|}">
 				<p>비밀번호 변경하기</p>
+			</a>
+			<a th:href="@{|/memberOut/${member.id}|}">
+				<p>회원 탈퇴</p>
 			</a>
 		</div>
 		
@@ -89,6 +93,11 @@
 			let profileSrcImg = document.getElementById("profileSrcImg");
 			profilePath.value = "/img/default_profileimg.jpg";
 			profileSrcImg.src = "/img/default_profileimg.jpg";
+			
+		}
+		
+		function goBack(){
+			window.history.back();
 		}
 	</script>
 			<script th:src="@{/js/nav.js}"></script>

@@ -37,7 +37,7 @@
 			"",
 			#{createOn},
 			null,
-			"/img/defalut_profileimg.jpg",
+			"/img/default_profileimg.jpg",
 			null,
 			#{createOn},
 			"N"
@@ -129,7 +129,44 @@
 		from diydb.passwordhistory 
 		where
 		memberId = #{param1};
-		
 	</select>
+	
+	<delete id="deleteMemberById" parameterType="String">
+		DELETE FROM diydb.member 
+		WHERE id = #{param1};
+	</delete>
+	<delete id="deletePostByMemberId" parameterType="String">
+		DELETE FROM diydb.post 
+		WHERE memberId = #{param1};
+	</delete>
+	<delete id="deleteReplyByMemberId" parameterType="String">
+		DELETE FROM diydb.reply 
+		WHERE replyerId = #{param1};
+	</delete>
+	<delete id="deleteReReplyByMemberId" parameterType="String">
+		DELETE FROM diydb.rereply 
+		WHERE rereplyerId = #{param1};
+	</delete>
+	
+	<delete id="deleteChatRoomByMemberId">
+		DELETE FROM diydb.chatroom 
+		WHERE chatReceiverId = #{param1} or chatSenderId = #{param1};
+	</delete>
+	<delete id="deleteFollowByMemberId">
+		DELETE FROM diydb.follow 
+		WHERE follower = #{param1} or followee = #{param1};
+	</delete>
+	<delete id="deleteLikePostByMemberId">
+		DELETE FROM diydb.likepost 
+		WHERE memberId = #{param1};
+	</delete>
+	<delete id="deleteNocieByMemberId">
+		DELETE FROM diydb.notice 
+		WHERE targetMemberId = #{param1} or doMemberId = #{param1};
+	</delete>
+	<delete id="deletePasswordHistoryByMemberId">
+		DELETE FROM diydb.passwordhistory 
+		WHERE memberId = #{param1};
+	</delete>
 	
 </mapper>

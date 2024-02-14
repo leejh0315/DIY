@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/notice.css}">
+
+</head>
+<body>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+	<h1>회원 탈퇴</h1>
+	<div>회원 탈퇴시, 회원님이 작성하신 게시글과 댓글, 채팅 내역은 삭제됩니다.</div>
+	<div>내용이 복구되지 않으니, 신중하게 선택하여주세요.</div>
+	
+	
+	<button onclick="memberOut()">회원탈퇴</button>
+<script th:inline="javascript">
+    var member = /*[[${member}]]*/ [];
+	function nextAction() {
+    	window.location.href = "/home/home";
+    	
+	}
+    function memberOut(){
+		console.log("눌림");
+		$.ajax({
+			data: member.id,
+			type: 'POST',
+			url: '/memberOut/'+ member.id,
+			enctype: 'multipart/form-data',
+			success: function (data) {
+				console.log(data);
+				if(data == "done"){
+					alert('회원 탈퇴 되었습니다. 서비스를 이용해주셔서 감사합니다.');
+					window.location.href = "/home/home";
+				}						
+			},
+		});
+	}
+</script>
+
+<script th:src="@{/js/nav.js}"></script>
+</body>
+</html>
