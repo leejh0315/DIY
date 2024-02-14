@@ -143,6 +143,7 @@
 		delete from diydb.post where postCode=#{postCode};
 	</delete>
 	
+	
 	<!-- 인기게시글 상위 5개의 post를 반환 -->
 	<select id="selectTop5PopularPosts" resultType="Post">
 		SELECT

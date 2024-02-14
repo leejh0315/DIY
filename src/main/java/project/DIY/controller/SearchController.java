@@ -19,6 +19,7 @@ import project.DIY.domain.Notice;
 import project.DIY.domain.PaginationVo;
 import project.DIY.domain.Post;
 import project.DIY.repository.AboutPostRepository;
+import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
 import project.DIY.session.SessionVar;
 
@@ -30,6 +31,8 @@ public class SearchController {		//검색 관련 controller
 	private final PostRepository postRepository;
 	@Autowired
 	private final AboutPostRepository aboutPostRepository;
+	@Autowired
+	private final MemberRepository memberRepository;
 	
 	//검색시, 검색어에 맞는 결과의 갯수를 반환
 	@PostMapping("/home/search/{keyword}")
@@ -58,6 +61,11 @@ public class SearchController {		//검색 관련 controller
 		pageVo.setOffset((page-1)*10);
 		pageVo.setTotalCount(totalCount);
 		List<Post> post = postRepository.selecetPostBySearch(pageVo);
+		List<Member> searchMember = memberRepository.selectMemberBySearch(searchKeyword);
+		int searchMemberCnt = searchMember.size();
+		
+		model.addAttribute("searchMemberCnt",searchMemberCnt);
+		model.addAttribute("searchMember", searchMember);
 		model.addAttribute("member", member);
 		model.addAttribute("post", post);
 		model.addAttribute("searchKeyword", searchKeyword);

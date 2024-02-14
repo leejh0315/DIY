@@ -167,5 +167,10 @@ public class MybatisMemberRepository implements MemberRepository{
 	public void deletePasswordHistoryByMemberId(String id) {
 		memberMapper.deletePasswordHistoryByMemberId(id);				
 	}
+
+	@Override
+	public List<Member> selectMemberBySearch(String search) {
+		return memberMapper.selectMemberBySearch(search);
+	}
 	
 }

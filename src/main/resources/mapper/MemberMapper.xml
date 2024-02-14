@@ -131,6 +131,14 @@
 		memberId = #{param1};
 	</select>
 	
+	
+	<select id="selectMemberBySearch" resultType="Member">
+        SELECT * 
+	    FROM diydb.member
+	    where nickName LIKE '%${param1}%'
+	    ORDER BY id DESC 
+	</select>
+	
 	<delete id="deleteMemberById" parameterType="String">
 		DELETE FROM diydb.member 
 		WHERE id = #{param1};

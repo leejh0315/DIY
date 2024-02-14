@@ -9,8 +9,17 @@
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/searchresult.css}">
 
+
 <style>
-	
+	.searchMember{
+	    display: flex;
+    	flex-direction: column; /* 위아래로 정렬 */
+	    justify-content: space-between; /* 위아래에 공간을 동일하게 배분 */
+	    height: 100%; 
+	}
+	.searchResult{
+		display: flex;
+	}
 </style>
 </head>
 <body>
@@ -20,29 +29,43 @@
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
-	
-	<div class="wrapcontainer">
-		<div class="searchresult_Wrap">
-			<div>검색</div>
-			
-			<h2 th:text="*{searchKeyword}"></h2><h2>검색결과</h2>
-			
-			<div th:each="post,i:${post}" id="postResult">
-				<div id="postComp">
-					<div th:id="${i.index}"></div>
-					<img th:src="${post.targetThumbnail}">
-					<div th:text="${post.targetName}"></div>
-					<div th:text="${post.targetSubName}"></div>
-					<div th:text="${post.targetAuthor}"></div>
-					<div th:text="${post.starCount}"></div>
-					<div th:text="${memberNick}"></div>
+	<div class="searchResult">
+		<div class="wrapcontainer">
+			<div class="searchresult_Wrap">
+				<div>검색</div>
+				
+				<h2 th:text="*{searchKeyword}"></h2><h2>검색결과</h2>
+				
+				<div th:each="post,i:${post}" id="postResult">
+					<div id="postComp">
+						<div th:id="${i.index}"></div>
+						<img th:src="${post.targetThumbnail}">
+						<div th:text="${post.targetName}"></div>
+						<div th:text="${post.targetSubName}"></div>
+						<div th:text="${post.targetAuthor}"></div>
+						<div th:text="${post.starCount}"></div>
+						<div th:text="${memberNick}"></div>
+					</div>
+					<hr>
 				</div>
-				<hr>
 			</div>
-
-		
+		</div>
+		<div class="searchMember">
+			<th:block th:if="${searchMemberCnt == 0}">
+				<div>해당 닉네임을 가진 유저가 없습니다.</div>
+			</th:block>
+			<th:block th:if="${searchMemberCnt != 0}">
+				<div th:each="searchMember,i:${searchMember}">
+					
+				        <div class="profileimg_div">
+				            <img th:src="${searchMember.profileSrc}">
+				        </div>
+						<div th:text="${searchMember.nickName}"></div>
+					
+				</div>	
+			</th:block>
+		</div>
 	</div>
-</div>
 		<script th:src="@{/js/nav.js}"></script>
 </body>
 </html>

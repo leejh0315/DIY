@@ -30,6 +30,7 @@ public interface MemberMapper {
 	public int selectCountByMemberIdAndPassword(PasswordHistory passwordHistory);
 	public List<PasswordHistory> passwordHistoryByMemberId(int memberId);
 	
+	public List<Member> selectMemberBySearch(String search);
 	public void deleteMemberById(String id);
 	public void deletePostByMemberId(String id);
 	public void deleteReplyByMemberId(String id);
