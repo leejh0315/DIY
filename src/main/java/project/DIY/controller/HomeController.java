@@ -229,7 +229,7 @@ public class HomeController {
          if(redisUtils.getData(loginForm.getLoginId()) != null &&
                redisUtils.getData(loginForm.getLoginId()).equals("5")){
             bindingResult.reject("loginForm","로그인 실패 5회입니다. 잠시 후에 다시 시도해주세요.");
-            System.out.println("로그인 실패 5회입니다. 잠시 후에 다시 시도해주세요.");
+            System.out.println("로그인 실패 5회입니다. 10분 후에 다시 시도해주세요.");
             redisUtils.setDataExpire(loginForm.getLoginId(), "LOCK", 60*10L);//10분동안 잠금
          } 
          else if(redisUtils.getData(loginForm.getLoginId()) != null &&

@@ -119,5 +119,53 @@ public class MybatisMemberRepository implements MemberRepository{
 	public List<PasswordHistory> passwordHistoryByMemberId(int memberId) {
 		return memberMapper.passwordHistoryByMemberId(memberId);
 	}
+
+	@Override
+	public void deleteMemberById(String id) {
+		memberMapper.deleteMemberById(id);
+		
+	}
+
+	@Override
+	public void deletePostByMemberId(String id) {
+		memberMapper.deletePostByMemberId(id);
+	}
+
+	@Override
+	public void deleteReplyByMemberId(String id) {
+		memberMapper.deleteReplyByMemberId(id);
+	}
+
+	@Override
+	public void deleteReReplyByMemberId(String id) {
+		memberMapper.deleteReReplyByMemberId(id);		
+	}
+
+	@Override
+	public void deleteChatRoomByMemberId(String id) {
+		memberMapper.deleteChatRoomByMemberId(id);
+		
+	}
+
+	@Override
+	public void deleteFollowByMemberId(String id) {
+		memberMapper.deleteFollowByMemberId(id);
+		
+	}
+
+	@Override
+	public void deleteLikePostByMemberId(String id) {
+		memberMapper.deleteLikePostByMemberId(id);		
+	}
+
+	@Override
+	public void deleteNocieByMemberId(String id) {
+		memberMapper.deleteNocieByMemberId(id);
+	}
+
+	@Override
+	public void deletePasswordHistoryByMemberId(String id) {
+		memberMapper.deletePasswordHistoryByMemberId(id);				
+	}
 	
 }

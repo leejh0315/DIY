@@ -198,8 +198,9 @@ public class AboutPostController {
 		System.out.println(reportPost);
 		
 		int selectReportPostcnt = aboutPostRepository.selectReportPost(reportPost);
-		
+		System.out.println("----------------------");
 		System.out.println(selectReportPostcnt);
+		System.out.println("----------------------");
 		if (selectReportPostcnt == 0) {
 			aboutPostRepository.insertReportPost(reportPost);
 			return "1";

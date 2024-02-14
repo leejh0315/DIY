@@ -26,8 +26,9 @@
 	<div class="wrapcontainer">
 		<div class="updateMemberWrap">
 			<h3>회원정보 변경</h3>
-
+	
 			<div class="update_colwrap">
+				<i class="fas fa-arrow-left" onclick="goBack()" style="cursor: pointer;"></i>
 			<div>
 				<div id="newProfile">
 					<img id="profileSrcImg" th:src="${member.profileSrc}">
@@ -47,14 +48,27 @@
 				</div>
 				<button type="submit" id="submit">변경하기</button>
 			</form>
+			
+			
+				<p onclick="doAsk()">문의하기</p>
+			
+			
 			<a th:href="@{|/directlyUpdatepassword/${member.id}|}">
 				<p>비밀번호 변경하기</p>
+			</a>
+			<a th:href="@{|/memberOut/${member.id}|}">
+				<p>회원 탈퇴</p>
 			</a>
 		</div>
 		
 		</div>
 	</div>
-	<script>
+	<script th:inline="javascript">
+    var member = /*[[${member}]]*/ [];
+		function doAsk(){
+			window.location.href = "/chat/createRoom/" + member.id + "?name=admin";
+		}
+		
 		$(document).ready(function() {
 			let profileSrc = document.getElementById("profileSrc");
 			let newProfile = document.getElementById("newProfile");
@@ -89,6 +103,11 @@
 			let profileSrcImg = document.getElementById("profileSrcImg");
 			profilePath.value = "/img/default_profileimg.jpg";
 			profileSrcImg.src = "/img/default_profileimg.jpg";
+			
+		}
+		
+		function goBack(){
+			window.history.back();
 		}
 	</script>
 			<script th:src="@{/js/nav.js}"></script>
