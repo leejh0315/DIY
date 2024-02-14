@@ -123,9 +123,9 @@ transition: filter linear .3s;
 .post_topmid{
     padding-right: 40px;
 }
-.post_topright{
+/* .post_topright{
     padding-right: 40px;
-}
+} */
 
 .searchModalButton {
     margin: 0;
