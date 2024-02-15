@@ -275,6 +275,7 @@ public class PostController {
 				r.get(i).setNickName(nickAndSrc.get(0).getNickName());
 				r.get(i).setUserProfileSrc((nickAndSrc.get(0).getProfileSrc()));
 			};
+		System.out.println(reRep);
 		int replyCnt = replyRepository.replyCnt(postCode);
 		model.addAttribute("replyCnt", replyCnt);
 		model.addAttribute("reRep", reRep);

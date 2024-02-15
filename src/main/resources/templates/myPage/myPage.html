@@ -300,8 +300,10 @@
     // Create a new element to hold the image
     var img = document.createElement('img');
     img.src = eventInfo.event.extendedProps.imageUrl;
-    img.style.width = '100%';  // Adjust the width as needed
-    img.style.height = '100%';  // Adjust the height as needed
+    img.style.width = '90%';  // Adjust the width as needed
+    img.style.height = '90%';
+	img.style.objectFit='cover';
+ // Adjust the height as needed
 
     // Create a new div element to hold the image element
     var container = document.createElement('div');

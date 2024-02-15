@@ -50,7 +50,10 @@ hr {
     gap: 0.8em;
 }
 
-
+.rereplycont>div:nth-of-type(3){
+    color: #777;
+    font-size: 14px;
+}
 
 /* .replyformdiv>textarea{
     box-sizing: border-box; 
