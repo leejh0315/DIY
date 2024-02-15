@@ -12,11 +12,11 @@
     min-width: 650px;
 
 }
-.searchresult_Wrap>div:nth-of-type(1){
+/* .searchresult_Wrap>div:nth-of-type(1){
     font-size: 30px;
     font-weight: 700;
-    margin-bottom: 40px;
-}
+    margin-bottom: 10px;
+} */
 
 .profileimg_div {
     width: 4em;
@@ -31,3 +31,156 @@
     overflow: hidden;
     border-radius: 70px;
 }
+
+.searchMember{
+    display: flex;
+    flex-direction: column; /* 위아래로 정렬 */
+    justify-content: space-between; /* 위아래에 공간을 동일하게 배분 */
+    height: 100%; 
+}
+.searchResult{
+    padding-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}
+.searchPost, .searchMember{
+width: 50%;
+}
+.searchresult_Wrap > h2{
+    display: inline-block;
+    margin: 10px 0;
+}
+.searchresult_Wrap > h2:nth-of-type(1){
+    padding-right: .7em;
+    color: #dc4632;
+}
+.searchPost>div:nth-of-type(1), .searchMember>div:nth-of-type(1){
+    padding: 10px 0 20px 0;
+    font-weight: 700;
+    }
+
+.row_Wrap{
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+#postComp{
+    padding: 0 10px;
+}
+    .thumb_Wrap{
+        max-width: 90px;
+        min-width: 90px;
+    }
+    .thumb_Wrap > img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+    
+    }
+    .ratebox p{
+        margin: 0;
+        padding: 0;
+    }
+    .ratebox{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        order: 2;
+        border: 1px solid #9A9E7B;
+        border-radius: 20px;
+        padding: 3px 10px;
+        font-size: 14px;
+        margin-left: auto;
+    }
+    .writerinfo_Wrap{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: .6em;
+        padding: 5px 0;
+    }
+    .writerinfo_Wrap>div{
+        font-size: 14px;
+    }
+    .writerinfo_Wrap>div:nth-of-type(2){
+        font-weight: 600;
+    }
+    .writerinfo_Wrap>div:nth-of-type(3){
+        font-weight: 400;
+        font-size: 13px;
+        color: #777;
+    }
+    .postprofileimg_div{
+        width: 1.8em;
+        height: 1.8em;
+    }
+    
+    .postprofileimg_div> img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    .target_Wrap {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1em;
+        margin-bottom: .3em;
+    }
+    .target_Wrap>div:nth-of-type(1){
+        font-weight: 700;
+        font-size: 14px;
+    }
+    .target_Wrap>div:nth-of-type(2),.target_Wrap>div:nth-of-type(3){
+        font-weight: 300;
+        font-size: 12px;
+        color: #777;
+    }
+    .postcnt_Wrap {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+    }
+    .postcnt_Wrap>div:nth-last-of-type(1){
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .postcnt_Wrap>div:nth-last-of-type(1){
+        font-size: 14px;
+        font-weight: 400;
+        color: #777;
+    }
+    .postcontent {
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    
+    }
+    .postcnt_Wrap > div:nth-of-type(1),
+    .target_Wrap> div
+    {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+    }
+    .userlistwrap{
+        gap: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .usernameintro>div:nth-of-type(2){
+        padding-top: 3px;
+        font-size: 14px;
+    height: 16px;
+    color: #555;
+    }

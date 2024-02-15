@@ -1,5 +1,6 @@
 package project.DIY.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +62,24 @@ public class SearchController {		//검색 관련 controller
 		pageVo.setOffset((page-1)*10);
 		pageVo.setTotalCount(totalCount);
 		List<Post> post = postRepository.selecetPostBySearch(pageVo);
+		for(int i=0; i<post.size();i++) {
+			String contentTemp = post.get(i).getContent();
+			String plainText = contentTemp.replaceAll("\\<.*?\\>", "");;
+			plainText = plainText.replaceAll("&nbsp;", "");
+			plainText = plainText.replaceAll("&gt;", "");
+			post.get(i).setContent(plainText);
+		}
+		List<String> profileSrc =new ArrayList<String>();
+		for(int i =0;i<post.size();i++) {
+			profileSrc.add(memberRepository.selectBymemberId(post.get(i).getMemberId()).getProfileSrc());
+		}
 		List<Member> searchMember = memberRepository.selectMemberBySearch(searchKeyword);
 		int searchMemberCnt = searchMember.size();
-		
+		int searchpostCnt = post.size();
 		model.addAttribute("searchMemberCnt",searchMemberCnt);
+		model.addAttribute("searchpostCnt",searchpostCnt);
 		model.addAttribute("searchMember", searchMember);
+		model.addAttribute("profileSrc",profileSrc);
 		model.addAttribute("member", member);
 		model.addAttribute("post", post);
 		model.addAttribute("searchKeyword", searchKeyword);

@@ -38,6 +38,7 @@
                 </div>
             </div>
         </a>
+        <th:block th:if="${followeeList.id != member.id}">
         <div class="btn_rowwrap">
 			
 	        <div th:with="chatValue=${chatMap[followeeList.id]}">
@@ -66,6 +67,7 @@
                 <button th:if="${status eq 2}" type="button" class="followbtn hidden-button" style="display: none;">본인</button>
             </div>
         </div>
+    </th:block>
         </div>
         <hr>
         </div>

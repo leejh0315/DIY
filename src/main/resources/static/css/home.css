@@ -156,6 +156,7 @@
 }
 
 .homebtm_wrap{
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -178,9 +179,9 @@
     border-radius: 7px;
     flex-grow: 1;
     height: 100%; */
-    flex-grow: 1;
+    /* flex-grow: 1; */
     height: 100%;
-    
+    width: 60%;
     border-radius: 15px;
     padding: 0 30px;
     margin: 20px 0;
@@ -190,11 +191,26 @@
     flex-direction: row;
     align-items: center;
 }
-.bestseller_thumb {
-    width: 85px;
+.bestsellercomp{
+    width: 33%;
+
 }
-.bestsellerWrap p {
-    margin: 10px 10px 10px 10px;
+.bestsellercomp > div {
+    margin-right: 10px; /* 각 요소 사이의 간격 조절 */
+}
+.bestseller_thumb{
+    
+}
+.bestseller_thumb img {
+    max-width: 100%; /* 이미지가 부모 요소를 넘지 않도록 설정 */
+    height: auto; /* 이미지의 세로 비율 유지 */
+}
+
+.bestseller_title,
+.bestseller_author {
+    white-space: nowrap; /* 텍스트가 한 줄을 넘어가지 않도록 설정 */
+    overflow: hidden; /* 넘치는 부분은 숨김 처리 */
+    text-overflow: ellipsis; /* 넘치는 부분에 ...으로 표시 */
 }
 .king_Wrap p {
     margin: 10px 10px 10px 10px;

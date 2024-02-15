@@ -9,18 +9,6 @@
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/searchresult.css}">
 
-
-<style>
-	.searchMember{
-	    display: flex;
-    	flex-direction: column; /* 위아래로 정렬 */
-	    justify-content: space-between; /* 위아래에 공간을 동일하게 배분 */
-	    height: 100%; 
-	}
-	.searchResult{
-		display: flex;
-	}
-</style>
 </head>
 <body>
 	<th:block th:if="${member == null}">
@@ -29,43 +17,94 @@
 	<th:block th:if="${member != null}">
 		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
 	</th:block>
-	<div class="searchResult">
+
 		<div class="wrapcontainer">
 			<div class="searchresult_Wrap">
-				<div>검색</div>
 				
 				<h2 th:text="*{searchKeyword}"></h2><h2>검색결과</h2>
-				
-				<div th:each="post,i:${post}" id="postResult">
-					<div id="postComp">
-						<div th:id="${i.index}"></div>
-						<img th:src="${post.targetThumbnail}">
-						<div th:text="${post.targetName}"></div>
-						<div th:text="${post.targetSubName}"></div>
-						<div th:text="${post.targetAuthor}"></div>
-						<div th:text="${post.starCount}"></div>
-						<div th:text="${memberNick}"></div>
+				<div class="searchResult">
+				<div class="searchPost">
+					<div>글 검색결과</div>
+					<th:block th:if="${searchpostCnt == 0}">
+							<div style="padding: 5em 0;color: #777;">검색된 글이 없습니다.</div>
+					</th:block>
+					<th:block th:if="searchpostCnt != 0">
+					<div th:each="post,i:${post}" id="postResult">
+						<a  th:href="@{|/posts/${post.postCode}|}">
+						<div id="postComp">
+							<div class="writerinfo_Wrap">
+								<div th:with="profile=${profileSrc[i.index]}" class="postprofileimg_div">
+									<img th:src="${profile}">
+								</div>
+								<div th:text="${post.memberNick}"></div>
+								<div th:text="${post.createOn}"></div>
+								<div class="ratebox" >
+									★<p th:text="${post.starCount}" style="padding-left: 5px;"></p>
+								</div>
+							</div>
+							<div class="row_Wrap">
+								<div class="thumb_Wrap">
+									<img th:src="${post.targetThumbnail}">
+								</div>
+								<div class="col_Wrap">
+								<div class="target_Wrap">
+									<div th:text="${post.targetName}"></div>
+									<div th:text="${post.targetAuthor}"></div>
+									<div th:text="${post.targetSubName}"></div>
+								</div>
+								<div class="postcnt_Wrap">
+									<div th:text="${post.title}"></div>
+									<div th:text="${post.content}" class="postcontent"></div>
+									<input th:value="${post.targetThumbnail}" id="targetThumb" type="hidden">
+								</div>
+							</div>
+						</div>
+							<!-- <div th:id="${i.index}"></div>
+			
+							<div class="thumb_Wrap">
+								<img th:src="${post.targetThumbnail}">
+							</div>
+
+							<div th:text="${post.targetName}"></div>
+							<div th:text="${post.targetSubName}"></div>
+							<div th:text="${post.targetAuthor}"></div>
+							<div th:text="${post.starCount}"></div>
+							<div th:text="${memberNick}"></div> -->
+						</div>
+					</a>
+						<hr>
+
 					</div>
-					<hr>
+					</th:block>
+				</div>
+
+				<div class="searchMember">
+					<div>유저 검색결과</div>
+					<th:block th:if="${searchMemberCnt == 0}">
+						<div div style="padding: 5em 0; color: #777;">검색된 유저가 없습니다.</div>
+					</th:block>
+					<th:block th:if="${searchMemberCnt != 0}">
+						<div th:each="searchMember,i:${searchMember}">
+							<a th:href="@{|/userPage/${searchMember.id}|}">
+								<div class="userlistwrap">
+									<div class="profileimg_div">
+										<img th:src="${searchMember.profileSrc}">
+									</div>
+									<div class="usernameintro">
+									<div th:text="${searchMember.nickName}"></div>
+									<div th:text="${searchMember.memberIntro}"></div>
+									</div>
+								</div>
+							</a>
+								<hr>
+						</div>	
+					</th:block>
 				</div>
 			</div>
 		</div>
-		<div class="searchMember">
-			<th:block th:if="${searchMemberCnt == 0}">
-				<div>해당 닉네임을 가진 유저가 없습니다.</div>
-			</th:block>
-			<th:block th:if="${searchMemberCnt != 0}">
-				<div th:each="searchMember,i:${searchMember}">
-					
-				        <div class="profileimg_div">
-				            <img th:src="${searchMember.profileSrc}">
-				        </div>
-						<div th:text="${searchMember.nickName}"></div>
-					
-				</div>	
-			</th:block>
 		</div>
-	</div>
+		
+
 		<script th:src="@{/js/nav.js}"></script>
 </body>
 </html>
