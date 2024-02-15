@@ -73,7 +73,7 @@ public class HomeController {
       LocalDate lastMonth = now.minusMonths(1);
       int lastMonthValue = lastMonth.getMonthValue();
 
-
+      System.out.println("now:" + now);
 
             List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
 

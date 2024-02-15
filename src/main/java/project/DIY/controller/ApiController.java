@@ -3,12 +3,15 @@ package project.DIY.controller;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -55,6 +58,39 @@ public class ApiController {
 		        return jsonString;
 	}
 	*/
+	
+	/*8c9a41a51bcc03f5ebd4baeaa2863ebb*/
+	@GetMapping("/home/bestMovie")
+    public String bestMovie() throws Exception{
+          
+        LocalDate now = LocalDate.now();
+        LocalDate oneWeekAgo = now.minusWeeks(1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String formattedDate = oneWeekAgo.format(formatter);
+        
+              URI uri = UriComponentsBuilder
+                      .fromUriString("http://www.kobis.or.kr")
+                      .path("/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.xml")
+                      .queryParam("key", "8c9a41a51bcc03f5ebd4baeaa2863ebb")
+                      .queryParam("targetDt", formattedDate)
+                      .queryParam("itemPerPage", "3")
+                      .queryParam("weekGb", "0")
+                      
+                      .encode(StandardCharsets.UTF_8)
+                      .build()
+                      .toUri();
+          
+              RestTemplate restTemplate = new RestTemplate();
+              RequestEntity<Void> req = RequestEntity
+                    .get(uri)
+                    .build();
+          
+               ResponseEntity<String> result = restTemplate.exchange(req, String.class);
+               String xmlString = result.getBody().toString();
+               String jsonString = convertXmlToJson(xmlString);
+               return jsonString;
+          }
+
 	
 	
 	@GetMapping("/home/aladinBestSeller")
@@ -238,6 +274,8 @@ public class ApiController {
 	            .queryParam("query", encode)
 	            .queryParam("startCount", 0)
 	            .queryParam("listCount", 20)
+	            .queryParam("detail", "Y")
+	            
 	            .queryParam("ServiceKey", "4RJCFW83684G62B74F89")
                 .encode(StandardCharsets.UTF_8)
                 .build()
@@ -252,6 +290,45 @@ public class ApiController {
 	
         return result.getBody();
 	}
+	
+	//인기영화
+	@GetMapping("/home/movie/{keyword}")
+	public String bestMovie(@PathVariable("keyword") String keyword, 
+							@RequestParam(value = "date") String date){
+	    		
+	    String query = keyword;
+	    
+	    System.out.println(keyword);
+	    System.out.println(date);
+	    ByteBuffer buffer = StandardCharsets.UTF_8.encode(query);
+	    String encode = StandardCharsets.UTF_8.decode(buffer).toString();
+	    
+	    URI uri = UriComponentsBuilder
+	            .fromUriString("http://api.koreafilm.or.kr")
+	            .path("/openapi-data2/wisenut/search_api/search_json2.jsp")
+	            .queryParam("collection", "kmdb_new2")
+	            .queryParam("detail", "Y")
+	            .queryParam("releaseDts", date)
+	            .queryParam("query", encode)
+	            .queryParam("startCount", 0)
+	            .queryParam("listCount", 1)
+	            .queryParam("detail", "Y")
+	            
+	            .queryParam("ServiceKey", "4RJCFW83684G62B74F89")
+                .encode(StandardCharsets.UTF_8)
+                .build()
+                .toUri();
+	
+        RestTemplate restTemplate = new RestTemplate();
+        RequestEntity<Void> req = RequestEntity
+                .get(uri)
+                .build();
+        
+        ResponseEntity<String> result = restTemplate.exchange(req, String.class);
+	
+        return result.getBody();
+	}
+	
 	
 	//xml 데이터 json으로 파싱
 	public static String convertXmlToJson(String xmlString) throws Exception {

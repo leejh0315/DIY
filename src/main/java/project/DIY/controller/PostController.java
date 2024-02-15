@@ -11,9 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -287,30 +289,32 @@ public class PostController {
 		return "post/post";
 	}
 	
-	//게시글 업데이트 페이지
-	@GetMapping("/update/{postCode}")
-	public String getUpdatePostByPostId(Model model, @PathVariable("postCode") int postCode, HttpServletRequest req) {
-		HttpSession session = req.getSession(false);
-		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-		Post post = postRepository.selectByPostCode(postCode);
-		aboutNotice(member, model);
-		if(member.getId() != post.getMemberId()) {
-			return "redirect:/home/home";
-		}
-		model.addAttribute("member", member);
-		model.addAttribute("post", post);
-		
-		return "post/updatePost";
-	}
-	
-	//게시글 업데이트 DB update
-	@PostMapping("/update/{postCode}")
-	public String postUpdatePostByPostId(@ModelAttribute Post post, @PathVariable("postCode") int postCode, HttpServletRequest req) {
-		LocalDateTime currentDateTime = LocalDateTime.now();
-		post.setUpdateOn(currentDateTime);
-		postRepository.updatePostByPostCode(post);
-		return "redirect:/posts/{postCode}";
-	}
+
+	   
+	   //게시글 업데이트 페이지
+	   @GetMapping("/update/{postCode}")
+	   public String getUpdatePostByPostId(Model model, @PathVariable("postCode") int postCode, HttpServletRequest req) {
+	      HttpSession session = req.getSession(false);
+	      Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+	      Post post = postRepository.selectByPostCode(postCode);
+	      aboutNotice(member, model);
+	      if(member.getId() != post.getMemberId()) {
+	         return "redirect:/home/home";
+	      }
+	      model.addAttribute("member", member);
+	      model.addAttribute("post", post);
+	      
+	      return "post/updatePost";
+	   }
+	   
+	   //게시글 업데이트 DB update
+	   @PostMapping("/update/{postCode}")
+	   public String postUpdatePostByPostId(@ModelAttribute Post post, @PathVariable("postCode") int postCode, HttpServletRequest req) {
+	      LocalDateTime currentDateTime = LocalDateTime.now();
+	      post.setUpdateOn(currentDateTime);
+	      postRepository.updatePostByPostCode(post);
+	      return "redirect:/posts/{postCode}";
+	   }
 	
 	//파일 지우는 메소드
 	private void deleteFile(String filePath, String fileName) {

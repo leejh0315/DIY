@@ -112,6 +112,8 @@ public class AboutPostController {
 	        	 targetPost.put(noticeList.get(i).getTargetId(), tempPost);
 	         }
 	    }
+	    System.out.println(targetPost);
+	    System.out.println(noticeList);
 	    int chatCnt = 0;
 	    int noticeCnt = 0;
 	    int noticeListLen = noticeList.size();

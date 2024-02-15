@@ -39,6 +39,7 @@
             </div>
         </a>
         <div class="btn_rowwrap">
+			
 	        <div th:with="chatValue=${chatMap[followeeList.id]}">
                 <th:block th:if="${chatValue == null}">
                     <a th:href="@{|/chat/createRoom/${followeeList.id}|}">

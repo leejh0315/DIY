@@ -8,7 +8,9 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/home.css}">
-
+<style>
+	
+</style>
 
 </head>
 <body>
@@ -90,6 +92,12 @@
 
 			</div>
 		</div>
+		
+		
+
+
+<div class="ha"></div>
+		
 
 	  <!-- end -->
 
@@ -124,6 +132,10 @@
 	</div>
 </div>
 </div>
+
+
+
+		
 	<!-- <footer class="footer">
 
     <p>Copyright © 2023. DIY All rights reserved.</p>
@@ -132,14 +144,62 @@
     원윤선 : ereunosun113@gmail.com 
     </p>
 	</footer> -->
-	
 	<script>
+	
 		let types = document.querySelectorAll(".type");
 		let checking = document.getElementById("checkbtn");
 		$("#type_1").css("background-color", "#9A9E7B");
 		$("#type_1").css("color", "white");
+		let boxOfficeNameList = [];
+		let boxOfficeDateList = [];
+				
 		
 		
+		$.ajax({
+			type: "GET",
+			url: "/home/bestMovie",
+			dataType: "json",
+			contentType: "application/json",
+			success: function(data) {
+				console.log(data.weeklyBoxOfficeList.weeklyBoxOffice);
+				for(let i =0;i<3;i++){
+					
+					let dateString = data.weeklyBoxOfficeList.weeklyBoxOffice[i].openDt;
+					let date = new Date(dateString);
+					let formattedDate = date.getFullYear().toString() + (date.getMonth() + 1).toString().padStart(2, '0') + date.getDate().toString().padStart(2, '0');
+					let movieName = data.weeklyBoxOfficeList.weeklyBoxOffice[i].movieNm
+					boxOfficeNameList.push(movieName);
+					boxOfficeDateList.push(dateString);	
+					console.log(movieName);
+					console.log(dateString);
+					$.ajax({
+						type: "GET",
+						url: "/home/movie/"+movieName,
+						 data : {
+               				"date" : formattedDate
+            			},
+						dataType: "json",
+						contentType: "application/json",
+						success: function(data) {
+							console.log(data);
+								/*
+								$('#bestsellerdiv').append('<div class="bestsellercomp">'+
+									
+							'<div id="' + i + '">' +
+							'<div class="bestseller_thumb"> '+
+							'<img src="'+ data.item[i].cover + '">' +
+							'</div>'+
+							'<div class="bestseller_title" >' + data.item[i].title + '</div>' +
+							
+							'<div class="bestseller_author ">' + data.item[i].author + '</div>' +
+							
+							'</div></div>');
+							*/
+				}
+		});
+		}
+		}
+	});
 		
 				$.ajax({
 					type: "GET",

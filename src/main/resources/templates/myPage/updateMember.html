@@ -12,105 +12,130 @@
 <link rel="stylesheet" th:href="@{/css/updatemember.css}">
 
 <style>
-	
+   #error{
+	   color : red;
+	   font-size: 14px;
+   }
 </style>
 </head>
 <body>
-	
-	<th:block th:if="${member == null}">
-		<div th:replace="main/header :: headFrag(${none})"></div>
-	</th:block>
-	<th:block th:if="${member != null}">
-		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
-	</th:block>
-	<div class="wrapcontainer">
-		<div class="updateMemberWrap">
-			<h3>회원정보 변경</h3>
-			<i class="fas fa-arrow-left" onclick="goBack()" style="cursor: pointer;"></i>
-			
-			<div class="update_colwrap">
-				
-			<div>
-				<div id="newProfile">
-					<img id="profileSrcImg" th:src="${member.profileSrc}">
-				</div>
-				<div class="profile_delWrap">
-					<p>프로필 이미지 삭제</p>
-					<i onclick="deleteSrc()" class="fa-solid fa-trash"></i>
-				</div>
-			</div>
-			<form method="post" action="/myPage/update/" enctype="multipart/form-data">
-				<input type="file" name="files" multiple="multiple" id="profileSrc"/>
-				<input th:field="*{member.profileSrc}" id="profilePath" type="hidden">
-				
-				<div class="info_colwrap">
-					<label>닉네임<input class="nick" th:field="*{member.nickName}"></label>
-					<label>한줄소개<input class="intro" th:field="*{member.memberIntro}"></label>
-				</div>
-				<button type="submit" id="submit">변경하기</button>
-			</form>
-			
-			
-				<p onclick="doAsk()">관리자 문의하기</p>
-			
-			
-			<a th:href="@{|/directlyUpdatepassword/${member.id}|}">
-				<p>비밀번호 변경하기</p>
-			</a>
-			<a th:href="@{|/memberOut/${member.id}|}">
-				<p>회원 탈퇴</p>
-			</a>
-		</div>
-		
-		</div>
-	</div>
-	<script th:inline="javascript">
+   
+   <th:block th:if="${member == null}">
+      <div th:replace="main/header :: headFrag(${none})"></div>
+   </th:block>
+   <th:block th:if="${member != null}">
+      <div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+   </th:block>
+   <div class="wrapcontainer">
+      <div class="updateMemberWrap">
+         <h3>회원정보 변경</h3>
+         <i class="fas fa-arrow-left" onclick="goBack()" style="cursor: pointer;"></i>
+         
+         <div class="update_colwrap">
+            
+         <div>
+            <div id="newProfile">
+               <img id="profileSrcImg" th:src="${member.profileSrc}">
+            </div>
+            <div class="profile_delWrap">
+               <p>프로필 이미지 삭제</p>
+               <i onclick="deleteSrc()" class="fa-solid fa-trash"></i>
+            </div>
+         </div>
+         <form method="post" action="/myPage/update/" enctype="multipart/form-data" id="updateForm">
+            <input type="file" name="files" multiple="multiple" id="profileSrc"/>
+            <input th:field="*{member.profileSrc}" id="profilePath" type="hidden">
+            
+            <div class="info_colwrap">
+               <label>닉네임<input class="nick" th:field="*{member.nickName}" id="nick"></label>
+               <p id="error"></p>
+               <label>한줄소개<input class="intro" th:field="*{member.memberIntro}"></label>
+            </div>
+            <button type="button" id="submitBtn">변경하기</button>
+         </form>
+         
+         
+            <p onclick="doAsk()">관리자 문의하기</p>
+         
+         
+         <a th:href="@{|/directlyUpdatepassword/${member.id}|}">
+            <p>비밀번호 변경하기</p>
+         </a>
+         <a th:href="@{|/memberOut/${member.id}|}">
+            <p>회원 탈퇴</p>
+         </a>
+      </div>
+      
+      </div>
+   </div>
+   <script th:inline="javascript">
     var member = /*[[${member}]]*/ [];
-		function doAsk(){
-			window.location.href = "/chat/createRoom/" + member.id + "?name=admin";
+    
+    let submitBtn = document.getElementById("submitBtn");
+    let error = document.getElementById("error");
+    
+    
+    submitBtn.addEventListener("click",(e)=>{
+		e.preventDefault();
+		let nick = document.getElementById("nick").value;
+		console.log('눌림');
+		console.log(nick);
+		if(nick == "" || nick == null || nick.trim()=="" || nick.trim()==null){
+			console.log('에러');
+			error.innerHTML = "닉네임을 입력해주세요."
+		}else{
+			let updateForm = document.getElementById("updateForm");
+			console.log(updateForm);
+			updateForm.submit(); 
 		}
-		
-		$(document).ready(function() {
-			let profileSrc = document.getElementById("profileSrc");
-			let newProfile = document.getElementById("newProfile");
-			let profilePath = document.getElementById("profilePath");
-			let profileSrcImg = document.getElementById("profileSrcImg");
-	
-			profileSrc.addEventListener("change", (e) => {
-				e.preventDefault();
-	
-				let image = e.target.files[0];
-				data = new FormData();
-				data.append('file', image);
-				$.ajax({
-					data: data,
-					type: 'POST',
-					url: '/myPage/profileImage',
-					contentType: false,
-					enctype: 'multipart/form-data',
-					processData: false,
-					success: function (imageData) {
-						console.log(imageData.src);
-						newProfile.innerHTML = "<img src='" + imageData.src + "'>";
-						profilePath.value = imageData.src;
-					},
-				});
-			});
-		});
-	
-		// deleteSrc 함수를 전역 범위에서 정의
-		function deleteSrc() {
-			let profilePath = document.getElementById("profilePath");
-			let profileSrcImg = document.getElementById("profileSrcImg");
-			profilePath.value = "/img/default_profileimg.jpg";
-			profileSrcImg.src = "/img/default_profileimg.jpg";
-			
-		}
-		
-		function goBack(){
-			window.history.back();
-		}
-	</script>
-			<script th:src="@{/js/nav.js}"></script>
+	})
+    
+    
+      function doAsk(){
+         window.location.href = "/chat/createRoom/" + member.id + "?name=admin";
+      }
+      
+      $(document).ready(function() {
+         let profileSrc = document.getElementById("profileSrc");
+         let newProfile = document.getElementById("newProfile");
+         let profilePath = document.getElementById("profilePath");
+         let profileSrcImg = document.getElementById("profileSrcImg");
+   
+         profileSrc.addEventListener("change", (e) => {
+            e.preventDefault();
+   
+            let image = e.target.files[0];
+            data = new FormData();
+            data.append('file', image);
+            $.ajax({
+               data: data,
+               type: 'POST',
+               url: '/myPage/profileImage',
+               contentType: false,
+               enctype: 'multipart/form-data',
+               processData: false,
+               success: function (imageData) {
+                  console.log(imageData.src);
+                  newProfile.innerHTML = "<img src='" + imageData.src + "'>";
+                  profilePath.value = imageData.src;
+               },
+            });
+         });
+      });
+   
+      // deleteSrc 함수를 전역 범위에서 정의
+      function deleteSrc() {
+         let profilePath = document.getElementById("profilePath");
+         let profileSrcImg = document.getElementById("profileSrcImg");
+         profilePath.value = "/img/default_profileimg.jpg";
+         profileSrcImg.src = "/img/default_profileimg.jpg";
+         
+      }
+      
+      function goBack(){
+         window.history.back();
+      }
+   </script>
+         <script th:src="@{/js/nav.js}"></script>
 </body>
 </html>

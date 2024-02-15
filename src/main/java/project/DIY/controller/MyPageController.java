@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ import project.DIY.domain.Notice;
 import project.DIY.domain.PaginationVo;
 import project.DIY.domain.PasswordHistory;
 import project.DIY.domain.Post;
+import project.DIY.form.JoinForm;
 import project.DIY.form.PasswordUpdateForm;
 import project.DIY.repository.AboutPostRepository;
 import project.DIY.repository.FollowRepository;
@@ -221,25 +223,40 @@ public class MyPageController {	//myPage 관련
 	
 	//회원 정보 수정 페이지
 	@GetMapping("/myPage/update/{id}")
-	public String getMyPageUpdate(@PathVariable("id") String id, HttpServletRequest req, Model model) {
+	public String getMyPageUpdate(@PathVariable("id") String id, HttpServletRequest req, Model model, JoinForm joinForm) {
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		aboutNotice(member, model);
 		if(!id.equals(Integer.toString(member.getId()))) {
 			return "redirect:/home/home";
 		}
+		model.addAttribute("joinForm", joinForm);
 		model.addAttribute("member", member);
 		return "myPage/updateMember";
 	}
 	
 	//회원 정보 수정 DB update
 	@PostMapping("/myPage/update/")
-	public String postMyPageUpdate(HttpServletRequest req, @ModelAttribute Member member) {
+	public String postMyPageUpdate(HttpServletRequest req, @ModelAttribute Member member, Errors errors, BindingResult bindingResult) {
 		HttpSession session = req.getSession(false);
 		Member sessionMember = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
 		
 		List<Post> posts = postRepository.selectUserPostbyId(sessionMember.getId());
 		String newNickName = member.getNickName();
+		/*
+	    if (!StringUtils.hasText(joinForm.getNickName())) {
+	        errors.rejectValue("nickName", null, "닉네임을 입력해주세요.");
+	    } else if (!joinForm.getNickName().matches("^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$")) {
+	        errors.rejectValue("nickName", null, "닉네임은 특수문자를 제외한 2~10자리여야 합니다.");
+	    }
+	    */
+		if(member.getNickName() == "" || member.getNickName() == null || member.getNickName().trim() == "" || member.getNickName().trim() == null) {
+			errors.rejectValue("nickName", null, "닉네임을 입력해주세요.");
+			return "myPage/update";
+		}else if(!member.getNickName().matches("^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$")) {
+			errors.rejectValue("nickName", null, "닉네임은 특수문자를 제외한 2~10자리여야 합니다.");
+			return "myPage/update";
+		}
 		
 		for(int i =0; i<posts.size(); i++) {
 			postRepository.updateById(newNickName, Integer.parseInt(posts.get(i).getPostCode()));
