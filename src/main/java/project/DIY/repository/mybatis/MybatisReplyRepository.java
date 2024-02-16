@@ -60,6 +60,18 @@ public class MybatisReplyRepository implements ReplyRepository{
 		
 		return replyMapper.replyCnt(postId);
 	}
+
+	@Override
+	public void deleteReply(int replyId) {
+		replyMapper.deleteReply(replyId);
+		
+	}
+
+	@Override
+	public void deleteReplyNotice(String type, int postCode, int doMemberId) {
+		replyMapper.deleteReplyNotice(type, postCode, doMemberId);
+		
+	}
 	
 	
 	

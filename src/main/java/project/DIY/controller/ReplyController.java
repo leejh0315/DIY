@@ -1,6 +1,5 @@
 package project.DIY.controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,6 +59,26 @@ public class ReplyController {
 		aboutPostRepository.insertNotice(notice);
 		return "redirect:/posts/{root}";
 	}
+	
+	@PostMapping("/deleteReply")
+	@ResponseBody
+	public String deleteReply(@RequestParam(value = "replyId") int replyId,
+			@RequestParam(value = "postCode") int postCode,
+			 HttpServletRequest req
+			) {
+		HttpSession session = req.getSession(false);
+		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
+		System.out.println("postCode : " + postCode);
+		System.out.println("replyId : " + replyId);
+		
+		replyRepository.deleteReplyNotice("reply", postCode, member.getId());
+		replyRepository.deleteReply(replyId);
+		
+		return "done";
+	}
+	
+	
 	
 	
 }

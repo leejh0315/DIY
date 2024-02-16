@@ -18,4 +18,6 @@ public interface ReplyMapper {
 	public List<ReReply> selectReReplyById(int postId); 
 	public void deleteReplybypostCode (int postId);
 	public int replyCnt(@Param("postId") int postId);
+	public void deleteReply(int replyId);
+	public void deleteReplyNotice(String type, int postCode, int doMemberId);
 }

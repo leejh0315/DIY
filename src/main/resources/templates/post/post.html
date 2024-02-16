@@ -135,6 +135,12 @@
 								<th:block th:if="${member != null}">
 									<div class="rereplybtn" style="cursor: pointer;">답글</div>
 								</th:block>
+								<th:block th:if="${member != null}">
+									<th:block th:if="${member.id == replylist.replyerId}">
+										<div class="rereplybtn" onClick="deleteReply(this)" th:id="${replylist.replyId}" style="cursor: pointer;">삭제</div>
+									</th:block>
+								</th:block>
+								
 							</div>
 							<!-- 대댓글입력폼 -->
 							<th:block th:if="${member != null}">
@@ -216,7 +222,30 @@
     var post = /*[[${post}]]*/ [];
 </script>
 	<script>
-
+	function deleteReply(e){
+		let replyId =  $(e).attr('id');
+		if (confirm("댓글을 삭제하시겠습니까?")) {
+				$.ajax({
+	            type: 'POST',
+	            url: '/deleteReply',
+	            data:{
+				 "replyId" : replyId,
+				 "postCode" : post.postCode
+					} ,
+	            success: function (data) {
+					if(data == 'done'){
+						alert('댓글이 삭제되었습니다.')	
+					}else{
+						alert('삭제에 실패하였습니다')
+					}
+					window.location.reload();
+            	}
+			})
+		    
+		} else {
+		    console.log("사용자가 '취소'를 눌렀습니다.");
+		}		
+	}
 
 		
 		function toggleEditDeleteButtons(icon) {
