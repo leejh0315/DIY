@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/welcome.css}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>500 Error</title>
+</head>
+<body>
+	<th:block th:if="${member == null}">
+		<div th:replace="main/header :: headFrag(${none})"></div>
+	</th:block>
+	<th:block th:if="${member != null}">
+		<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
+	</th:block>
+	
+	<div class="wrapcontainer">
+		<div class="welcom_wrap">
+			<div>
+				<img th:src="@{/img/logo.png}" alt="">
+			</div>
+			<h2>에러페이지 입니다.</h2>
+			<br>
+			<div>잘못된 접근 입니다. 다시 요청해주세요.</div>
+			<button onclick="goBack()">뒤로 가기</button>
+		</div>
+	</div>	
+</body>
+
+<script>
+	function goBack(){
+		history.back();
+	}
+	$(document).ready(function(){
+		 setTimeout(function() {
+        	history.back();
+    }, 3000); 
+	})
+</script>
+<script th:src="@{/js/nav.js}"></script>    
+</html>
