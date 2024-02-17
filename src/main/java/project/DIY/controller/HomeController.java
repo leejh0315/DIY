@@ -168,6 +168,7 @@ public class HomeController {
       }else {
          LocalDateTime currentDateTime = LocalDateTime.now();
          Member member = new Member();
+         
          member.setLoginId(joinForm.getLoginId());
          member.setPassword(passwordEncoder.encode(joinForm.getPassword()));
          member.setNickName(joinForm.getNickName());
@@ -213,19 +214,20 @@ public class HomeController {
       Member memberVO = loginService.login(loginForm.getLoginId(), loginForm.getPassWord());
 
 
-     int failCount = 0;
-      if(bindingResult.hasErrors()) {
-         model.addAttribute("loginForm", loginForm);
-         return "login/login";
-      }
+     int failCount;
+     
+     
       if(memberVO == null) { //계정정보가 없거나, 비밀번호가 안맞거나 로그인 실패
-        
+    	  if(redisUtils.getData(loginForm.getLoginId()) == null) {
+    		  redisUtils.setData(loginForm.getLoginId(), "0");
+    		  }
+    	  
          if(redisUtils.getData(loginForm.getLoginId()) != null && !redisUtils.getData(loginForm.getLoginId()).equals("LOCK")) {
            failCount = Integer.parseInt(redisUtils.getData(loginForm.getLoginId()));
            System.out.println(failCount);
            redisUtils.setData(loginForm.getLoginId(), Integer.toString(failCount+1));
-           
          } 
+         
          if(redisUtils.getData(loginForm.getLoginId()) != null &&
                redisUtils.getData(loginForm.getLoginId()).equals("5")){
             bindingResult.reject("loginForm","로그인 실패 5회입니다. 잠시 후에 다시 시도해주세요.");
@@ -255,7 +257,7 @@ public class HomeController {
       
       
       redisUtils.setDataExpire(loginForm.getLoginId(), "", 1);
-      HttpSession session = req.getSession(true);
+      HttpSession session = req.getSession(true);//세션에 정보가 없을 때, null을 반환하는 것이 아닌 새로운 객체를 생성하여 반환
       session.setAttribute(SessionVar.LOGIN_MEMBER, memberVO);
       
       

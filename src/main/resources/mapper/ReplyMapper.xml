@@ -61,7 +61,10 @@
 	
 	<delete id="deleteReplyNotice">
 		delete from diydb.notice where type = #{param1} and targetId = #{param2} and doMemberId=#{param3};
-		
+	</delete>
+	
+	<delete id="deleteReReply">
+		delete from diydb.rereply where rereplyId = #{param1}
 	</delete>
 	
 </mapper>

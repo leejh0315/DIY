@@ -17,4 +17,5 @@ public interface ReplyRepository {
 	public int replyCnt(@Param("postId") int postId);
 	public void deleteReply(int replyId);
 	public void deleteReplyNotice(String type, int postCode, int doMemberId);
+	public void deleteReReply(int rereplyId);
 }

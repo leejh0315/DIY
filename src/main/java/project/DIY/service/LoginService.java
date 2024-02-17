@@ -22,14 +22,9 @@ public class LoginService {
 	
 	public Member login(String id, String password) {
 		Member member = memberRepository.selectById(id);
-		
-		String salt = getSalt();
-		String res = getEncrypt(password, salt);
-		
 		if(member != null) {
 			if(passwordEncoder.matches(password, member.getPassword())) {
 				System.out.println("로그인 성공");
-				member.setPassword(res);
 				return member;
 			}
 		}

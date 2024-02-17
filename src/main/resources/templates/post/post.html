@@ -9,7 +9,21 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/postdetail.css}">
-
+	<style>
+		.rereplyDateAndDelete{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 1em;
+		}
+		.deleteReReply{
+			color: black;
+			font-size: 16px;
+		}
+		.reportCheckModal{
+			z-index: 999;
+		}
+	</style>
 </head>
 <body>
 
@@ -35,7 +49,9 @@
 	<div class="deleteModal" id="deleteModal" style="display: none;">
 		<div>
 			<div id="modalcontent">글을 삭제하시겠습니까?</div>
+			<div class="mc" style="width: 300px;">
 			<p id="modalcontent">게시글 삭제시 댓글 및 좋아요 정보가 삭제되고, 복구되지 않습니다.</p>
+			</div>
 			<div id="deleteCancle">취소</div>
 			<div id="deleteConfirm">삭제</div>
 		</div>
@@ -167,10 +183,17 @@
 							<div th:each="item : ${reRep}" class="rereply">
 								<div class="replyWrap">
 								<img class="img" th:src="${item.userProfileSrc}"  alt="">
-								<div class="rereplycont">							
+								<div class="rereplycont">
 									<div th:text="${item.nickName}"></div>
 									<div th:text="${item.rereply}"></div>
-									<div th:text="${item.rereplyCreateOn}"></div>
+									<div class="rereplyDateAndDelete">
+										<div th:text="${item.rereplyCreateOn}"></div>
+										<th:block th:if="${member != null}">
+											<th:block th:if="${member.id == item.rereplyerId}">
+												<div class="deleteReReply" onClick="deleteReReply(this)" th:id="${item.rereplyId}" style="cursor: pointer;">삭제</div>
+											</th:block>
+										</th:block>
+									</div>
 								</div>
 							</div>
 							</div>
@@ -222,6 +245,31 @@
     var post = /*[[${post}]]*/ [];
 </script>
 	<script>
+	function deleteReReply(e){
+		let reReplyId =  $(e).attr('id');
+		if (confirm("댓글을 삭제하시겠습니까?")) {
+			$.ajax({
+            type: 'POST',
+            url: '/deleteReReply',
+            data:{
+			 "reReplyId" : reReplyId,
+			 
+				} ,
+            success: function (data) {
+				if(data == 'done'){
+					alert('답글이 삭제되었습니다.')	
+				}else{
+					alert('삭제에 실패하였습니다')
+				}
+				window.location.reload();
+        	}
+		})
+		    
+		} else {
+		    console.log("사용자가 '취소'를 눌렀습니다.");
+		}
+	}
+		
 	function deleteReply(e){
 		let replyId =  $(e).attr('id');
 		if (confirm("댓글을 삭제하시겠습니까?")) {
@@ -319,7 +367,7 @@
 					var previousPage = document.referrer;
 					console.log(typeof(post.postCode));
 					
-					let deleteBtn = document.getElementById("deleteBtn");
+					//let deleteBtn = document.getElementById("deleteBtn");
 					let deleteCancle = document.getElementById("deleteCancle");
 					let deleteConfirm = document.getElementById("deleteConfirm");
 				    
@@ -337,6 +385,7 @@
 						jQuery(".modalBackground").fadeOut();
 						});
 						deleteConfirm.addEventListener("click", (e)=>{
+							console.log('됐다.');
 							$.ajax({
 							type: 'POST',
 							url: '/postdelete',
@@ -425,6 +474,7 @@
 				let reportCancle = document.getElementById("reportCancle");
 				let reportConfirm = document.getElementById("reportConfirm");
 			    reportbtn.addEventListener("click", (e)=>{
+					
 					jQuery(".reportCheckModal").fadeIn();
 					jQuery(".modalBackground").fadeIn();
 				

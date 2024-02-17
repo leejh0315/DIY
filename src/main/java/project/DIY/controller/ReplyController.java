@@ -78,6 +78,15 @@ public class ReplyController {
 		return "done";
 	}
 	
+	@PostMapping("/deleteReReply")
+	@ResponseBody
+	public String deleteReReply(@RequestParam(value = "reReplyId") int reReplyId
+			) {
+		System.out.println("replyId : " + reReplyId);
+		replyRepository.deleteReReply(reReplyId);
+		
+		return "done";
+	}
 	
 	
 	
