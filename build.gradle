@@ -64,5 +64,5 @@ tasks.named('test') {
 }
 
 processResources {
-    dependsOn "copyWebApp"
+    //dependsOn "copyWebApp"
 }
