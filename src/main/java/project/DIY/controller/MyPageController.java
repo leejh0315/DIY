@@ -283,7 +283,7 @@ public class MyPageController {	//myPage 관련
     	// JSON 객체 생성
         JsonObject jsonObject = new JsonObject();
         // 이미지 파일이 저장될 경로 설정
-        String fileRoot  = "C:\\DIY\\src\\main\\resources\\static\\image\\profile\\"; 
+        String fileRoot  = "home/ubuntu\\DIY\\src\\main\\resources\\static\\image\\profile\\"; 
         // 업로드된 파일의 원본 파일명과 확장자 추출
         String originalFileName = multipartFile.getOriginalFilename();
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));

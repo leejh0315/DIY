@@ -53,8 +53,10 @@ public class WebConfig implements WebMvcConfigurer{
 	             .addResourceLocations("classpath:/static/img/",
 	                                   "classpath:/static/css/",
 	                                   
-	                                   "file:/C:/DIY/src/main/resources/static/image/post/",
-	                                   "file:/C:/DIY/src/main/resources/static/image/profile/",
+	                                   //"file:/C:/DIY/src/main/resources/static/image/post/",
+	                                   //"file:/C:/DIY/src/main/resources/static/image/profile/",
+	                                   "file:/home/ubuntu/DIY/src/main/resources/static/image/post/",
+	                                   "file:/home/ubuntu/DIY/src/main/resources/static/image/profile/",
 	                                   
 	                                   "classpath:/static/js/");
 	}
