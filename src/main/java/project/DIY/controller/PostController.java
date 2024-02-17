@@ -94,7 +94,7 @@ public class PostController {
         //String fileRoot  = "C:\\image\\temp\\"; 
         
         //String fileRoot  = "C:\\DIY\\src\\main\\resources\\static\\image\\post\\";
-        String fileRoot  = "home/ubuntu/DIY\\src\\main\\resources\\static\\image\\post\\";
+        String fileRoot  = "/home/ubuntu/DIY/src/main/resources/static/image/post/";
         // 업로드된 파일의 원본 파일명과 확장자 추출
         String originalFileName = multipartFile.getOriginalFilename();
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
