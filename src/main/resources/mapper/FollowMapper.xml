@@ -6,7 +6,7 @@
 	
 	<insert id="insertFollow" parameterType="Integer">
 		INSERT INTO diydb.follow (`follower`, `followee`) 
-		VALUES (#{arg0}, #{arg1});
+		VALUES (#{param1}, #{param2});
 	</insert>
 
 	<select id="selectFollowee" parameterType="Integer">
