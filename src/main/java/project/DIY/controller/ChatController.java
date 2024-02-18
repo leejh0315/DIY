@@ -52,10 +52,10 @@ public class ChatController {
 		
 		
 		//aboutPostRepository.updateNoticeView(1, id);
-        List<ChatRoom> roomList = chatService.findMyRoom(id);
-        Map<Integer, Member> roomMap = new HashMap<Integer, Member>();
+        List<ChatRoom> roomList = chatService.findMyRoom(id); //내 방들을 찾음( 내가 receiver이거나 sender이거나 )
+        Map<Integer, Member> roomMap = new HashMap<Integer, Member>(); 
         
-        List<ChatMessage> chatOrder = chatRepository.selectMessageByOrder(id);
+        List<ChatMessage> chatOrder = chatRepository.selectMessageByOrder(id);//(최근에 온 메세지가 상단에 노출되게끔 하는)
         
         System.out.println("roomList : " + roomList);
         
@@ -73,41 +73,44 @@ public class ChatController {
         }
         System.out.println("this TempList : " + tempList);
        
-        for(int i = 0; i<tempList.size(); i++) {
-        	if(member.getId() == tempList.get(i).getChatReceiverId()) {
-        		for(int j = 0 ; j < tempList.size(); j++) {
-        			int you =tempList.get(j).getChatSenderId();
+        for(int i = 0; i<tempList.size(); i++) {//채팅방 개수만큼 반복
+        	
+        	if(member.getId() == tempList.get(i).getChatReceiverId()) { //세션에 있는 아이디와, tempList의 reciever가 같으면
+        		
+        			int you =tempList.get(i).getChatSenderId();			//상대방은 senderId 일것
         			if(you != member.getId()) {
         				Member uMember = memberRepository.selectBymemberId(you);
         				roomMap.put(you, uMember);
         				tempList.get(i).setChatReceiverId(you);
-        			}
         		}
         	}
         	else if(member.getId() == tempList.get(i).getChatSenderId()) {
-        		for(int j = 0 ; j < tempList.size(); j++) {
-        			int you =tempList.get(j).getChatReceiverId();
+        		
+        			int you =tempList.get(i).getChatReceiverId();
         			if(you != member.getId()) {
         				Member uMember = memberRepository.selectBymemberId(you);
         				roomMap.put(you, uMember);
         			}
-        		}
+        		
         	}
         }
+        
         System.out.println("tempList : " + tempList);
         System.out.println("chatOrder : " + chatOrder);
+        
         Map<Integer, Integer> chatCntMap = new HashMap<Integer, Integer>();
                 
         for(int i = 0 ; i < chatOrder.size(); i++) {
         	Notice notice = new Notice();
         	notice.setTargetId(tempList.get(i).getId());
+        	notice.setTargetMemberId(id);
         	
-        	if(id != chatOrder.get(i).getSender()) {
-        		notice.setTargetMemberId(chatOrder.get(i).getReceiver());
-        		notice.setDoMemberId(chatOrder.get(i).getSender());
+        	
+        	
+        	if(id == tempList.get(i).getChatSenderId()) {
+        		notice.setDoMemberId(tempList.get(i).getChatReceiverId());
         	}else {
-        		notice.setTargetMemberId(chatOrder.get(i).getSender());
-        		notice.setDoMemberId(chatOrder.get(i).getReceiver());
+        		notice.setDoMemberId(tempList.get(i).getChatSenderId());
         	}
         	
         	 

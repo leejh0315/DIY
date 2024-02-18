@@ -1,3 +1,116 @@
+@media(max-width:576px){
+
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.wrapcontainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.chat_wrap, .msgArea {
+    width: 100%; /* 여기를 조절해서 원하는 너비로 설정하세요 */
+    
+    margin: 1em 0 0em 0;
+    padding: 1em;
+    vertical-align: middle;
+    display: block;
+    background-color: #f3f3f3;
+    
+}
+
+.chat_wrap{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px; 
+}
+.msgArea{
+    border-bottom-left-radius: 10px;
+
+    border-bottom-right-radius: 10px; 
+}
+
+.msgArea {
+    margin: 0;
+    max-height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.msgArea > input {
+    flex-grow: 1;
+    width: 60%;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.msgArea > button {
+    min-width: 50px;
+}
+
+.myMessage, .yourMessage {
+    width: fit-content;
+    max-width: 80%;
+    min-width: 20%;
+    word-wrap: break-word;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.myMessage {
+    background-color: #9A9E7B;
+    color: white;
+    margin-left: auto;
+}
+
+.yourMessage {
+    background-color: #ddd;
+    color: black;
+    align-self: flex-start;
+}
+
+.myMessage div:nth-of-type(2), .yourMessage div:nth-of-type(2) {
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+.sendBtn, .quit {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.sendBtn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.quit {
+    background-color: #f44336;
+    color: white;
+}
+
+}
+
+/*--------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+
+@media all and (min-width:576px) and (max-width:1860px) { 
+
+
 body {
     margin: 0;
     padding: 0;
@@ -94,4 +207,5 @@ body {
 .quit {
     background-color: #f44336;
     color: white;
+}
 }

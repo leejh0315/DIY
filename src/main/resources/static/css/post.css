@@ -1,6 +1,354 @@
 @import url("font.css");
 
 
+@media(max-width:576px){
+
+.title{
+    font-weight: 800 ;
+} 
+
+.searchModal{
+    z-index: 1;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate3d(-50%, -50%, 0);
+    
+    height: 550px;
+    background-color:rgb(248, 248, 248);
+}
+.searchModal>div:nth-of-type(1){
+    height: 100%;
+}
+.searchModal>div>div:nth-of-type(1){
+    background-color:#9A9E7B ;
+    padding: 15px 20px;
+    font-size: 16px;
+    height: 50px;
+    color: white;
+}
+
+
+
+.select_lab {
+    width: 500px;
+    /* label 등은 inline-block */
+    margin: 0 auto;
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+.select_lab label{
+    padding: 0;
+}
+#keyword1{
+    border-radius: 8px;
+    border:1px solid #9A9E7B;
+    width: 190px;
+    height: 30px;
+    text-indent: 6px;
+}
+
+.searchButton {
+    color: white;
+    background-color: #9A9E7B;
+    border-radius: 10px;
+    width: 65px;
+    height: 30px;
+    border: none;
+}
+
+
+
+#searchModalOffButton{
+    position: absolute;
+    top: 15px;
+    right: 18px;
+}
+
+#searchResult {
+    margin: 0 50px 0 50px;
+    height: 65%;
+    overflow-y: auto;
+}
+
+
+
+.resultarea{
+    padding-top: 20px;
+}
+.resultarea>p{
+    font-size: 16px;
+    width: 500px;
+    font-weight: 700;
+    padding-left: 50px;
+}
+.resultarea hr{
+    width: 500px;
+    margin: 10px auto;
+    color: #686868;
+}
+
+
+.rating__star {
+font-size: 2em;
+cursor: pointer;
+color: #9A9E7B;
+transition: filter linear .3s;
+}
+
+
+
+/* 작품선택부분 */
+.post_topwrap{
+    
+    display: grid;
+    justify-content: space-around;
+    padding: 50px 0 30px 0;
+    
+    align-items: center;
+}
+
+.post_topleft{
+    padding-right: 40px;
+    text-align: left;
+    flex: auto;
+}
+
+.post_topleft > .p1 {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.post_topleft>.p2{
+    color: #777777;
+}
+.post_topmid{
+    padding-right: 40px;
+}
+/* .post_topright{
+    padding-right: 40px;
+} */
+
+.searchModalButton {
+    margin: 0;
+    border-radius: 10px;
+    background-color: transparent;
+    border:1px solid #9A9E7B;
+    width: 312px;
+    height: 36px;
+    font-weight: 800;
+}
+
+label{
+    font-weight: 400;
+}
+
+.categorySelect {
+    width: 80px;
+    height: 30px;
+}
+
+
+.selectedWork{
+    
+    border-radius: 10px;
+    border:1px solid #999999;
+    width: 350px;
+    height: 200px;
+    padding: 27px 20px 0 30px;
+}
+
+.selectedWork >img {
+    width: 100px;
+    height: 145px;
+    float: left;
+}
+
+.selectedWork>div:nth-of-type(1){ 
+    height: 145px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center
+}
+
+.selectedWork>div>div:nth-of-type(1){ 
+    font-weight: 800;
+    color: #333333;
+}
+.selectedWork> div>div{
+    color: #777777;
+}
+
+    
+.selectedWork > div {
+    float: right;
+    width: 188px;
+    overflow: hidden;
+    color: #777777;
+}
+.post_topmid > p {
+    display: inline-block;
+    padding-right:.5em;
+}
+.post_topmid > p:nth-of-type(1) {
+    font-weight: 800;
+}
+.post_topmid > p:nth-of-type(2){
+    color:red;
+}
+.error{
+    color:red;
+
+}
+
+.post_topright > p{
+    font-weight: 800;
+}
+
+.rating {
+    border-radius: 10px;
+    border:1px solid #999999;
+    
+    height: 200px;
+    width: 350px;
+
+    position: relative;
+
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .3em;
+    overflow: hidden;
+    
+    }
+
+
+
+    .rating__result {
+        padding-right: 20px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #333333;
+        pointer-events: none;
+        }
+
+    .titlearea{
+     	display: flex;
+     	justify-content: space-around;
+     
+    }
+    .titlearea >.error{
+        padding-left: 6em;
+    }
+    .title_lb{
+        
+        display: flex;
+        flex-direction: row;
+        justify-items: center;
+        align-items: center;
+        
+        font-weight: 800;
+    }
+    .title_lb > span {
+        flex-grow: .5;
+    }
+    .note-editor{
+		width: 500px;
+	}
+    .posttitle{
+        
+        border:1px solid #999999;
+        border-radius: 10px;
+        flex-grow: 1;
+        width: 290px;
+        height: 35px;
+        font-weight: 300;
+        text-indent: 15px;
+    }
+ 
+
+    .content_wrap{
+        width: 1100px;
+        margin: 20px auto;
+    }
+    .content_wrap>div:nth-of-type(1){
+        display: flex;
+        flex-direction: row;
+        gap: .8em;;
+    }
+    .content_wrap >div>p:nth-of-type(1) {
+        font-weight: 800;
+    }
+
+    .submitBtn {
+        float: right;
+         
+        width: 180px;
+        height: 50px;
+        color: white;
+        background-color: #9A9E7B;
+        border-radius: 10px;
+        border: none;
+        margin-bottom: 2%;
+    }
+
+    /* 모달창 css */
+
+    .result {
+        display: flex;
+        flex-direction: row;
+        height: 160px;
+        width: 340px;
+        padding: 20px 0 0 0;
+    }
+    .result div:nth-of-type(1){
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center
+    }
+
+    .result > img {
+        width: 100px;
+
+    }
+
+
+    
+	.spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border: 8px solid #f3f3f3; /* Light grey */
+        border-top: 8px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spinner 1s linear infinite;
+    }
+    @keyframes spinner {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+}
+}
+
+/*--------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+
+@media all and (min-width:576px) and (max-width:1860px) { 
+
+
+
 .title{
     font-weight: 800 ;
 } 
@@ -329,3 +677,4 @@ label{
             transform: rotate(360deg);
         }
     }
+}

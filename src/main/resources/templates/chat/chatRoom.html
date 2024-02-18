@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
 <style>
 	.myMessage{
@@ -16,7 +17,7 @@
 <script src='https://kit.fontawesome.com/c8fabc7e12.js' crossorigin='anonymous'></script>
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/chatroom.css}">
-
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 </head>
 <body>
 	<div th:replace="main/header :: headFrag(${member.activeUUID})"></div>
@@ -51,6 +52,10 @@
 </body>
 
 <script th:inline="javascript">
+	$(document).ready(function() {
+               	var pageHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
+	window.scrollTo(0, pageHeight);
+});
 	var room = /*[[${room}]]*/ [];
     var roomId = /*[[${room.roomId}]]*/ 0;
     var id = /*[[${id}]]*/ 0;
@@ -59,14 +64,15 @@
     let socket = new WebSocket("ws://localhost:8080/ws/chat/"+roomId);
     
     
-
+ 	
     
 	console.log('member : ' , member);
 		
     console.log('room : ' , room);
         function enterRoom(socket){
             var enterMsg={"type" : "ENTER","roomId":roomId ,"sender":member.id, "senderNick":memberNick,"message":""}; //sender는  글쓸때 수정하자.\
-         
+         	var pageHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
+	window.scrollTo(0, pageHeight);
             socket.send(JSON.stringify(enterMsg), roomId);
         }
 
