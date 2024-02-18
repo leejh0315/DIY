@@ -48,7 +48,7 @@ public class WebSockChatHandler extends TextWebSocketHandler {
         String payload = message.getPayload();
         ChatMessage chatMessage = objectMapper.readValue(payload, ChatMessage.class);
         ChatRoom room = chatService.findByRoomId(chatMessage.getRoomId());
-        String goalRoom = "ws://localhost:8080/ws/chat/" + chatMessage.getRoomId();
+        String goalRoom = "ws://52.79.205.235:8080/ws/chat/" + chatMessage.getRoomId();
         
         room.setSessions(Setsessions);
         
