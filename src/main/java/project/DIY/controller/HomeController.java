@@ -77,8 +77,8 @@ public class HomeController {
 
             List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
 
-      if(king.size() !=3){
-      king= memberRepository.thisMonthWriteKing(
+      if(king.size()< 3){
+    	  king= memberRepository.thisMonthWriteKing(
       lastMonthValue);
 
       }
