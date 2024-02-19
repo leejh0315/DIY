@@ -179,6 +179,7 @@ public class HomeController {
          pH.setMemberId(newMember.getId());
          pH.setPassword(newMember.getPassword());
          memberRepository.insertPasswordHistory(pH);
+         redisUtils.setDataExpire(joinForm.getLoginId(), "", 1);
          return "redirect:/" + "home/welcome";   
       }
    }
