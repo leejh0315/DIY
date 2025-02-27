@@ -81,9 +81,7 @@ public class ApiController {
                       .toUri();
           
               RestTemplate restTemplate = new RestTemplate();
-              RequestEntity<Void> req = RequestEntity
-                    .get(uri)
-                    .build();
+              RequestEntity<Void> req = RequestEntity.get(uri).build();
           
                ResponseEntity<String> result = restTemplate.exchange(req, String.class);
                String xmlString = result.getBody().toString();

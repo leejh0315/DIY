@@ -25,6 +25,7 @@ dependencies {
     
 	implementation group: 'org.glassfish', name: 'javax.annotation', version: '10.0-b28'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
     
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -36,6 +37,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -49,6 +51,7 @@ dependencies {
 	
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis' //redis
     implementation 'it.ozimov:embedded-redis:0.7.2' 	// 로컬

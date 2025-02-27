@@ -35,19 +35,13 @@ public class LoginFilter implements Filter {
 		if(isLoginCheckPath(uri)) {
 			HttpSession session = req.getSession(true);
 			Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
-			
 			log.info("Session: {}", session);
 			log.info("Member: {}", member);
-			
-			
-			if(member == null ||session == null 
-					//||!member.getLoginId().equals("admin")
-				) {
+			if(member == null ||session == null) {
 				log.info("로그인 없이 접근 시도 {}", uri);
 				resp.sendRedirect("/home/dologin");
 				return;
 			}
-
 		}
 		chain.doFilter(request, response);
 	}

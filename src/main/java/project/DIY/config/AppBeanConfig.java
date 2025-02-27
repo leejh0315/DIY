@@ -14,6 +14,7 @@ import project.DIY.repository.ReplyRepository;
 import project.DIY.repository.mybatis.AboutPostMapper;
 import project.DIY.repository.mybatis.ChatMapper;
 import project.DIY.repository.mybatis.MemberMapper;
+//import project.DIY.repository.mybatis.MemberMapper;
 import project.DIY.repository.mybatis.MybatisAboutPostRepository;
 import project.DIY.repository.mybatis.MybatisChatRepository;
 import project.DIY.repository.mybatis.MybatisMemberRepository;
@@ -26,7 +27,6 @@ import project.DIY.repository.mybatis.ReplyMapper;
 @RequiredArgsConstructor
 public class AppBeanConfig {
 
-   @Autowired
    private final MemberMapper memberMapper;
    @Autowired
    private final PostMapper postMapper;
@@ -36,6 +36,7 @@ public class AppBeanConfig {
    private final AboutPostMapper aboutPostMapper;
    @Autowired
    private final ChatMapper chatMapper;
+   
    @Bean
    public MemberRepository memberRepository() {
       return new MybatisMemberRepository(memberMapper);
@@ -62,5 +63,7 @@ public class AppBeanConfig {
    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
        return restTemplateBuilder.build();
    }
+
+
    
 }

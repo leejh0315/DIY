@@ -67,7 +67,7 @@ public class HomeController {
       HttpSession session = req.getSession();
       Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
       
-      aboutNotice(member, model);
+//      aboutNotice(member, model);
       LocalDate now = LocalDate.now();
       int monthValue = now.getMonthValue();
       LocalDate lastMonth = now.minusMonths(1);
@@ -75,7 +75,7 @@ public class HomeController {
 
       System.out.println("now:" + now);
 
-            List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
+      List<Map<String,String>> king = memberRepository.thisMonthWriteKing(monthValue);
 
       if(king.size()< 3){
     	  king= memberRepository.thisMonthWriteKing(
@@ -85,6 +85,7 @@ public class HomeController {
       List<Post> post = postRepository.selectByPostCtCodeHome("book");
 
       List<String> kingProfileimg =new ArrayList<>();
+      if(kingProfileimg.size()>=1) {
 	      for(int i = 0; i<3;i++) {
 	    	  Integer kingid =((Post) king.get(i)).getMemberId();
 	    	  
@@ -95,7 +96,11 @@ public class HomeController {
 	    	  }
 		    	 
 	      }
-      
+      }else {
+    	  for(int i = 0; i<3 ; i++) {
+    		  kingProfileimg.add("/img/defalut_profileimg.jpg");
+    	  }
+      }
       
       List<String> top5_profileImg = new ArrayList<>();
       List<Post> top5posts = postRepository.selectTop5PopularPosts();
@@ -258,6 +263,8 @@ public class HomeController {
       
       
       redisUtils.setDataExpire(loginForm.getLoginId(), "", 1);
+      
+      
       HttpSession session = req.getSession(true);//세션에 정보가 없을 때, null을 반환하는 것이 아닌 새로운 객체를 생성하여 반환
       session.setAttribute(SessionVar.LOGIN_MEMBER, memberVO);
       
@@ -346,8 +353,7 @@ public class HomeController {
          errors.rejectValue("passWord", null, "비밀번호 필수 입력입니다.");
       }
    }
-   
-   //이메일 형식
+ 
    public void validateEmail(String email, Errors errors) {
 	    if (!StringUtils.hasText(email)) {
        errors.rejectValue("loginId", null, "아이디 필수 입력입니다.");

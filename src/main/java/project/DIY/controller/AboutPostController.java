@@ -30,10 +30,11 @@ import project.DIY.repository.MemberRepository;
 import project.DIY.repository.PostRepository;
 import project.DIY.repository.ReplyRepository;
 import project.DIY.session.SessionVar;
+
 @Controller
 @RequiredArgsConstructor
-
 public class AboutPostController {
+	
 	@Autowired
 	private final AboutPostRepository aboutPostRepository;
 	@Autowired

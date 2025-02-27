@@ -34,7 +34,7 @@
 	</insert>
 	
 	<select id="selectNoticeById" resultType="Notice">
-		select * from diydb.notice where targetMemberId = #{memberId} order by id desc;
+		select * from diydb.notice where targetMemberId = #{memberId} order by noticeId desc;
 	</select>		
 	<select id="selectLikedPostsById" parameterType="Integer">
 		SELECT postCode FROM diydb.likepost where memberId = #{memberId};

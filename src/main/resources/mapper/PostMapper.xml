@@ -59,7 +59,7 @@
 	
 	<!-- 카테고리에 맞는 가장 많이 작성된 5개의 post를 반환 -->
 	<select id="selectByPostCtCodeHome" resultType="Post">
-		select
+		<!--select
 			 targetName,
 			 targetAuthor,
 			 targetThumbnail,
@@ -71,7 +71,20 @@
 			 group by targetName 
 			 order by cnt desc 
 			 LIMIT 5;
-		
+		-->
+		SELECT 
+    targetName, 
+    MAX(targetAuthor) AS targetAuthor, 
+    MAX(targetThumbnail) AS targetThumbnail, 
+    AVG(starCount) AS starCount, 
+    MAX(targetSubName) AS targetSubName, 
+    COUNT(targetName) AS cnt
+FROM diydb.post
+WHERE postCtCode = #{postCtCode}
+GROUP BY targetName
+ORDER BY cnt DESC
+LIMIT 5;
+
 	</select>
 	
 	<select id="selectAllpost" resultType="Post">

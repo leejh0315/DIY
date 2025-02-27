@@ -5,31 +5,31 @@
 <mapper	namespace="project.DIY.repository.mybatis.FollowMapper">
 	
 	<insert id="insertFollow" parameterType="Integer">
-		INSERT INTO diydb.follow (`follower`, `followee`) 
+		INSERT INTO diydb.follow (`followerId`, `followeeId`) 
 		VALUES (#{param1}, #{param2});
 	</insert>
 
 	<select id="selectFollowee" parameterType="Integer">
-		select * from diydb.follow where follower = #{memberId} order by id desc;
+		select * from diydb.follow where followerId = #{memberId} order by id desc;
 	</select>
 	
 	<select id="selectFollower" parameterType="Integer">
-		select * from diydb.follow where followee = #{memberId} order by id desc;
+		select * from diydb.follow where followeeId = #{memberId} order by id desc;
 	</select>
 	
 	<select id="cntFollowee" parameterType="Integer">
-		select count(*) from diydb.follow where follower = #{memberId};
+		select count(*) from diydb.follow where followerId = #{memberId};
 	</select>
 	
 	<select id="cntFollower" parameterType="Integer">
-		select count(*) from diydb.follow where followee = #{memberId};
+		select count(*) from diydb.follow where followeeId = #{memberId};
 	</select>
 	
 	<select id="followCheck" parameterType="Integer">
-    select count(*) from diydb.follow where follower = #{param1} and followee = #{param2};
+    select count(*) from diydb.follow where followerId = #{param1} and followeeId = #{param2};
 	</select>
 	
 	<delete id="unfollow" parameterType="Integer">
-		delete from diydb.follow where follower=#{param1} and followee =#{param2};
+		delete from diydb.follow where followerId =#{param1} and followeeId =#{param2};
 	</delete>
 </mapper>

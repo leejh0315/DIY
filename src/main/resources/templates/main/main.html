@@ -101,33 +101,32 @@
 
 	  <!-- end -->
 
-		<div class="king_Wrap">
-			<p>이달의 기록왕</p>
-			<div class="kingcontent">
-			<div class="rank scd">
-				<div>2등</div>
-				<div class="kingimgdiv">
-					<img th:src="${kingProfileimg[1]}">
-				</div>
-				<div th:text="${king[1].memberNick}"></div>
-			</div>
-			<div class="rank fst">
-				<div>1등</div>
-				<div class="kingimgdiv">
-					<img th:src="${kingProfileimg[0]}">
-				</div>	
-				<div th:text="${king[0].memberNick}"></div>
-			</div>
-			<div class="rank thd">
-			<div>3등</div>
-				<div class="kingimgdiv">
-					<img th:src="${kingProfileimg[2]}">
-				</div>
-				<div th:text="${king[2].memberNick}"></div>
-			</div>
-
-		</div>
-		</div>
+		<div class="king_Wrap" th:if="${king != null && king.size() > 0}">
+    <p>이달의 기록왕</p>
+    <div class="kingcontent">
+        <div class="rank scd">
+            <div>2등</div>
+            <div class="kingimgdiv">
+                <img th:src="${kingProfileimg[1]}">
+            </div>
+            <div th:text="${king[1].memberNick}"></div>
+        </div>
+        <div class="rank fst">
+            <div>1등</div>
+            <div class="kingimgdiv">
+                <img th:src="${kingProfileimg[0]}">
+            </div>    
+            <div th:text="${king[0].memberNick}"></div>
+        </div>
+        <div class="rank thd">
+            <div>3등</div>
+            <div class="kingimgdiv">
+                <img th:src="${kingProfileimg[2]}">
+            </div>
+            <div th:text="${king[2].memberNick}"></div>
+        </div>
+    </div>
+</div>
 		
 	</div>
 </div>

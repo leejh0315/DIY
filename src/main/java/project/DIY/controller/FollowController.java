@@ -44,6 +44,7 @@ public class FollowController {
 		
 		HttpSession session = req.getSession(false);
 		Member member = (Member) session.getAttribute(SessionVar.LOGIN_MEMBER);
+		
 		aboutNotice(member, model);
 		Member user = memberRepository.selectBymemberId(id);
 		int memberId = member.getId();

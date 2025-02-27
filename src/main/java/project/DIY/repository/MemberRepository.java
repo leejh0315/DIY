@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import project.DIY.domain.Member;
 import project.DIY.domain.PasswordHistory;
+
 
 public interface MemberRepository {
 	public Member selectById(String loginId); //loginId값에 해당하는 멤버 정보 가져옴

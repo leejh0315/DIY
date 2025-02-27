@@ -9,6 +9,7 @@ import project.DIY.domain.Member;
 
 public class MemberValidator implements Validator{
 
+	
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return Member.class.isAssignableFrom(clazz);
